@@ -1,0 +1,32 @@
+{
+  "tasks": [
+    {
+      "description": "We are going to do more refactoring",
+      "priority": 0,
+      "id": 1
+    },
+    {
+      "description": "Que aterrize el Perseverance",
+      "priority": 1,
+      "id": 2
+    },
+    {
+      "description": "Que Elon Musk no haga cosas cuando yo hago streaming",
+      "priority": 2,
+      "id": 3
+    }
+  ],
+  "focus-sessions": [
+    {
+      "id": 1,
+      "state": "active",
+      "tasks": [
+        1,
+        2
+      ]
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

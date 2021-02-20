@@ -1,0 +1,9 @@
+.user-header {
+  display: flex;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
