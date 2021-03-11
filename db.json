@@ -1,25 +1,30 @@
 {
   "tasks": [
     {
-      "description": "We are going to do more refactoring",
+      "description": "Agrego mi primera tarea",
       "priority": 0,
       "id": 1
     },
     {
-      "description": "Que aterrize el Perseverance",
+      "description": "Esta es una nueva tarea",
       "priority": 1,
-      "id": 2
+      "id": 3
     },
     {
-      "description": "Que Elon Musk no haga cosas cuando yo hago streaming",
+      "description": "Hola tareas",
       "priority": 2,
-      "id": 3
+      "id": 4
+    },
+    {
+      "description": "Esto si que funciona",
+      "priority": 3,
+      "id": 5
     }
   ],
   "focus-sessions": [
     {
       "id": 1,
-      "state": "active",
+      "state": "finished",
       "tasks": [
         1,
         2

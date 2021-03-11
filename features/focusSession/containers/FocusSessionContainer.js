@@ -10,6 +10,8 @@ import {
   Paragraph,
   AddButton,
   Modal,
+  CenteredContent,
+  Container,
 } from '@glrodasz/components'
 
 // TODO: Move to the common components
@@ -76,20 +78,24 @@ const FocusSessionContainer = ({ initialData }) => {
         }
       />
       {showModal && (
-        <Modal onClose={onCloseModal}>
-          <Picture src="/images/couch-pause.svg" width={200}></Picture>
-          <Heading size="lg" color="tertiary">Tomate un tiempo para refrescarte</Heading>
-          <Spacer.Horizontal size="md" />
-          <Paragraph>
-            Siempre hay que celebrar los pequeños triunfos, por eso te invitamos
-            a tomar un descanso para despejar tu mente.
-          </Paragraph>
-          <Spacer.Horizontal size="md" />
-          <div style={{ display: 'flex', gap: '0 20px' }}>
-            <Button isMuted>5 min</Button>
-            <Button isMuted>10 min</Button>
-            <Button isMuted>15 min</Button>
-          </div>
+        <Modal onClose={onCloseModal} isCentered>
+            <CenteredContent>
+              <Picture src="/images/couch-pause.svg" width={200}></Picture>
+              <Heading size="xl" color="tertiary" isInline>
+                Tomate un tiempo para refrescarte
+              </Heading>
+              <Spacer.Horizontal size=" sm" />
+              <Paragraph>
+                Siempre hay que celebrar los pequeños triunfos, por eso te
+                invitamos a tomar un descanso para despejar tu mente.
+              </Paragraph>
+              <Spacer.Horizontal size="md" />
+              <div style={{ display: 'flex', gap: '0 20px' }}>
+                <Button isMuted>5 min</Button>
+                <Button isMuted>10 min</Button>
+                <Button isMuted>15 min</Button>
+              </div>
+            </CenteredContent>
         </Modal>
       )}
     </>

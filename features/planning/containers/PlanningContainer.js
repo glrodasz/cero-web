@@ -5,93 +5,60 @@ import { useQuery, useQueryCache, useMutation } from 'react-query'
 import {
   FullHeightContent,
   Button,
-  Avatar,
   Spacer,
   Heading,
   Paragraph,
   AddButton,
+  CenteredContent,
+  Modal,
+  LoadingError,
 } from '@glrodasz/components'
 
 import TaskList from '../components/TaskList'
 import UserHeader from '../../common/components/UserHeader/UserHeader'
 
 import { MAXIMUM_BACKLOG_QUANTITY } from '../constants'
-import { tasksApi, focusSessionsApi } from '../api'
-import { reorderTasks } from '../helpers'
+import { focusSessionsApi } from '../api'
+
+import { useTasks } from '../hooks/tasks'
+import { handleDragEnd, handleDeleteTask } from '../handlers'
 
 const PlanningContainer = ({ initialData }) => {
-  const cache = useQueryCache()
+  const queryCache = useQueryCache()
 
   // Focus Sessions
   const [createFocusSession] = useMutation(() => focusSessionsApi.create(), {
     onSuccess: () => {
       // Query Invalidations
-      cache.invalidateQueries('focusSessions')
+      queryCache.invalidateQueries('focusSessions')
     },
   })
 
-  // Tasks
-  const { isLoading, error, data } = useQuery(
-    'tasks',
-    () => tasksApi.getAll(),
-    {
-      initialData,
-    }
-  )
-  const [tasks, setTasks] = useState(data)
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
+  const [currentTaskId, setCurrentTaskId] = useState(null)
 
-  const [createTask] = useMutation((params) => tasksApi.create(params), {
-    onSuccess: () => {
-      // Query Invalidations
-      cache.invalidateQueries('tasks')
+  const { tasksData, tasksIsLoading, tasksError, tasksCrud } = useTasks({
+    queryCache,
+    initialData: initialData.tasks,
+    crudCallbacks: {
+      delete: () => setCurrentTaskId(null),
     },
   })
 
-  const [updatePriorities] = useMutation(
-    (params) => tasksApi.updatePriorities(params),
-    {
-      onSuccess: () => {
-        // Query Invalidations
-        cache.invalidateQueries('tasks')
-      },
-    }
-  )
-
-  const [deleteTask] = useMutation((params) => tasksApi.delete(params), {
-    onSuccess: () => {
-      // Query Invalidations
-      cache.invalidateQueries('tasks')
-    },
-  })
-
+  // TODO: It oculd possible live in useTasks
+  const [tasks, setTasks] = useState(tasksData)
   useEffect(() => {
-    setTasks(data)
-  }, [data])
-
-  const onDragEnd = (result) => {
-    // dropped outside the list
-    if (!result.destination) {
-      return
-    }
-
-    const sourceIndex = result.source.index
-    const destinationIndex = result.destination.index
-
-    const orderedTasks = reorderTasks(tasks, sourceIndex, destinationIndex)
-    setTasks(orderedTasks)
-
-    updatePriorities({ tasks: orderedTasks })
-  }
-
-  // TODO: Create LoadingError Component (Loading, Error)
-  if (isLoading) return 'Loading...'
-  if (error) return `An error has ocurred ${error.message}`
+    setTasks(tasksData)
+  }, [tasksData])
 
   return (
     <>
       <FullHeightContent
         content={
-          <>
+          <LoadingError
+            isLoading={tasksIsLoading}
+            errorMessage={tasksError?.message}
+          >
             <UserHeader
               avatar="https://placeimg.com/200/200/people"
               title="Hola, Cristian"
@@ -108,8 +75,11 @@ const PlanningContainer = ({ initialData }) => {
             )}
             <TaskList
               tasks={tasks}
-              onDragEnd={onDragEnd}
-              onDeleteTask={deleteTask}
+              onDragEnd={handleDragEnd({ tasks, setTasks, tasksCrud })}
+              onDeleteTask={handleDeleteTask({
+                setCurrentTaskId,
+                setShowDeleteConfirmation,
+              })}
             />
             {tasks?.length === 1 && (
               <>
@@ -124,7 +94,10 @@ const PlanningContainer = ({ initialData }) => {
                 <Spacer.Horizontal size="md" />
                 <AddButton
                   onAdd={(value) =>
-                    createTask({ description: value, priority: tasks.length })
+                    tasksCrud.create({
+                      description: value,
+                      priority: tasks.length,
+                    })
                   }
                   focusHelpText="Presiona enter"
                   blurHelpText="Clic para continuar"
@@ -133,7 +106,7 @@ const PlanningContainer = ({ initialData }) => {
                 </AddButton>
               </>
             )}
-          </>
+          </LoadingError>
         }
         footer={
           !!tasks?.length >= 1 && (
@@ -155,6 +128,37 @@ const PlanningContainer = ({ initialData }) => {
           )
         }
       />
+      {showDeleteConfirmation && (
+        <Modal type="secondary">
+          <CenteredContent>
+            <Heading size="xl">
+              ¿Estás seguro de querer eliminar esta tarea?
+            </Heading>
+            <Spacer.Horizontal size="md" />
+            <Paragraph>La tarea se eliminará de manera permanente.</Paragraph>
+            <Spacer.Horizontal size="sm" />
+            <Button
+              type="secondary"
+              onClick={() => {
+                setShowDeleteConfirmation(false)
+                setCurrentTaskId(null)
+              }}
+            >
+              No, Regresar
+            </Button>
+            <Spacer.Horizontal size="xs" />
+            <Button
+              type="primary"
+              onClick={() => {
+                tasksCrud.delete({ id: currentTaskId })
+                setShowDeleteConfirmation(false)
+              }}
+            >
+              Sí, eliminar
+            </Button>
+          </CenteredContent>
+        </Modal>
+      )}
     </>
   )
 }
