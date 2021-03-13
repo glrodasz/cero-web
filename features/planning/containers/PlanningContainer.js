@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { useQuery, useQueryCache, useMutation } from 'react-query'
+import { useQueryCache, useMutation } from 'react-query'
 
 import {
   FullHeightContent,
