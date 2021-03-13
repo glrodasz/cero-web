@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { useQueryCache, useMutation } from 'react-query'
+import { useQueryCache } from 'react-query'
 
 import {
   FullHeightContent,
@@ -18,53 +17,47 @@ import TaskList from '../components/TaskList'
 import UserHeader from '../../common/components/UserHeader/UserHeader'
 
 import { MAXIMUM_BACKLOG_QUANTITY } from '../constants'
-import { focusSessionsApi } from '../api'
 
-import { useTasks } from '../hooks/tasks'
-import { handleDragEnd, handleDeleteTask } from '../handlers'
+import useDeleteConfirmation from '../hooks/useDeleteConfirmation'
+import useTasks from '../hooks/useTasks'
+import useFocusSessions from '../hooks/useFocusSessions'
+
+import {
+  handleDragEnd,
+  handleDeleteTask,
+  handleAddTask,
+  handleClickCancelRemove,
+  handleClickConfirmRemove,
+  handleClickStartSession,
+} from '../handlers'
 
 const PlanningContainer = ({ initialData }) => {
   const queryCache = useQueryCache()
 
-  // Focus Sessions
-  const [createFocusSession] = useMutation(() => focusSessionsApi.create(), {
-    onSuccess: () => {
-      // Query Invalidations
-      queryCache.invalidateQueries('focusSessions')
-    },
-  })
+  const deleteConfirmation = useDeleteConfirmation()
 
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
-  const [currentTaskId, setCurrentTaskId] = useState(null)
-
-  const { tasksData, tasksIsLoading, tasksError, tasksCrud } = useTasks({
+  const tasks = useTasks({
     queryCache,
     initialData: initialData.tasks,
-    crudCallbacks: {
-      delete: () => setCurrentTaskId(null),
-    },
+    onRemove: () => deleteConfirmation.setTasksId(null),
   })
 
-  // TODO: It oculd possible live in useTasks
-  const [tasks, setTasks] = useState(tasksData)
-  useEffect(() => {
-    setTasks(tasksData)
-  }, [tasksData])
+  const focusSessions = useFocusSessions({ queryCache })
 
   return (
     <>
       <FullHeightContent
         content={
           <LoadingError
-            isLoading={tasksIsLoading}
-            errorMessage={tasksError?.message}
+            isLoading={tasks.isLoading}
+            errorMessage={tasks.error?.message}
           >
             <UserHeader
               avatar="https://placeimg.com/200/200/people"
               title="Hola, Cristian"
               text="Conoce la metodologia RETO"
             />
-            {tasks?.length == 0 && (
+            {tasks.data?.length == 0 && (
               <>
                 <Spacer.Horizontal size="lg" />
                 <Heading size="lg">
@@ -74,14 +67,18 @@ const PlanningContainer = ({ initialData }) => {
               </>
             )}
             <TaskList
-              tasks={tasks}
-              onDragEnd={handleDragEnd({ tasks, setTasks, tasksCrud })}
+              tasks={tasks.data}
+              onDragEnd={handleDragEnd({
+                tasksData: tasks.data,
+                tasksApi: tasks.api,
+                tasksSetLocalData: tasks.setLocalData,
+              })}
               onDeleteTask={handleDeleteTask({
-                setCurrentTaskId,
-                setShowDeleteConfirmation,
+                setTaskId: deleteConfirmation.setTaskId,
+                setShowDialog: deleteConfirmation.setShowDialog,
               })}
             />
-            {tasks?.length === 1 && (
+            {tasks.data?.length === 1 && (
               <>
                 <Spacer.Horizontal size="md" />
                 <Heading size="lg">
@@ -89,16 +86,14 @@ const PlanningContainer = ({ initialData }) => {
                 </Heading>
               </>
             )}
-            {tasks?.length < MAXIMUM_BACKLOG_QUANTITY && (
+            {tasks.data?.length < MAXIMUM_BACKLOG_QUANTITY && (
               <>
                 <Spacer.Horizontal size="md" />
                 <AddButton
-                  onAdd={(value) =>
-                    tasksCrud.create({
-                      description: value,
-                      priority: tasks.length,
-                    })
-                  }
+                  onAdd={handleAddTask({
+                    tasks: tasks.data,
+                    tasksApi: tasks.api,
+                  })}
                   focusHelpText="Presiona enter"
                   blurHelpText="Clic para continuar"
                 >
@@ -109,7 +104,7 @@ const PlanningContainer = ({ initialData }) => {
           </LoadingError>
         }
         footer={
-          !!tasks?.length >= 1 && (
+          !!tasks.data?.length >= 1 && (
             <>
               <Spacer.Horizontal size="lg" />
               <Paragraph size="sm">
@@ -118,7 +113,9 @@ const PlanningContainer = ({ initialData }) => {
               </Paragraph>
               <Spacer.Horizontal size="sm" />
               <Button
-                onClick={() => createFocusSession()}
+                onClick={handleClickStartSession({
+                  focusSessionsApi: focusSessions.api,
+                })}
                 isDisabled
                 type="primary"
               >
@@ -128,7 +125,7 @@ const PlanningContainer = ({ initialData }) => {
           )
         }
       />
-      {showDeleteConfirmation && (
+      {deleteConfirmation.showDialog && (
         <Modal type="secondary">
           <CenteredContent>
             <Heading size="xl">
@@ -139,20 +136,21 @@ const PlanningContainer = ({ initialData }) => {
             <Spacer.Horizontal size="sm" />
             <Button
               type="secondary"
-              onClick={() => {
-                setShowDeleteConfirmation(false)
-                setCurrentTaskId(null)
-              }}
+              onClick={handleClickCancelRemove({
+                setTaskId: deleteConfirmation.setTaskId,
+                setShowDialog: deleteConfirmation.setShowDialog,
+              })}
             >
               No, Regresar
             </Button>
             <Spacer.Horizontal size="xs" />
             <Button
               type="primary"
-              onClick={() => {
-                tasksCrud.delete({ id: currentTaskId })
-                setShowDeleteConfirmation(false)
-              }}
+              onClick={handleClickConfirmRemove({
+                taskId: deleteConfirmation.taskId,
+                tasksApi: tasks.api,
+                setShowDialog: deleteConfirmation.setShowDialog,
+              })}
             >
               Sí, eliminar
             </Button>

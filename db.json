@@ -2,7 +2,7 @@
   "tasks": [
     {
       "description": "Agrego mi primera tarea",
-      "priority": 0,
+      "priority": 3,
       "id": 1
     },
     {
@@ -12,12 +12,12 @@
     },
     {
       "description": "Hola tareas",
-      "priority": 2,
+      "priority": 0,
       "id": 4
     },
     {
       "description": "Esto si que funciona",
-      "priority": 3,
+      "priority": 2,
       "id": 5
     }
   ],

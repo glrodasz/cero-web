@@ -7,10 +7,10 @@ describe('[ features / plannning / handlers ]', () => {
     describe('when the handler is call', () => {
       it('should return a function', () => {
         // Arrange
-        const param = {}
+        const params = {}
 
         // Act
-        const result = typeof handleDeleteTask(param)
+        const result = typeof handleDeleteTask(params)
         const expected = 'function'
 
         // Assert
@@ -19,32 +19,32 @@ describe('[ features / plannning / handlers ]', () => {
     })
 
     describe('When the function returned is called', () => {
-      it('should call `setShowDeleteConfirmation` with true', () => {
+      it('should call `setShowDialog` with true', () => {
         // Arrange
-        const setShowDeleteConfirmation = jest.fn() // Stub/Spie
-        const setCurrentTaskId = () => {}
+        const setShowDialog = jest.fn() // Stub/Spie
+        const setTaskId = () => {}
         const id = 'foo'
-        const params = { setShowDeleteConfirmation, setCurrentTaskId }
+        const params = { setShowDialog, setTaskId }
 
         // Act
         handleDeleteTask(params)({ id })
 
         // Assert
-        expect(setShowDeleteConfirmation).toHaveBeenCalledWith(true)
+        expect(setShowDialog).toHaveBeenCalledWith(true)
       })
 
-      it('should call `setCurrentTaskId` with the provided `id`', () => {
+      it('should call `setTaskId` with the provided `id`', () => {
         // Arrange
-        const setShowDeleteConfirmation = () => {}
-        const setCurrentTaskId = jest.fn()
+        const setShowDialog = () => {}
+        const setTaskId = jest.fn()
         const id = 'foo'
-        const params = { setShowDeleteConfirmation, setCurrentTaskId }
+        const params = { setShowDialog, setTaskId }
 
         // Act
         handleDeleteTask(params)({ id })
 
         // Assert
-        expect(setCurrentTaskId).toHaveBeenCalledWith('foo')
+        expect(setTaskId).toHaveBeenCalledWith('foo')
       })
     })
   })
