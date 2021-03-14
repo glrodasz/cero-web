@@ -68,15 +68,8 @@ const PlanningContainer = ({ initialData }) => {
             )}
             <TaskList
               tasks={tasks.data}
-              onDragEnd={handleDragEnd({
-                tasksData: tasks.data,
-                tasksApi: tasks.api,
-                tasksSetLocalData: tasks.setLocalData,
-              })}
-              onDeleteTask={handleDeleteTask({
-                setTaskId: deleteConfirmation.setTaskId,
-                setShowDialog: deleteConfirmation.setShowDialog,
-              })}
+              onDragEnd={handleDragEnd({ tasks })}
+              onDeleteTask={handleDeleteTask({ deleteConfirmation })}
             />
             {tasks.data?.length === 1 && (
               <>
@@ -90,10 +83,7 @@ const PlanningContainer = ({ initialData }) => {
               <>
                 <Spacer.Horizontal size="md" />
                 <AddButton
-                  onAdd={handleAddTask({
-                    tasks: tasks.data,
-                    tasksApi: tasks.api,
-                  })}
+                  onAdd={handleAddTask({ tasks })}
                   focusHelpText="Presiona enter"
                   blurHelpText="Clic para continuar"
                 >
@@ -113,9 +103,7 @@ const PlanningContainer = ({ initialData }) => {
               </Paragraph>
               <Spacer.Horizontal size="sm" />
               <Button
-                onClick={handleClickStartSession({
-                  focusSessionsApi: focusSessions.api,
-                })}
+                onClick={handleClickStartSession({ focusSessions })}
                 isDisabled
                 type="primary"
               >
@@ -136,21 +124,14 @@ const PlanningContainer = ({ initialData }) => {
             <Spacer.Horizontal size="sm" />
             <Button
               type="secondary"
-              onClick={handleClickCancelRemove({
-                setTaskId: deleteConfirmation.setTaskId,
-                setShowDialog: deleteConfirmation.setShowDialog,
-              })}
+              onClick={handleClickCancelRemove({ deleteConfirmation })}
             >
               No, Regresar
             </Button>
             <Spacer.Horizontal size="xs" />
             <Button
               type="primary"
-              onClick={handleClickConfirmRemove({
-                taskId: deleteConfirmation.taskId,
-                tasksApi: tasks.api,
-                setShowDialog: deleteConfirmation.setShowDialog,
-              })}
+              onClick={handleClickConfirmRemove({ tasks, deleteConfirmation })}
             >
               Sí, eliminar
             </Button>
@@ -162,13 +143,15 @@ const PlanningContainer = ({ initialData }) => {
 }
 
 PlanningContainer.propTypes = {
-  initialData: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      description: PropTypes.string.isRequired,
-      priority: PropTypes.number.isRequired,
-    })
-  ),
+  initialData: PropTypes.shape({
+    tasks: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        description: PropTypes.string.isRequired,
+        priority: PropTypes.number.isRequired,
+      })
+    ),
+  }),
 }
 
 export default PlanningContainer

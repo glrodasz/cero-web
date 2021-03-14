@@ -24,7 +24,7 @@ describe('[ features / plannning / handlers ]', () => {
         const setShowDialog = jest.fn() // Stub/Spie
         const setTaskId = () => {}
         const id = 'foo'
-        const params = { setShowDialog, setTaskId }
+        const params = { deleteConfirmation: { setShowDialog, setTaskId } }
 
         // Act
         handleDeleteTask(params)({ id })
@@ -38,7 +38,7 @@ describe('[ features / plannning / handlers ]', () => {
         const setShowDialog = () => {}
         const setTaskId = jest.fn()
         const id = 'foo'
-        const params = { setShowDialog, setTaskId }
+        const params = { deleteConfirmation: { setShowDialog, setTaskId } }
 
         // Act
         handleDeleteTask(params)({ id })

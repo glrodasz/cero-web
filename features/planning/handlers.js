@@ -1,45 +1,43 @@
 import { reorderTasks } from './helpers'
 
-export const handleDragEnd = ({ tasksData, tasksSetLocalData, tasksApi }) => (
-  result
-) => {
-  if (result.destination) {
-    const sourceIndex = result.source.index
-    const destinationIndex = result.destination.index
+export const handleDragEnd = ({ tasks }) => (result) => {
+  const { source, destination } = result
 
-    const orderedTasks = reorderTasks(tasksData, sourceIndex, destinationIndex)
+  if (destination) {
+    const { data, api, setLocalData } = tasks
+    const orderedTasks = reorderTasks(data, source.index, destination.index)
 
-    tasksSetLocalData(orderedTasks)
-    tasksApi.updatePriorities({ tasks: orderedTasks })
+    setLocalData(orderedTasks)
+    api.updatePriorities({ tasks: orderedTasks })
   }
 }
 
-export const handleAddTask = ({ tasks, tasksApi }) => (value) => {
-  tasksApi.create({
-    description: value,
-    priority: tasks.length,
-  })
+export const handleAddTask = ({ tasks }) => (value) => {
+  const { api, data } = tasks
+  api.create({ description: value, priority: data.length })
 }
 
-export const handleDeleteTask = ({ setTaskId, setShowDialog }) => ({ id }) => {
-  setShowDialog(true)
+export const handleDeleteTask = ({ deleteConfirmation }) => ({ id }) => {
+  const { setTaskId, setShowDialog } = deleteConfirmation
   setTaskId(id)
+  setShowDialog(true)
 }
 
-export const handleClickCancelRemove = ({ setTaskId, setShowDialog }) => () => {
-  setShowDialog(false)
+export const handleClickCancelRemove = ({ deleteConfirmation }) => () => {
+  const { setTaskId, setShowDialog } = deleteConfirmation
   setTaskId(null)
+  setShowDialog(false)
 }
 
 export const handleClickConfirmRemove = ({
-  tasksApi,
-  taskId,
-  setShowDialog,
+  tasks,
+  deleteConfirmation,
 }) => () => {
-  tasksApi.remove({ id: taskId })
+  const { taskId, setShowDialog } = deleteConfirmation
+  tasks.api.remove({ id: taskId })
   setShowDialog(false)
 }
 
-export const handleClickStartSession = ({ focusSessionsApi }) => () => {
-  focusSessionsApi.create()
+export const handleClickStartSession = ({ focusSessions }) => () => {
+  focusSessions.api.create()
 }
