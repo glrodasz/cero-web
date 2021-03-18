@@ -1,103 +1,63 @@
-import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { useQuery, useQueryCache, useMutation } from 'react-query'
+import { useQueryCache } from 'react-query'
 
 import {
   FullHeightContent,
   Button,
-  Avatar,
   Spacer,
   Heading,
   Paragraph,
   AddButton,
+  CenteredContent,
+  Modal,
+  LoadingError,
 } from '@glrodasz/components'
 
 import TaskList from '../components/TaskList'
 import UserHeader from '../../common/components/UserHeader/UserHeader'
 
 import { MAXIMUM_BACKLOG_QUANTITY } from '../constants'
-import { tasksApi, focusSessionsApi } from '../api'
-import { reorderTasks } from '../helpers'
+
+import useDeleteConfirmation from '../hooks/useDeleteConfirmation'
+import useTasks from '../hooks/useTasks'
+import useFocusSessions from '../hooks/useFocusSessions'
+
+import {
+  handleDragEnd,
+  handleDeleteTask,
+  handleAddTask,
+  handleClickCancelRemove,
+  handleClickConfirmRemove,
+  handleClickStartSession,
+} from '../handlers'
 
 const PlanningContainer = ({ initialData }) => {
-  const cache = useQueryCache()
+  const queryCache = useQueryCache()
 
-  // Focus Sessions
-  const [createFocusSession] = useMutation(() => focusSessionsApi.create(), {
-    onSuccess: () => {
-      // Query Invalidations
-      cache.invalidateQueries('focusSessions')
-    },
+  const deleteConfirmation = useDeleteConfirmation()
+
+  const tasks = useTasks({
+    queryCache,
+    initialData: initialData.tasks,
+    onRemove: () => deleteConfirmation.setTasksId(null),
   })
 
-  // Tasks
-  const { isLoading, error, data } = useQuery(
-    'tasks',
-    () => tasksApi.getAll(),
-    {
-      initialData,
-    }
-  )
-  const [tasks, setTasks] = useState(data)
-
-  const [createTask] = useMutation((params) => tasksApi.create(params), {
-    onSuccess: () => {
-      // Query Invalidations
-      cache.invalidateQueries('tasks')
-    },
-  })
-
-  const [updatePriorities] = useMutation(
-    (params) => tasksApi.updatePriorities(params),
-    {
-      onSuccess: () => {
-        // Query Invalidations
-        cache.invalidateQueries('tasks')
-      },
-    }
-  )
-
-  const [deleteTask] = useMutation((params) => tasksApi.delete(params), {
-    onSuccess: () => {
-      // Query Invalidations
-      cache.invalidateQueries('tasks')
-    },
-  })
-
-  useEffect(() => {
-    setTasks(data)
-  }, [data])
-
-  const onDragEnd = (result) => {
-    // dropped outside the list
-    if (!result.destination) {
-      return
-    }
-
-    const sourceIndex = result.source.index
-    const destinationIndex = result.destination.index
-
-    const orderedTasks = reorderTasks(tasks, sourceIndex, destinationIndex)
-    setTasks(orderedTasks)
-
-    updatePriorities({ tasks: orderedTasks })
-  }
-
-  // TODO: Create LoadingError Component (Loading, Error)
-  if (isLoading) return 'Loading...'
-  if (error) return `An error has ocurred ${error.message}`
+  const focusSessions = useFocusSessions({ queryCache })
 
   return (
     <>
       <FullHeightContent
         content={
-          <>
+          <LoadingError
+            isLoading={tasks.isLoading}
+            errorMessage={tasks.error?.message}
+          >
             <UserHeader
               avatar="https://placeimg.com/200/200/people"
               title="Hola, Cristian"
               text="Conoce la metodologia RETO"
             />
-            {tasks?.length == 0 && (
+            {tasks.data?.length == 0 && (
               <>
                 <Spacer.Horizontal size="lg" />
                 <Heading size="lg">
@@ -107,11 +67,11 @@ const PlanningContainer = ({ initialData }) => {
               </>
             )}
             <TaskList
-              tasks={tasks}
-              onDragEnd={onDragEnd}
-              onDeleteTask={deleteTask}
+              tasks={tasks.data}
+              onDragEnd={handleDragEnd({ tasks })}
+              onDeleteTask={handleDeleteTask({ deleteConfirmation })}
             />
-            {tasks?.length === 1 && (
+            {tasks.data?.length === 1 && (
               <>
                 <Spacer.Horizontal size="md" />
                 <Heading size="lg">
@@ -119,13 +79,11 @@ const PlanningContainer = ({ initialData }) => {
                 </Heading>
               </>
             )}
-            {tasks?.length < MAXIMUM_BACKLOG_QUANTITY && (
+            {tasks.data?.length < MAXIMUM_BACKLOG_QUANTITY && (
               <>
                 <Spacer.Horizontal size="md" />
                 <AddButton
-                  onAdd={(value) =>
-                    createTask({ description: value, priority: tasks.length })
-                  }
+                  onAdd={handleAddTask({ tasks })}
                   focusHelpText="Presiona enter"
                   blurHelpText="Clic para continuar"
                 >
@@ -133,10 +91,10 @@ const PlanningContainer = ({ initialData }) => {
                 </AddButton>
               </>
             )}
-          </>
+          </LoadingError>
         }
         footer={
-          !!tasks?.length >= 1 && (
+          !!tasks.data?.length >= 1 && (
             <>
               <Spacer.Horizontal size="lg" />
               <Paragraph size="sm">
@@ -145,7 +103,7 @@ const PlanningContainer = ({ initialData }) => {
               </Paragraph>
               <Spacer.Horizontal size="sm" />
               <Button
-                onClick={() => createFocusSession()}
+                onClick={handleClickStartSession({ focusSessions })}
                 isDisabled
                 type="primary"
               >
@@ -155,18 +113,45 @@ const PlanningContainer = ({ initialData }) => {
           )
         }
       />
+      {deleteConfirmation.showDialog && (
+        <Modal type="secondary">
+          <CenteredContent>
+            <Heading size="xl">
+              ¿Estás seguro de querer eliminar esta tarea?
+            </Heading>
+            <Spacer.Horizontal size="md" />
+            <Paragraph>La tarea se eliminará de manera permanente.</Paragraph>
+            <Spacer.Horizontal size="sm" />
+            <Button
+              type="secondary"
+              onClick={handleClickCancelRemove({ deleteConfirmation })}
+            >
+              No, Regresar
+            </Button>
+            <Spacer.Horizontal size="xs" />
+            <Button
+              type="primary"
+              onClick={handleClickConfirmRemove({ tasks, deleteConfirmation })}
+            >
+              Sí, eliminar
+            </Button>
+          </CenteredContent>
+        </Modal>
+      )}
     </>
   )
 }
 
 PlanningContainer.propTypes = {
-  initialData: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      description: PropTypes.string.isRequired,
-      priority: PropTypes.number.isRequired,
-    })
-  ),
+  initialData: PropTypes.shape({
+    tasks: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        description: PropTypes.string.isRequired,
+        priority: PropTypes.number.isRequired,
+      })
+    ),
+  }),
 }
 
 export default PlanningContainer

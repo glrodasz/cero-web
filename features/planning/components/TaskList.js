@@ -6,7 +6,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { PRIOTIY_TASKS_QUANTITY, MAXIMUM_BACKLOG_QUANTITY } from '../constants'
 import { getTaskType } from '../helpers'
 
-const TaskList = ({ tasks, onDragEnd, onDeleteTask, isActive }) => {
+const TaskList = ({ tasks, onDragEnd, onDeleteTask, onCompleteTask, isActive }) => {
   return (
     <>
       {!!tasks?.length && (
@@ -42,6 +42,7 @@ const TaskList = ({ tasks, onDragEnd, onDeleteTask, isActive }) => {
                             onDelete={() => onDeleteTask({ id: task.id })}
                             isPending={!isActive}
                             type={getTaskType(index)}
+                            onCheck={onCompleteTask}
                           >
                             {task.description}
                           </Task>
