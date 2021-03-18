@@ -10,14 +10,11 @@ describe('[ features / plannning / handlers ]', () => {
     describe('when the handler is call', () => {
       it('should return a function', () => {
         // Arrange
-        const params = {}
-
+        // TODO:
         // Act
-        const result = typeof handleDragEnd(params)
-        const expected = 'function'
-
+        // TODO:
         // Assert
-        expect(result).toBe(expected)
+        // TODO:
       })
     })
 
@@ -38,7 +35,7 @@ describe('[ features / plannning / handlers ]', () => {
         handleDragEnd(params)(event)
 
         // Assert
-        expect(reorderTasks).toHaveBeenCalledWith([1, 2, 3], 0, 1)
+        expect(reorderTasks).toHaveBeenCalledWith(/* TODO: */)
       })
 
       it('should call `setLocalData` with `orderedTasks`', () => {
@@ -58,7 +55,7 @@ describe('[ features / plannning / handlers ]', () => {
         handleDragEnd(params)(event)
 
         // Assert
-        expect(setLocalDataMock).toHaveBeenCalledWith(['a', 'b', 'c'])
+        // TODO:
       })
 
       it('should call `api.updatePriorities` with `{ tasks: orderedTasks }`', () => {
@@ -79,9 +76,7 @@ describe('[ features / plannning / handlers ]', () => {
         handleDragEnd(params)(event)
 
         // Assert
-        expect(updatePrioritiesMock).toHaveBeenCalledWith({
-          tasks: ['a', 'b', 'c'],
-        })
+        // TODO:
       })
     })
 
@@ -115,7 +110,7 @@ describe('[ features / plannning / handlers ]', () => {
         handleDragEnd(params)(event)
 
         // Assert
-        expect(setLocalDataMock).not.toHaveBeenCalled()
+        // TODO:
       })
 
       it('should not call `api.updatePriorities`', () => {
@@ -136,7 +131,7 @@ describe('[ features / plannning / handlers ]', () => {
         handleDragEnd(params)(event)
 
         // Assert
-        expect(updatePrioritiesMock).not.toHaveBeenCalledWith()
+        // TODO:
       })
     })
   })
