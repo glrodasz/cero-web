@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import FocusSessionContainer from '../features/focusSession/containers/FocusSessionContainer'
 import { resetServerContext } from 'react-beautiful-dnd'
 
@@ -24,8 +25,13 @@ export async function getServerSideProps({ res }) {
   return { props: { tasks, activeFocusSession } }
 }
 
-const FocusSession = ({ tasks, activeFocusSessiom }) => {
-  return <FocusSessionContainer initialData={{ tasks, activeFocusSessiom }} />
+const FocusSession = ({ tasks, activeFocusSession }) => {
+  return <FocusSessionContainer initialData={{ tasks, activeFocusSession }} />
+}
+
+FocusSession.propTypes = {
+  tasks: PropTypes.array,
+  activeFocusSession: PropTypes.object,
 }
 
 export default FocusSession

@@ -1,8 +1,6 @@
 import { reorderTasks } from './helpers'
 
-export const handleDragEnd = ({ tasks }) => (result) => {
-  const { source, destination } = result
-
+export const handleDragEnd = ({ tasks }) => ({ source, destination }) => {
   if (destination) {
     const { data, api, setLocalData } = tasks
     const orderedTasks = reorderTasks(data, source.index, destination.index)

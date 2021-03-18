@@ -6,7 +6,13 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { PRIOTIY_TASKS_QUANTITY, MAXIMUM_BACKLOG_QUANTITY } from '../constants'
 import { getTaskType } from '../helpers'
 
-const TaskList = ({ tasks, onDragEnd, onDeleteTask, onCompleteTask, isActive }) => {
+const TaskList = ({
+  tasks,
+  onDragEnd,
+  onDeleteTask,
+  onCompleteTask,
+  isActive,
+}) => {
   return (
     <>
       {!!tasks?.length && (
@@ -75,8 +81,10 @@ const TaskList = ({ tasks, onDragEnd, onDeleteTask, onCompleteTask, isActive }) 
 }
 
 TaskList.propTypes = {
+  onCompleteTask: PropTypes.func.isRequired,
   onDragEnd: PropTypes.func.isRequired,
   onDeleteTask: PropTypes.func.isRequired,
+  isActive: PropTypes.bool,
   tasks: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,

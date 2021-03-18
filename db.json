@@ -25,10 +25,7 @@
     {
       "id": 1,
       "state": "finished",
-      "tasks": [
-        1,
-        2
-      ]
+      "tasks": [1, 2]
     }
   ],
   "profile": {

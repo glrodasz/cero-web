@@ -1,22 +1,19 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 import {
   FullHeightContent,
   Button,
-  Avatar,
   Spacer,
   Picture,
   Heading,
   Paragraph,
-  AddButton,
   Modal,
   CenteredContent,
-  Container,
 } from '@glrodasz/components'
 
 // TODO: Move to the common components
 import TaskList from '../../planning/components/TaskList'
-import { MAXIMUM_BACKLOG_QUANTITY } from '../../planning/constants'
 import UserHeader from '../../common/components/UserHeader/UserHeader'
 
 const FocusSessionContainer = ({ initialData }) => {
@@ -32,7 +29,7 @@ const FocusSessionContainer = ({ initialData }) => {
     setShowModal(true)
   }
 
-  const onDragEnd = (result) => {}
+  const onDragEnd = () => {}
   const deleteTask = () => {}
 
   return (
@@ -79,27 +76,31 @@ const FocusSessionContainer = ({ initialData }) => {
       />
       {showModal && (
         <Modal onClose={onCloseModal} isCentered>
-            <CenteredContent>
-              <Picture src="/images/couch-pause.svg" width={200}></Picture>
-              <Heading size="xl" color="tertiary" isInline>
-                Tomate un tiempo para refrescarte
-              </Heading>
-              <Spacer.Horizontal size=" sm" />
-              <Paragraph>
-                Siempre hay que celebrar los pequeños triunfos, por eso te
-                invitamos a tomar un descanso para despejar tu mente.
-              </Paragraph>
-              <Spacer.Horizontal size="md" />
-              <div style={{ display: 'flex', gap: '0 20px' }}>
-                <Button isMuted>5 min</Button>
-                <Button isMuted>10 min</Button>
-                <Button isMuted>15 min</Button>
-              </div>
-            </CenteredContent>
+          <CenteredContent>
+            <Picture src="/images/couch-pause.svg" width={200}></Picture>
+            <Heading size="xl" color="tertiary" isInline>
+              Tomate un tiempo para refrescarte
+            </Heading>
+            <Spacer.Horizontal size=" sm" />
+            <Paragraph>
+              Siempre hay que celebrar los pequeños triunfos, por eso te
+              invitamos a tomar un descanso para despejar tu mente.
+            </Paragraph>
+            <Spacer.Horizontal size="md" />
+            <div style={{ display: 'flex', gap: '0 20px' }}>
+              <Button isMuted>5 min</Button>
+              <Button isMuted>10 min</Button>
+              <Button isMuted>15 min</Button>
+            </div>
+          </CenteredContent>
         </Modal>
       )}
     </>
   )
+}
+
+FocusSessionContainer.propTypes = {
+  initialData: PropTypes.object,
 }
 
 export default FocusSessionContainer

@@ -1,7 +1,5 @@
 import Link from 'next/link'
 import {
-  Avatar,
-  Heading,
   Spacer,
   Card,
   Picture,
