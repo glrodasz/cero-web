@@ -1,6 +1,6 @@
 import { reorderTasks } from './helpers'
 
-export const handleDragEnd = ({ tasks }) => ({ source, destination }) => {
+export const handleDragEndTask = ({ tasks }) => ({ source, destination }) => {
   if (destination) {
     const { data, api, setLocalData } = tasks
     const orderedTasks = reorderTasks(data, source.index, destination.index)
@@ -10,12 +10,12 @@ export const handleDragEnd = ({ tasks }) => ({ source, destination }) => {
   }
 }
 
-export const handleAddTask = ({ tasks }) => (value) => {
+export const handleClickAddTask = ({ tasks }) => (value) => {
   const { api, data } = tasks
   api.create({ description: value, priority: data.length })
 }
 
-export const handleDeleteTask = ({ deleteConfirmation }) => ({ id }) => {
+export const handleClickDeleteTask = ({ deleteConfirmation }) => ({ id }) => {
   const { setTaskId, setShowDialog } = deleteConfirmation
   setTaskId(id)
   setShowDialog(true)

@@ -1,4 +1,4 @@
-import { handleDeleteTask, handleDragEnd } from './handlers'
+import { handleDeleteTask, handleDragEndTask } from './handlers'
 
 import { reorderTasks } from './helpers'
 jest.mock('./helpers', () => ({
@@ -6,14 +6,14 @@ jest.mock('./helpers', () => ({
 }))
 
 describe('[ features / plannning / handlers ]', () => {
-  describe('#handleDragEnd', () => {
+  describe('#handleDragEndTask', () => {
     describe('when the handler is call', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleDragEnd(params)
+        const result = typeof handleDragEndTask(params)
         const expected = 'function'
 
         // Assert
@@ -35,7 +35,7 @@ describe('[ features / plannning / handlers ]', () => {
         }
 
         // Act
-        handleDragEnd(params)(event)
+        handleDragEndTask(params)(event)
 
         // Assert
         expect(reorderTasks).toHaveBeenCalledWith([1, 2, 3], 0, 1)
@@ -55,7 +55,7 @@ describe('[ features / plannning / handlers ]', () => {
         }
 
         // Act
-        handleDragEnd(params)(event)
+        handleDragEndTask(params)(event)
 
         // Assert
         expect(setLocalDataMock).toHaveBeenCalledWith(['a', 'b', 'c'])
@@ -76,7 +76,7 @@ describe('[ features / plannning / handlers ]', () => {
         reorderTasks.mockReturnValue(['a', 'b', 'c'])
 
         // Act
-        handleDragEnd(params)(event)
+        handleDragEndTask(params)(event)
 
         // Assert
         expect(updatePrioritiesMock).toHaveBeenCalledWith({
@@ -92,7 +92,7 @@ describe('[ features / plannning / handlers ]', () => {
         const params = {}
 
         // Act
-        handleDragEnd(params)(result)
+        handleDragEndTask(params)(result)
 
         // Assert
         expect(reorderTasks).not.toHaveBeenCalledWith()
@@ -112,7 +112,7 @@ describe('[ features / plannning / handlers ]', () => {
         }
 
         // Act
-        handleDragEnd(params)(event)
+        handleDragEndTask(params)(event)
 
         // Assert
         expect(setLocalDataMock).not.toHaveBeenCalled()
@@ -133,7 +133,7 @@ describe('[ features / plannning / handlers ]', () => {
         reorderTasks.mockReturnValue(['a', 'b', 'c'])
 
         // Act
-        handleDragEnd(params)(event)
+        handleDragEndTask(params)(event)
 
         // Assert
         expect(updatePrioritiesMock).not.toHaveBeenCalledWith()

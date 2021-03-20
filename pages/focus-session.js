@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import FocusSessionContainer from '../features/focusSession/containers/FocusSessionContainer'
+import FocusSessionContainer from '../features/focusSession/containers/FocusSession'
 import { resetServerContext } from 'react-beautiful-dnd'
 
 import { tasksApi, focusSessionsApi } from '../features/planning/api'

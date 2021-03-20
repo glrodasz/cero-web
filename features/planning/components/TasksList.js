@@ -6,11 +6,11 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { PRIOTIY_TASKS_QUANTITY, MAXIMUM_BACKLOG_QUANTITY } from '../constants'
 import { getTaskType } from '../helpers'
 
-const TaskList = ({
+const TasksList = ({
   tasks,
-  onDragEnd,
-  onDeleteTask,
-  onCompleteTask,
+  onDragEndTask,
+  onClickDeleteTask,
+  onCheckCompleteTask,
   isActive,
 }) => {
   return (
@@ -24,7 +24,7 @@ const TaskList = ({
           <Spacer.Horizontal size="md" />
         </>
       )}
-      <DragDropContext onDragEnd={onDragEnd}>
+      <DragDropContext onDragEnd={onDragEndTask}>
         <Droppable droppableId="planning">
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
@@ -45,10 +45,10 @@ const TaskList = ({
                         >
                           <Task
                             key={task.id}
-                            onDelete={() => onDeleteTask({ id: task.id })}
+                            onDelete={() => onClickDeleteTask({ id: task.id })}
                             isPending={!isActive}
                             type={getTaskType(index)}
-                            onCheck={onCompleteTask}
+                            onCheck={onCheckCompleteTask}
                           >
                             {task.description}
                           </Task>
@@ -80,10 +80,10 @@ const TaskList = ({
   )
 }
 
-TaskList.propTypes = {
-  onCompleteTask: PropTypes.func.isRequired,
-  onDragEnd: PropTypes.func.isRequired,
-  onDeleteTask: PropTypes.func.isRequired,
+TasksList.propTypes = {
+  onCheckCompleteTask: PropTypes.func.isRequired,
+  onDragEndTask: PropTypes.func.isRequired,
+  onClickDeleteTask: PropTypes.func.isRequired,
   isActive: PropTypes.bool,
   tasks: PropTypes.arrayOf(
     PropTypes.shape({
@@ -94,4 +94,4 @@ TaskList.propTypes = {
   ),
 }
 
-export default TaskList
+export default TasksList

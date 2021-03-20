@@ -1,31 +1,27 @@
 {
   "tasks": [
     {
-      "description": "Agrego mi primera tarea",
-      "priority": 3,
-      "id": 1
-    },
-    {
-      "description": "Esta es una nueva tarea",
-      "priority": 2,
+      "description": "This is another one!",
+      "priority": 0,
       "id": 3
     },
     {
-      "description": "Hola tareas",
-      "priority": 0,
-      "id": 4
-    },
-    {
-      "description": "Esto si que funciona",
+      "description": "Una tarea más",
       "priority": 1,
-      "id": 5
+      "id": 4
     }
   ],
   "focus-sessions": [
     {
       "id": 1,
-      "state": "finished",
-      "tasks": [1, 2]
+      "state": "active",
+      "tasks": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": 2
     }
   ],
   "profile": {
