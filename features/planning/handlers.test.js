@@ -22,7 +22,7 @@ describe('[ features / plannning / handlers ]', () => {
     })
 
     describe('When the function returned is called and `result.destination` is true ', () => {
-      it('should not call `reorderTasks` with the correct params', () => {
+      it('should call `reorderTasks` with the correct params', () => {
         // Arrange
         const noop = () => {}
         const event = { destination: { index: 1 }, source: { index: 0 } }
