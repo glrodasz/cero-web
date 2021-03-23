@@ -2,12 +2,12 @@
   "tasks": [
     {
       "description": "This is another one!",
-      "priority": 0,
+      "priority": 1,
       "id": 3
     },
     {
       "description": "Una tarea más",
-      "priority": 1,
+      "priority": 0,
       "id": 4
     }
   ],

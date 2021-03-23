@@ -1,4 +1,11 @@
-import { handleDeleteTask, handleDragEndTask } from './handlers'
+import {
+  handleClickDeleteTask,
+  handleDragEndTask,
+  handleClickAddTask,
+  handleClickCancelRemove,
+  handleClickConfirmRemove,
+  handleClickStartSession,
+} from './handlers'
 
 import { reorderTasks } from './helpers'
 jest.mock('./helpers', () => ({
@@ -141,14 +148,14 @@ describe('[ features / plannning / handlers ]', () => {
     })
   })
 
-  describe('#handleDeleteTask', () => {
+  describe('#handleClickAddTask', () => {
     describe('when the handler is call', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleDeleteTask(params)
+        const result = typeof handleClickAddTask(params)
         const expected = 'function'
 
         // Assert
@@ -157,15 +164,52 @@ describe('[ features / plannning / handlers ]', () => {
     })
 
     describe('When the function returned is called', () => {
+      it('should call `api.create` with the correct args', () => {
+        // Arrange
+
+        const createMock = jest.fn()
+        const api = { create: createMock }
+        const data = [42, 6521, 1264]
+        const params = { tasks: { api, data } }
+        const value = 'foo'
+
+        // Act
+        handleClickAddTask(params)(value)
+
+        // Assert
+        expect(createMock).toHaveBeenCalledWith({
+          description: 'foo',
+          priority: 3,
+        })
+      })
+    })
+  })
+
+  describe('#handleClickDeleteTask', () => {
+    describe('when the handler is call', () => {
+      it('should return a function', () => {
+        // Arrange
+        const params = {}
+
+        // Act
+        const result = typeof handleClickDeleteTask(params)
+        const expected = 'function'
+
+        // Assert
+        expect(result).toBe(expected)
+      })
+    })
+
+    describe('when the function returned is called', () => {
       it('should call `setShowDialog` with true', () => {
         // Arrange
-        const setShowDialog = jest.fn() // Stub/Spie
+        const setShowDialog = jest.fn() // Mock/Spie
         const setTaskId = () => {}
         const id = 'foo'
         const params = { deleteConfirmation: { setShowDialog, setTaskId } }
 
         // Act
-        handleDeleteTask(params)({ id })
+        handleClickDeleteTask(params)({ id })
 
         // Assert
         expect(setShowDialog).toHaveBeenCalledWith(true)
@@ -179,10 +223,135 @@ describe('[ features / plannning / handlers ]', () => {
         const params = { deleteConfirmation: { setShowDialog, setTaskId } }
 
         // Act
-        handleDeleteTask(params)({ id })
+        handleClickDeleteTask(params)({ id })
 
         // Assert
         expect(setTaskId).toHaveBeenCalledWith('foo')
+      })
+    })
+  })
+
+  describe('#handleClickCancelRemove', () => {
+    describe('when the handler is call', () => {
+      it('should return a function', () => {
+        // Arrange
+        const params = {}
+
+        // Act
+        const result = typeof handleClickCancelRemove(params)
+        const expected = 'function'
+
+        // Assert
+        expect(result).toBe(expected)
+      })
+    })
+
+    describe('when the function returned is called', () => {
+      it('should call `setShowDialog` with false', () => {
+        // Arrange
+        const setShowDialog = jest.fn() // Mock/Spie
+        const setTaskId = () => {}
+        const id = 'foo'
+        const params = { deleteConfirmation: { setShowDialog, setTaskId } }
+
+        // Act
+        handleClickCancelRemove(params)({ id })
+
+        // Assert
+        expect(setShowDialog).toHaveBeenCalledWith(false)
+      })
+
+      it('should call `setTaskId` with null', () => {
+        // Arrange
+        const setShowDialog = () => {}
+        const setTaskId = jest.fn()
+        const params = { deleteConfirmation: { setShowDialog, setTaskId } }
+
+        // Act
+        handleClickCancelRemove(params)()
+
+        // Assert
+        expect(setTaskId).toHaveBeenCalledWith(null)
+      })
+    })
+  })
+
+  describe('#handleClickConfirmRemove', () => {
+    describe('when the handler is call', () => {
+      it('should return a function', () => {
+        // Arrange
+        const params = {}
+
+        // Act
+        const result = typeof handleClickConfirmRemove(params)
+        const expected = 'function'
+
+        // Assert
+        expect(result).toBe(expected)
+      })
+    })
+
+    describe('when the function returned is called', () => {
+      it('should call `tasks.api.remove` with the correct id', () => {
+        // Arrange
+        const noop = () => {}
+        const removeMock = jest.fn()
+        const tasks = { api: { remove: removeMock } }
+        const deleteConfirmation = { taskId: 'foo', setShowDialog: noop }
+        const params = { tasks, deleteConfirmation }
+        // Act
+        handleClickConfirmRemove(params)()
+
+        // Assert
+        expect(removeMock).toHaveBeenCalledWith({ id: 'foo' })
+      })
+
+      it('should call `setShowDialog` with false', () => {
+        // Arrange
+        const noop = () => {}
+        const setShowDialogMock = jest.fn()
+        const tasks = { api: { remove: noop } }
+        const deleteConfirmation = {
+          taskId: 'foo',
+          setShowDialog: setShowDialogMock,
+        }
+        const params = { tasks, deleteConfirmation }
+        // Act
+        handleClickConfirmRemove(params)()
+
+        // Assert
+        expect(setShowDialogMock).toHaveBeenCalledWith(false)
+      })
+    })
+  })
+
+  describe('#handleClickStartSession', () => {
+    describe('when the handler is call', () => {
+      it('should return a function', () => {
+        // Arrange
+        const params = {}
+
+        // Act
+        const result = typeof handleClickStartSession(params)
+        const expected = 'function'
+
+        // Assert
+        expect(result).toBe(expected)
+      })
+    })
+
+    describe('when the function returned is called', () => {
+      it('should call `focusSessions.api.create`', () => {
+        // Arrange
+        const createMock = jest.fn()
+        const focusSessions = { api: { create: createMock } }
+        const params = { focusSessions }
+
+        // Act
+        handleClickStartSession(params)()
+
+        // Assert
+        expect(createMock).toHaveBeenCalled()
       })
     })
   })

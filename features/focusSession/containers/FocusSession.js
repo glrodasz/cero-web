@@ -1,22 +1,15 @@
 import PropTypes from 'prop-types'
 import { useQueryCache } from 'react-query'
 
-import {
-  FullHeightContent,
-  Button,
-  Spacer,
-  LoadingError,
-} from '@glrodasz/components'
+import { FullHeightContent, LoadingError } from '@glrodasz/components'
 
-// TODO: Move to the common components
 import UserHeader from '../../common/components/UserHeader'
 
 import TasksList from '../../planning/components/TasksList'
 import DeleteTaskModal from '../../planning/components/DeleteTaskModal'
-import useTasks from '../../planning/hooks/useTasks'
-import useDeleteConfirmation from '../../planning/hooks/useDeleteConfirmation'
 
 import BreaktimeModal from '../components/BreaktimeModal'
+import FocusSessionFooter from '../components/FocusSessionFooter'
 
 import {
   handleClickDeleteTask,
@@ -27,8 +20,9 @@ import {
 
 import { handleClickCloseBreaktime } from '../handlers.js'
 
+import useTasks from '../../planning/hooks/useTasks'
+import useDeleteConfirmation from '../../planning/hooks/useDeleteConfirmation'
 import useBreaktimeConfirmation from '../hooks/useBreaktimeConfirmation'
-import FocusSessionFooter from '../components/FocusSessionFooter'
 
 const FocusSession = ({ initialData }) => {
   const queryCache = useQueryCache()
