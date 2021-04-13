@@ -64,20 +64,6 @@ const FocusSession = ({ initialData }) => {
               })}
               isActive
             />
-            {/* {tasks?.length < MAXIMUM_BACKLOG_QUANTITY && (
-              <>
-                <Spacer.Horizontal size="md" />
-                <AddButton
-                  onAdd={(value) =>
-                    createTask({ description: value, priority: tasks.length })
-                  }
-                  focusHelpText="Presiona enter"
-                  blurHelpText="Clic para continuar"
-                >
-                  Toca para agregar la tarea
-                </AddButton>
-              </>
-            )} */}
           </LoadingError>
         }
         footer={<FocusSessionFooter onClickEndSession={() => {}} />}
