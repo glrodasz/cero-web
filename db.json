@@ -2,20 +2,23 @@
   "tasks": [
     {
       "description": "This is another one!",
-      "priority": 0,
+      "priority": 2,
       "id": 3
     },
     {
-      "description": "Una tarea más",
-      "priority": 1,
-      "id": 4
+      "description": "This is a new task",
+      "priority": 0,
+      "id": 5
     }
   ],
   "focus-sessions": [
     {
       "id": 1,
       "state": "active",
-      "tasks": [1, 2]
+      "tasks": [
+        1,
+        2
+      ]
     },
     {
       "id": 2
