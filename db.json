@@ -2,12 +2,12 @@
   "tasks": [
     {
       "description": "This is another one!",
-      "priority": 1,
+      "priority": 0,
       "id": 3
     },
     {
       "description": "Una tarea más",
-      "priority": 0,
+      "priority": 1,
       "id": 4
     }
   ],
@@ -15,10 +15,7 @@
     {
       "id": 1,
       "state": "active",
-      "tasks": [
-        1,
-        2
-      ]
+      "tasks": [1, 2]
     },
     {
       "id": 2
