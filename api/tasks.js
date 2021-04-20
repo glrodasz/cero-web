@@ -13,14 +13,17 @@ class Task extends Request {
   create({ description, priority }) {
     return this.request('tasks', {
       method: 'post',
-      body: { description, priority },
+      body: { description, priority, status: 'pending' },
     })
   }
 
   updatePriorities({ tasks }) {
     return Promise.all(
-      tasks.map(({ id, priority }) =>
-        this.request(`tasks/${id}`, { method: 'patch', body: { priority } })
+      tasks.map(({ id, priority, status }) =>
+        this.request(`tasks/${id}`, {
+          method: 'patch',
+          body: { priority, status },
+        })
       )
     )
   }

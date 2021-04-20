@@ -5,7 +5,6 @@ import { FullHeightContent, LoadingError } from '@glrodasz/components'
 
 import UserHeader from '../../common/components/UserHeader'
 
-import TasksList from '../../planning/components/TasksList'
 import DeleteTaskModal from '../../planning/components/DeleteTaskModal'
 
 import BreaktimeModal from '../components/BreaktimeModal'
@@ -23,6 +22,7 @@ import { handleClickCloseBreaktime } from '../handlers.js'
 import useTasks from '../../planning/hooks/useTasks'
 import useDeleteConfirmation from '../../planning/hooks/useDeleteConfirmation'
 import useBreaktimeConfirmation from '../hooks/useBreaktimeConfirmation'
+import Board from '../../common/components/Board'
 
 const FocusSession = ({ initialData }) => {
   const queryCache = useQueryCache()
@@ -53,7 +53,7 @@ const FocusSession = ({ initialData }) => {
               title="Hola, Cristian"
               text="Conoce la metodologia RETO"
             />
-            <TasksList
+            <Board
               tasks={tasks.data}
               onDragEndTask={handleDragEndTask({ tasks })}
               onClickDeleteTask={handleClickDeleteTask({

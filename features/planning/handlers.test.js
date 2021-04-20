@@ -28,66 +28,75 @@ describe('[ features / plannning / handlers ]', () => {
       })
     })
 
-    describe('When the function returned is called and `result.destination` is true ', () => {
-      it('should call `reorderTasks` with the correct params', () => {
-        // Arrange
-        const noop = () => {}
-        const event = { destination: { index: 1 }, source: { index: 0 } }
-        const params = {
-          tasks: {
-            data: [1, 2, 3],
-            api: { updatePriorities: noop },
-            setLocalData: noop,
-          },
-        }
+    describe('When the function returned is called `result.destination` exists ', () => {
+      describe('and `source` and `destination` have the same `droppalbeId`', () => {
+        it('should call `reorderTasks` with the correct params', () => {
+          // Arrange
+          const noop = () => {}
+          const event = {
+            destination: { index: 1, droppableId: 'foo' },
+            source: { index: 0, droppableId: 'foo' },
+          }
+          const params = {
+            tasks: {
+              data: [{ status: 'foo' }, { status: 'foo' }, { status: 'bar' }],
+              api: { updatePriorities: noop },
+              setLocalData: noop,
+            },
+          }
 
-        // Act
-        handleDragEndTask(params)(event)
+          // Act
+          handleDragEndTask(params)(event)
 
-        // Assert
-        expect(reorderTasks).toHaveBeenCalledWith([1, 2, 3], 0, 1)
-      })
+          // Assert
+          expect(reorderTasks).toHaveBeenCalledWith(
+            [{ status: 'foo' }, { status: 'foo' }],
+            0,
+            1,
+            'foo'
+          )
+        })
+        it('should call `setLocalData` with `orderedTasks`', () => {
+          // Arrange
+          const noop = () => {}
+          const setLocalDataMock = jest.fn()
+          const event = { destination: { index: 1 }, source: { index: 0 } }
+          const params = {
+            tasks: {
+              data: [1, 2, 3],
+              api: { updatePriorities: noop },
+              setLocalData: setLocalDataMock,
+            },
+          }
 
-      it('should call `setLocalData` with `orderedTasks`', () => {
-        // Arrange
-        const noop = () => {}
-        const setLocalDataMock = jest.fn()
-        const event = { destination: { index: 1 }, source: { index: 0 } }
-        const params = {
-          tasks: {
-            data: [1, 2, 3],
-            api: { updatePriorities: noop },
-            setLocalData: setLocalDataMock,
-          },
-        }
+          // Act
+          handleDragEndTask(params)(event)
 
-        // Act
-        handleDragEndTask(params)(event)
+          // Assert
+          expect(setLocalDataMock).toHaveBeenCalledWith(['a', 'b', 'c'])
+        })
 
-        // Assert
-        expect(setLocalDataMock).toHaveBeenCalledWith(['a', 'b', 'c'])
-      })
+        it('should call `api.updatePriorities` with `{ tasks: orderedTasks }`', () => {
+          // Arrange
+          const noop = () => {}
+          const updatePrioritiesMock = jest.fn()
+          const event = { destination: { index: 1 }, source: { index: 0 } }
+          const params = {
+            tasks: {
+              data: [1, 2, 3],
+              api: { updatePriorities: updatePrioritiesMock },
+              setLocalData: noop,
+            },
+          }
+          reorderTasks.mockReturnValue(['a', 'b', 'c'])
 
-      it('should call `api.updatePriorities` with `{ tasks: orderedTasks }`', () => {
-        // Arrange
-        const noop = () => {}
-        const updatePrioritiesMock = jest.fn()
-        const event = { destination: { index: 1 }, source: { index: 0 } }
-        const params = {
-          tasks: {
-            data: [1, 2, 3],
-            api: { updatePriorities: updatePrioritiesMock },
-            setLocalData: noop,
-          },
-        }
-        reorderTasks.mockReturnValue(['a', 'b', 'c'])
+          // Act
+          handleDragEndTask(params)(event)
 
-        // Act
-        handleDragEndTask(params)(event)
-
-        // Assert
-        expect(updatePrioritiesMock).toHaveBeenCalledWith({
-          tasks: ['a', 'b', 'c'],
+          // Assert
+          expect(updatePrioritiesMock).toHaveBeenCalledWith({
+            tasks: ['a', 'b', 'c'],
+          })
         })
       })
     })

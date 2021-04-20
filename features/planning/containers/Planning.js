@@ -4,7 +4,7 @@ import { useQueryCache } from 'react-query'
 import { FullHeightContent, LoadingError } from '@glrodasz/components'
 
 import UserHeader from '../../common/components/UserHeader'
-import TaskList from '../components/TasksList'
+import Board from '../../common/components/Board'
 import PlanningOnboarding from '../components/PlanningOnboarding'
 import DeleteTaskModal from '../components/DeleteTaskModal'
 
@@ -51,7 +51,7 @@ const Planning = ({ initialData }) => {
               text="Conoce la metodologia RETO"
             />
             <PlanningOnboarding tasksLength={tasksLength}>
-              <TaskList
+              <Board
                 tasks={tasks.data}
                 onDragEndTask={handleDragEndTask({ tasks })}
                 onClickDeleteTask={handleClickDeleteTask({
