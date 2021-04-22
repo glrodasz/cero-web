@@ -1,4 +1,5 @@
 import { reorderTasks } from './helpers'
+import Router from 'next/router'
 
 export const handleDragEndTask = ({ tasks }) => ({
   source,
@@ -104,4 +105,5 @@ export const handleClickConfirmRemove = ({
 
 export const handleClickStartSession = ({ focusSessions }) => () => {
   focusSessions.api.create()
+  Router.push('/focus-session')
 }

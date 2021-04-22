@@ -8,43 +8,71 @@
     },
     {
       "description": "Create test for the current state of the project",
-      "priority": 1,
+      "priority": 2,
       "status": "in-progress",
       "id": 2
     },
     {
       "description": "Make sure planning flow is working correctly: Pending Line should be just a line",
-      "priority": 1,
+      "priority": 0,
       "status": "pending",
       "id": 3
     },
     {
       "description": "Planning flow: Onboarding works correctly",
-      "priority": 2,
+      "priority": 3,
       "status": "in-progress",
       "id": 4
     },
     {
       "description": "Planning flow: Making sure new tasks move to in progress priority (Backend)",
-      "priority": 0,
+      "priority": 1,
       "status": "pending",
       "id": 5
+    },
+    {
+      "description": "Move planning/handlers to tasks/handlers and split them in individual tasks",
+      "priority": 1,
+      "status": "in-progress",
+      "id": 6
     }
   ],
   "focus-sessions": [
     {
-      "id": 1,
-      "state": "active",
-      "tasks": [
-        1,
-        2
-      ]
+      "status": "finished",
+      "id": 1
     },
     {
+      "status": "finished",
       "id": 2
     },
     {
+      "status": "finished",
       "id": 3
+    },
+    {
+      "status": "finished",
+      "id": 4
+    },
+    {
+      "status": "finished",
+      "id": 5
+    },
+    {
+      "status": "finished",
+      "id": 6
+    },
+    {
+      "status": "finished",
+      "id": 7
+    },
+    {
+      "status": "finished",
+      "id": 8
+    },
+    {
+      "status": "active",
+      "id": 9
     }
   ],
   "profile": {

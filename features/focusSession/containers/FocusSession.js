@@ -4,12 +4,12 @@ import { useQueryCache } from 'react-query'
 import { FullHeightContent, LoadingError } from '@glrodasz/components'
 
 import UserHeader from '../../common/components/UserHeader'
-
-import DeleteTaskModal from '../../planning/components/DeleteTaskModal'
-
+import Board from '../../tasks/components/Board'
+import DeleteTaskModal from '../../tasks/components/DeleteTaskModal'
 import BreaktimeModal from '../components/BreaktimeModal'
 import FocusSessionFooter from '../components/FocusSessionFooter'
 
+// TODO: Move to tasks features
 import {
   handleClickDeleteTask,
   handleClickCancelRemove,
@@ -17,12 +17,16 @@ import {
   handleDragEndTask,
 } from '../../planning/handlers'
 
-import { handleClickCloseBreaktime } from '../handlers.js'
+import {
+  handleClickCloseBreaktime,
+  handleClickEndSession,
+  handleCheckCompleteTask,
+} from '../handlers.js'
 
-import useTasks from '../../planning/hooks/useTasks'
-import useDeleteConfirmation from '../../planning/hooks/useDeleteConfirmation'
+import useTasks from '../../tasks/hooks/useTasks'
+import useDeleteConfirmation from '../../tasks/hooks/useDeleteConfirmation'
 import useBreaktimeConfirmation from '../hooks/useBreaktimeConfirmation'
-import Board from '../../common/components/Board'
+import useFocusSessions from '../hooks/useFocusSessions'
 
 const FocusSession = ({ initialData }) => {
   const queryCache = useQueryCache()
@@ -36,9 +40,7 @@ const FocusSession = ({ initialData }) => {
     onRemove: () => deleteConfirmation.setTasksId(null),
   })
 
-  const handleCheckCompleteTask = ({ breaktimeConfirmation }) => () => {
-    breaktimeConfirmation.setShowDialog(true)
-  }
+  const focusSessions = useFocusSessions({ queryCache })
 
   return (
     <>
@@ -66,7 +68,14 @@ const FocusSession = ({ initialData }) => {
             />
           </LoadingError>
         }
-        footer={<FocusSessionFooter onClickEndSession={() => {}} />}
+        footer={
+          <FocusSessionFooter
+            onClickEndSession={handleClickEndSession({
+              focusSessions,
+              initialData,
+            })}
+          />
+        }
       />
       {breaktimeConfirmation.showDialog && (
         <BreaktimeModal

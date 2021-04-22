@@ -4,13 +4,13 @@ import { useQueryCache } from 'react-query'
 import { FullHeightContent, LoadingError } from '@glrodasz/components'
 
 import UserHeader from '../../common/components/UserHeader'
-import Board from '../../common/components/Board'
+import Board from '../../tasks/components/Board'
+import DeleteTaskModal from '../../tasks/components/DeleteTaskModal'
 import PlanningOnboarding from '../components/PlanningOnboarding'
-import DeleteTaskModal from '../components/DeleteTaskModal'
 
-import useDeleteConfirmation from '../hooks/useDeleteConfirmation'
-import useTasks from '../hooks/useTasks'
-import useFocusSessions from '../hooks/useFocusSessions'
+import useDeleteConfirmation from '../../tasks/hooks/useDeleteConfirmation'
+import useTasks from '../../tasks/hooks/useTasks'
+import useFocusSessions from '../../focusSession/hooks/useFocusSessions'
 
 import {
   handleDragEndTask,
