@@ -12,6 +12,9 @@ jest.mock('./helpers', () => ({
   reorderTasks: jest.fn().mockReturnValue(['a', 'b', 'c']),
 }))
 
+import Router from 'next/router'
+jest.mock('next/router', () => ({ push: jest.fn() }))
+
 describe('[ features / plannning / handlers ]', () => {
   describe('#handleDragEndTask', () => {
     describe('when the handler is call', () => {
@@ -88,7 +91,6 @@ describe('[ features / plannning / handlers ]', () => {
               setLocalData: noop,
             },
           }
-          reorderTasks.mockReturnValue(['a', 'b', 'c'])
 
           // Act
           handleDragEndTask(params)(event)
@@ -146,7 +148,6 @@ describe('[ features / plannning / handlers ]', () => {
             setLocalData: noop,
           },
         }
-        reorderTasks.mockReturnValue(['a', 'b', 'c'])
 
         // Act
         handleDragEndTask(params)(event)
@@ -361,6 +362,18 @@ describe('[ features / plannning / handlers ]', () => {
 
         // Assert
         expect(createMock).toHaveBeenCalled()
+      })
+
+      it('should call `Router.push` with `/focus-session`', () => {
+        // Arrange
+        const focusSessions = { api: { create: () => {} } }
+        const params = { focusSessions }
+
+        // Act
+        handleClickStartSession(params)()
+
+        // Assert
+        expect(Router.push).toHaveBeenCalledWith('/focus-session')
       })
     })
   })

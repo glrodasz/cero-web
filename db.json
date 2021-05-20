@@ -1,40 +1,34 @@
 {
   "tasks": [
     {
-      "description": "Move components to Task feature folder",
+      "description": "Hello",
       "priority": 0,
       "status": "in-progress",
       "id": 1
     },
     {
-      "description": "Create test for the current state of the project",
-      "priority": 2,
+      "description": "Hello",
+      "priority": 1,
       "status": "in-progress",
       "id": 2
     },
     {
-      "description": "Make sure planning flow is working correctly: Pending Line should be just a line",
+      "description": "Hello",
       "priority": 0,
       "status": "pending",
       "id": 3
     },
     {
-      "description": "Planning flow: Onboarding works correctly",
-      "priority": 3,
-      "status": "in-progress",
+      "description": "Hello",
+      "priority": 1,
+      "status": "pending",
       "id": 4
     },
     {
-      "description": "Planning flow: Making sure new tasks move to in progress priority (Backend)",
-      "priority": 1,
+      "description": "Hello",
+      "priority": 2,
       "status": "pending",
       "id": 5
-    },
-    {
-      "description": "Move planning/handlers to tasks/handlers and split them in individual tasks",
-      "priority": 1,
-      "status": "in-progress",
-      "id": 6
     }
   ],
   "focus-sessions": [
@@ -71,8 +65,20 @@
       "id": 8
     },
     {
-      "status": "active",
+      "status": "finished",
       "id": 9
+    },
+    {
+      "status": "finished",
+      "id": 10
+    },
+    {
+      "status": "finished",
+      "id": 11
+    },
+    {
+      "status": "finished",
+      "id": 12
     }
   ],
   "profile": {

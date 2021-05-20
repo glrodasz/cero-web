@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / common / ToggleColorScheme ] when ToggleColorScheme is called should render 1`] = `
+<DocumentFragment>
+  <div
+    style="display: flex; align-items: center; cursor: pointer; width: 150px;"
+  >
+    {"isChecked":false} Dark Mode
+  </div>
+</DocumentFragment>
+`;

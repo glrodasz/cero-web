@@ -52,6 +52,7 @@ const Planning = ({ initialData }) => {
             />
             <PlanningOnboarding tasksLength={tasksLength}>
               <Board
+                isActive={false}
                 tasks={tasks.data}
                 onDragEndTask={handleDragEndTask({ tasks })}
                 onClickDeleteTask={handleClickDeleteTask({

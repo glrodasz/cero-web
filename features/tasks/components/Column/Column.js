@@ -4,7 +4,7 @@ import { Droppable } from 'react-beautiful-dnd'
 import { TaskCounter, Spacer } from '@glrodasz/components'
 
 import DraggableTask from '../DraggableTask/DraggableTask'
-import { MAXIMUM_BACKLOG_QUANTITY } from '../../../planning/constants'
+import { getTitle, getTotal, getCurrent } from '../../helpers'
 
 const Column = ({
   column,
@@ -15,11 +15,11 @@ const Column = ({
 }) => {
   return (
     <TaskCounter
-      title={column.title}
+      title={getTitle({ column, isActive })}
       defaultIsCollapsed={isActive ? column.id !== 'in-progress' : false}
       isToggleable={isActive}
-      current={tasks.length}
-      total={column.id === 'pending' && MAXIMUM_BACKLOG_QUANTITY}
+      current={getCurrent({ tasks, column, isActive })}
+      total={getTotal({ column, isActive })}
     >
       <Spacer.Horizontal size="md" />
       <Droppable droppableId={column.id}>
