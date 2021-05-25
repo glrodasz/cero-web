@@ -1,7 +1,8 @@
 import Router from 'next/router'
 
 export const handleCheckCompleteTask = ({ breaktimeConfirmation }) => () => {
-  breaktimeConfirmation.setShowDialog(true)
+  const { setShowDialog } = breaktimeConfirmation
+  setShowDialog(true)
 }
 
 export const handleClickCloseBreaktime = ({ breaktimeConfirmation }) => () => {

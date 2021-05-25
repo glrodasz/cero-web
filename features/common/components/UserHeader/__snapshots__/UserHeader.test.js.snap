@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / common / components / UserHeader ] when \`UserHeader\` is mounted should render 1`] = `
+<DocumentFragment>
+  <div
+    class="user-header"
+  >
+    (Avatar {"src":"avatar"} /) (Space.Vertical {"size":"sm"} /) 
+    <div
+      class="text"
+    >
+      (Heading {"size":"lg"})title(/Heading) (Paragraph {"size":"lg"})text(/Paragraph) 
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`[ features / common / components / UserHeader ] when \`UserHeader\` is mounted with \`isPrimary\` as \`true\` should render 1`] = `
+<DocumentFragment>
+  <div
+    class="user-header"
+  >
+    (Avatar {"src":"avatar"} /) (Space.Vertical {"size":"sm"} /) 
+    <div
+      class="text"
+    >
+      (Heading {"size":"lg"})title(/Heading) (Heading {"color":"primary"})text(/Heading) 
+    </div>
+  </div>
+</DocumentFragment>
+`;
