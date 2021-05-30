@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / common / components / ToggleColorScheme ] when \`ToggleColorScheme\` is mounted should render 1`] = `
+<DocumentFragment>
+  <div
+    style="display: flex; align-items: center; cursor: pointer; width: 150px;"
+  >
+    (Check {"isChecked":false} /)  (Heading {})Dark Mode(/Heading) 
+  </div>
+</DocumentFragment>
+`;

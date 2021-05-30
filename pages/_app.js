@@ -26,6 +26,7 @@ function MyApp({ Component, pageProps }) {
         style={{
           paddingTop: 30,
           display: 'flex',
+          width: '100%',
           justifyContent: 'space-between',
         }}
       >

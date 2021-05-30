@@ -1,3 +1,3 @@
-const withComponentsLibray = require('./config/withComponentsLibrary')
+const webpackConfig = require('./config/webpack')
 
-module.exports = withComponentsLibray()
+module.exports = webpackConfig()

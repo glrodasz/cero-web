@@ -1,4 +1,4 @@
-const SERVER_URL = 'http://localhost:3001'
+import { apiUrl } from '../config'
 
 class Request {
   constructor(resource) {
@@ -18,7 +18,7 @@ class Request {
       requestOptions.body = JSON.stringify(options.body)
     }
 
-    return fetch(`${SERVER_URL}/${resource}`, requestOptions).then((data) =>
+    return fetch(`${apiUrl}/${resource}`, requestOptions).then((data) =>
       data.json()
     )
   }

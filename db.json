@@ -1,31 +1,84 @@
 {
   "tasks": [
     {
-      "description": "Agrego mi primera tarea",
-      "priority": 3,
+      "description": "Hello",
+      "priority": 0,
+      "status": "in-progress",
       "id": 1
     },
     {
-      "description": "Esta es una nueva tarea",
-      "priority": 2,
+      "description": "Hello",
+      "priority": 1,
+      "status": "in-progress",
+      "id": 2
+    },
+    {
+      "description": "Hello",
+      "priority": 0,
+      "status": "pending",
       "id": 3
     },
     {
-      "description": "Hola tareas",
-      "priority": 0,
+      "description": "Hello",
+      "priority": 1,
+      "status": "pending",
       "id": 4
     },
     {
-      "description": "Esto si que funciona",
-      "priority": 1,
+      "description": "Hello",
+      "priority": 2,
+      "status": "pending",
       "id": 5
     }
   ],
   "focus-sessions": [
     {
-      "id": 1,
-      "state": "finished",
-      "tasks": [1, 2]
+      "status": "finished",
+      "id": 1
+    },
+    {
+      "status": "finished",
+      "id": 2
+    },
+    {
+      "status": "finished",
+      "id": 3
+    },
+    {
+      "status": "finished",
+      "id": 4
+    },
+    {
+      "status": "finished",
+      "id": 5
+    },
+    {
+      "status": "finished",
+      "id": 6
+    },
+    {
+      "status": "finished",
+      "id": 7
+    },
+    {
+      "status": "finished",
+      "id": 8
+    },
+    {
+      "status": "finished",
+      "id": 9
+    },
+    {
+      "status": "finished",
+      "id": 10
+    },
+    {
+      "status": "finished",
+      "id": 11
+    },
+    {
+      "status": "finished",
+      "id": 12
     }
   ],
   "profile": {

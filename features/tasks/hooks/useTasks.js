@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { tasksApi } from '../api'
+import { tasksApi } from '../../planning/api'
 import { useQuery, useMutation } from 'react-query'
 
 const QUERY_KEY = 'tasks'
