@@ -1,13 +1,16 @@
-import ReactDOMServer from 'react-dom/server'
+import { renderToStaticMarkup } from 'react-dom/server'
 
 const prettify = (obj) => JSON.stringify(obj)
-const staticfy = (children) =>
-  `${ReactDOMServer.renderToStaticMarkup(children)}`
+
+const cleanMarkup = (markup) =>
+  markup
     .replace(/&amp;quot;/g, '"')
     .replace(/&lt;/g, '(')
     .replace(/&gt;/g, ')')
 
-// FIXME: Make this funciton recursive
+const staticfy = (children) => cleanMarkup(`${renderToStaticMarkup(children)}`)
+
+// TODO: Write tetst and check more consistent alternative
 export const shallowRender = (name) => (props) => {
   if (props.children) {
     const { children, ...otherProps } = props
