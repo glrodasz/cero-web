@@ -16,7 +16,7 @@ jest.mock('@glrodasz/components', () => {
 
 describe('[ features / focusSession / components / BreaktimeModal ]', () => {
   describe('when `BreaktimeModal` is mounted', () => {
-    it.only('should render', () => {
+    it('should render', () => {
       const props = {
         onClickClose: () => {},
       }

@@ -13,4 +13,5 @@ module.exports = {
       functions: 60,
     },
   },
+  transformIgnorePatterns: ['node_modules/(?!@glrodasz/components)'],
 }

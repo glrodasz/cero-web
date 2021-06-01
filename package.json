@@ -26,6 +26,7 @@
     "lint:json": "prettier '**/!(db).json' --list-different --ignore-path .gitignore",
     "lint": "run-p lint:js lint:json lint:css",
     "test:coverage": "yarn test --coverage",
+    "test:coverage:html": "yarn test:coverage & open coverage/lcov-report/index.html",
     "test:watch": "CONSOLE_LEVEL=debug yarn test --watch",
     "test": "jest"
   },
@@ -46,6 +47,7 @@
     "@mapbox/stylelint-processor-arbitrary-tags": "0.3.0",
     "@testing-library/react": "11.2.7",
     "@testing-library/react-hooks": "7.0.0",
+    "@testing-library/user-event": "13.1.9",
     "commitizen": "4.2.2",
     "concurrently": "5.3.0",
     "eslint": "7.13.0",

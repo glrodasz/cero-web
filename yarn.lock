@@ -1446,9 +1446,9 @@
     strip-json-comments "^3.1.1"
 
 "@glrodasz/components@*":
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/@glrodasz/components/-/components-1.11.0.tgz#c7bbe6848692757fd6a0d6a787c8ab93b4f419a3"
-  integrity sha512-UrCUlmDvVZLP3KKw0P2uXcVgkvGcqG191Q1FM271XsZtG5GjzG3qzbtJni1zfLDO4VjYWkEWPpymQDGGsIUAhQ==
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/@glrodasz/components/-/components-1.12.0.tgz#22733c0b14784f6a8aaa679e4ddcf7531f7d2370"
+  integrity sha512-C0ydBf1PudM9eN+2/jARCtCOAZQI7JPjIAYhf2qohocDSbb6DatGHRGZUHuwfGtJeJITba1iQN6RZBKJ1dvBuA==
 
 "@hapi/accept@5.0.1":
   version "5.0.1"
@@ -1797,6 +1797,13 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@testing-library/dom" "^7.28.1"
+
+"@testing-library/user-event@13.1.9":
+  version "13.1.9"
+  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-13.1.9.tgz#29e49a42659ac3c1023565ff56819e0153a82e99"
+  integrity sha512-NZr0zL2TMOs2qk+dNlqrAdbaRW5dAmYwd1yuQ4r7HpkVEOj0MWuUjDWwKhcLd/atdBy8ZSMHSKp+kXSQe47ezg==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
 
 "@types/aria-query@^4.2.0":
   version "4.2.1"
