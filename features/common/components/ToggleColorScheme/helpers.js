@@ -5,20 +5,23 @@ export const persistColorScheme = ({ isDarkMode, setIsDarkMode }) => {
   setIsDarkMode(isDarkMode)
 }
 
-export const loadAndListenColorScheme = ({ setIsDarkMode }) => {
+export const loadAndListenColorScheme = ({
+  setIsDarkMode,
+  __persistColorScheme = persistColorScheme,
+}) => {
   const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
   darkModeMediaQuery?.addListener((event) => {
     const isDarkMode = event.matches
-    persistColorScheme({ isDarkMode, setIsDarkMode })
+    __persistColorScheme({ isDarkMode, setIsDarkMode })
   })
 
   const localStorageColorScheme = localStorage.getItem('prefers-color-scheme')
 
   if (localStorageColorScheme) {
     const isDarkMode = localStorageColorScheme === 'dark'
-    persistColorScheme({ isDarkMode, setIsDarkMode })
+    __persistColorScheme({ isDarkMode, setIsDarkMode })
   } else {
     const isDarkMode = darkModeMediaQuery?.matches
-    persistColorScheme({ isDarkMode, setIsDarkMode })
+    __persistColorScheme({ isDarkMode, setIsDarkMode })
   }
 }
