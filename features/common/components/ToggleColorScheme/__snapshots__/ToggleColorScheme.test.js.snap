@@ -5,7 +5,7 @@ exports[`[ features / common / components / ToggleColorScheme ] when \`ToggleCol
   <div
     style="display: flex; align-items: center; cursor: pointer; width: 150px;"
   >
-    (Check {"isChecked":false} /)  (Heading {})Dark Mode(/Heading) 
+    [Check {"isChecked":false} /]  [Heading]Dark Mode[/Heading] 
   </div>
 </DocumentFragment>
 `;

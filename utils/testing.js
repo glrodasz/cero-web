@@ -1,20 +1,37 @@
+import isObject from './isObject'
 import { renderToStaticMarkup } from 'react-dom/server'
 
-const prettify = (obj) => JSON.stringify(obj)
+const EMPTY_SPACE = ' '
+
+const objectStringify = (obj) =>
+  isObject(obj) && Object.keys(obj).length
+    ? `${EMPTY_SPACE}${JSON.stringify(obj)}`
+    : ''
 
 const cleanMarkup = (markup) =>
   markup
     .replace(/&amp;quot;/g, '"')
-    .replace(/&lt;/g, '(')
-    .replace(/&gt;/g, ')')
+    .replace(/&quot;/g, '"')
+    .replace(/&lt;/g, '[')
+    .replace(/&gt;/g, ']')
 
-const staticfy = (children) => cleanMarkup(`${renderToStaticMarkup(children)}`)
+const renderStatic = (children) =>
+  cleanMarkup(`${renderToStaticMarkup(children)}`)
 
-// TODO: Write tetst and check more consistent alternative
-export const shallowRender = (name) => (props) => {
+const dummyComponent = ({ name, props, children }) =>
+  `[${name}${objectStringify(props)}${!children ? ' /' : ''}]${
+    children ? `${children}[/${name}]${EMPTY_SPACE}` : ''
+  }`
+
+export const dummyRender = (name) => (props) => {
   if (props.children) {
-    const { children, ...otherProps } = props
-    return `(${name} ${prettify(otherProps)})${staticfy(children)}(/${name}) `
+    const { children, ...rest } = props
+    return dummyComponent({
+      name,
+      props: rest,
+      children: renderStatic(children),
+    })
   }
-  return `(${name} ${JSON.stringify(props)} /) `
+
+  return `${dummyComponent({ name, props })}${EMPTY_SPACE}`
 }

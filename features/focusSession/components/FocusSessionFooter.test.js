@@ -3,11 +3,11 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 jest.mock('@glrodasz/components', () => {
-  const { shallowRender } = require('../../../utils/testing')
+  const { dummyRender } = require('../../../utils/testing')
   const originalModule = jest.requireActual('@glrodasz/components')
   return {
     ...originalModule,
-    Spacer: { Horizontal: shallowRender('Spacer') },
+    Spacer: { Horizontal: dummyRender('Spacer') },
   }
 })
 

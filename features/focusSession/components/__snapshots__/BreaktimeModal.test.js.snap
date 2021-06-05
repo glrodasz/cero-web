@@ -2,6 +2,6 @@
 
 exports[`[ features / focusSession / components / BreaktimeModal ] when \`BreaktimeModal\` is mounted should render 1`] = `
 <DocumentFragment>
-  (Modal {"isCentered":true})(CenteredContent {})(Picture {"src":"/images/couch-pause.svg","width":200} /) (Heading {"size":"xl","color":"tertiary","isInline":true})Tomate un tiempo para refrescarte(/Heading) (Spacer {"size":" sm"} /) (Paragraph {})Siempre hay que celebrar los pequeños triunfos, por eso te invitamos a tomar un descanso para despejar tu mente.(/Paragraph) (Spacer {"size":"md"} /) (div style=&quot;display:flex;gap:0 20px&quot;)(Button {"isMuted":true})5 min(/Button) (Button {"isMuted":true})10 min(/Button) (Button {"isMuted":true})15 min(/Button) (/div)(/CenteredContent) (/Modal) 
+  [Modal {"isCentered":true}][CenteredContent][Picture {"src":"/images/couch-pause.svg","width":200} /] [Heading {"size":"xl","color":"tertiary","isInline":true}]Tomate un tiempo para refrescarte[/Heading] [Spacer {"size":" sm"} /] [Paragraph]Siempre hay que celebrar los pequeños triunfos, por eso te invitamos a tomar un descanso para despejar tu mente.[/Paragraph] [Spacer {"size":"md"} /] [div style="display:flex;gap:0 20px"][Button {"isMuted":true}]5 min[/Button] [Button {"isMuted":true}]10 min[/Button] [Button {"isMuted":true}]15 min[/Button] [/div][/CenteredContent] [/Modal] 
 </DocumentFragment>
 `;

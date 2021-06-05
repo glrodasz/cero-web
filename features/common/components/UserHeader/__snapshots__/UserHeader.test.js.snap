@@ -5,11 +5,11 @@ exports[`[ features / common / components / UserHeader ] when \`UserHeader\` is 
   <div
     class="user-header"
   >
-    (Avatar {"src":"avatar"} /) (Space.Vertical {"size":"sm"} /) 
+    [Avatar {"src":"avatar"} /] [Space.Vertical {"size":"sm"} /] 
     <div
       class="text"
     >
-      (Heading {"size":"lg"})title(/Heading) (Paragraph {"size":"lg"})text(/Paragraph) 
+      [Heading {"size":"lg"}]title[/Heading] [Paragraph {"size":"lg"}]text[/Paragraph] 
     </div>
   </div>
 </DocumentFragment>
@@ -20,11 +20,11 @@ exports[`[ features / common / components / UserHeader ] when \`UserHeader\` is 
   <div
     class="user-header"
   >
-    (Avatar {"src":"avatar"} /) (Space.Vertical {"size":"sm"} /) 
+    [Avatar {"src":"avatar"} /] [Space.Vertical {"size":"sm"} /] 
     <div
       class="text"
     >
-      (Heading {"size":"lg"})title(/Heading) (Heading {"color":"primary"})text(/Heading) 
+      [Heading {"size":"lg"}]title[/Heading] [Heading {"color":"primary"}]text[/Heading] 
     </div>
   </div>
 </DocumentFragment>

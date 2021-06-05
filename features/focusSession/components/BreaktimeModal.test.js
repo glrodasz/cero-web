@@ -2,15 +2,15 @@ import BreaktimeModal from './BreaktimeModal'
 import { render } from '@testing-library/react'
 
 jest.mock('@glrodasz/components', () => {
-  const { shallowRender } = require('../../../utils/testing')
+  const { dummyRender } = require('../../../utils/testing')
   return {
-    Modal: shallowRender('Modal'),
-    CenteredContent: shallowRender('CenteredContent'),
-    Picture: shallowRender('Picture'),
-    Heading: shallowRender('Heading'),
-    Spacer: { Horizontal: shallowRender('Spacer') },
-    Paragraph: shallowRender('Paragraph'),
-    Button: shallowRender('Button'),
+    Modal: dummyRender('Modal'),
+    CenteredContent: dummyRender('CenteredContent'),
+    Picture: dummyRender('Picture'),
+    Heading: dummyRender('Heading'),
+    Spacer: { Horizontal: dummyRender('Spacer') },
+    Paragraph: dummyRender('Paragraph'),
+    Button: dummyRender('Button'),
   }
 })
 
