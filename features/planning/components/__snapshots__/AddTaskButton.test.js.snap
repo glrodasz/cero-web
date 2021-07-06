@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / planning / components / AddTaskButton ] when \`AddTaskButton\` is mounted should render 1`] = `
+<DocumentFragment>
+  [Spacer {"size":"md"} /] [Button {"focusHelpText":"Presiona enter","blurHelpText":"Clic para continuar"}]Toca para agregar la tarea[/Button] 
+</DocumentFragment>
+`;
