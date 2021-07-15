@@ -1,9 +1,7 @@
-import { useState } from 'react'
+import useDialog from '../../common/hooks/useDialog'
 
 const useBreaktimeConfirmation = () => {
-  const [showDialog, setShowDialog] = useState(false)
-
-  return { showDialog, setShowDialog }
+  return useDialog()
 }
 
 export default useBreaktimeConfirmation

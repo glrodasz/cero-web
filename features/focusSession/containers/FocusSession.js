@@ -6,6 +6,7 @@ import { FullHeightContent, LoadingError } from '@glrodasz/components'
 import UserHeader from '../../common/components/UserHeader'
 import Board from '../../tasks/components/Board'
 import DeleteTaskModal from '../../tasks/components/DeleteTaskModal'
+import BreaktimeConfirmation from '../components/BreaktimeConfirmation'
 import BreaktimeModal from '../components/BreaktimeModal'
 import FocusSessionFooter from '../components/FocusSessionFooter'
 
@@ -18,7 +19,9 @@ import {
 } from '../../planning/handlers'
 
 import {
-  handleClickCloseBreaktime,
+  handleClickCloseBreaktimeConfirmation,
+  handleClickCloseBreaktimeModal,
+  handleClickChooseBreaktime,
   handleClickEndSession,
   handleCheckCompleteTask,
 } from '../handlers.js'
@@ -26,6 +29,7 @@ import {
 import useTasks from '../../tasks/hooks/useTasks'
 import useDeleteConfirmation from '../../tasks/hooks/useDeleteConfirmation'
 import useBreaktimeConfirmation from '../hooks/useBreaktimeConfirmation'
+import useBreaktime from '../hooks/useBreaktime'
 import useFocusSessions from '../hooks/useFocusSessions'
 
 const FocusSession = ({ initialData }) => {
@@ -33,6 +37,7 @@ const FocusSession = ({ initialData }) => {
 
   const deleteConfirmation = useDeleteConfirmation()
   const breaktimeConfirmation = useBreaktimeConfirmation()
+  const breaktime = useBreaktime()
 
   const tasks = useTasks({
     queryCache,
@@ -78,8 +83,20 @@ const FocusSession = ({ initialData }) => {
         }
       />
       {breaktimeConfirmation.showDialog && (
+        <BreaktimeConfirmation
+          onClickClose={handleClickCloseBreaktimeConfirmation({
+            breaktimeConfirmation,
+          })}
+          onClickChoose={handleClickChooseBreaktime({
+            breaktime,
+            breaktimeConfirmation,
+          })}
+        />
+      )}
+      {breaktime.showDialog && (
         <BreaktimeModal
-          onClickClose={handleClickCloseBreaktime({ breaktimeConfirmation })}
+          breaktime={breaktime.time}
+          onClickClose={handleClickCloseBreaktimeModal({ breaktime })}
         />
       )}
       {deleteConfirmation.showDialog && (

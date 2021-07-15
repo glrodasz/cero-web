@@ -1,4 +1,4 @@
-import BreaktimeModal from './BreaktimeModal'
+import BreaktimeConfirmation from './BreaktimeConfirmation'
 import { render } from '@testing-library/react'
 
 jest.mock('@glrodasz/components', () => {
@@ -14,13 +14,14 @@ jest.mock('@glrodasz/components', () => {
   }
 })
 
-describe('[ features / focusSession / components / BreaktimeModal ]', () => {
-  describe('when `BreaktimeModal` is mounted', () => {
+describe('[ features / focusSession / components / BreaktimeConfirmation ]', () => {
+  describe('when `BreaktimeConfirmation` is mounted', () => {
     it('should render', () => {
       const props = {
         onClickClose: () => {},
+        onClickChoose: () => {},
       }
-      const { asFragment } = render(<BreaktimeModal {...props} />)
+      const { asFragment } = render(<BreaktimeConfirmation {...props} />)
       expect(asFragment()).toMatchSnapshot()
     })
   })

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 import {
@@ -7,28 +8,54 @@ import {
   Heading,
   Spacer,
   Paragraph,
-  Button,
 } from '@glrodasz/components'
 
-const BreaktimeModal = ({ onClickClose }) => {
+import { time } from '../../common/constants'
+
+const formatBreakTime = (time) => {
+  const seconds = time / 1000
+  const currentMinutes = String(Math.floor(seconds / 60)).padStart(2, '0')
+  const currentSeconds = String(seconds % 60).padStart(2, '0')
+
+  return `${currentMinutes}:${currentSeconds}`
+}
+
+const reverseTick = ({ currentTime, setCurrentTime }) => () => {
+  setCurrentTime(currentTime - time.ONE_SECOND_IN_MS)
+}
+
+const BreaktimeModal = ({ onClickClose, breaktime }) => {
+  const [currentTime, setCurrentTime] = useState(breaktime)
+
+  useEffect(() => {
+    currentTime <= 0 && onClickClose()
+
+    const intervalId = setInterval(
+      reverseTick({ currentTime, setCurrentTime }),
+      time.ONE_SECOND_IN_MS
+    )
+
+    return () => clearInterval(intervalId)
+  }, [currentTime])
+
   return (
     <Modal isCentered onClose={onClickClose}>
       <CenteredContent>
-        <Picture src="/images/couch-pause.svg" width={200}></Picture>
-        <Heading size="xl" color="tertiary" isInline>
-          Tomate un tiempo para refrescarte
+        <Heading size="2xl" color="tertiary" weight="normal">
+          {formatBreakTime(currentTime)}
+        </Heading>
+        <Picture src="/images/yoga-pause.svg" width={200}></Picture>
+        <Spacer.Horizontal size="md" />
+        <Heading size="xl" color="tertiary">
+          DESCONÉCTATE
         </Heading>
         <Spacer.Horizontal size=" sm" />
         <Paragraph>
-          Siempre hay que celebrar los pequeños triunfos, por eso te invitamos a
-          tomar un descanso para despejar tu mente.
+          Trabajar cuando te levantas no te permite despertar completamente. Por
+          eso, date un tiempo antes de empezar tu día.
         </Paragraph>
         <Spacer.Horizontal size="md" />
-        <div style={{ display: 'flex', gap: '0 20px' }}>
-          <Button isMuted>5 min</Button>
-          <Button isMuted>10 min</Button>
-          <Button isMuted>15 min</Button>
-        </div>
+        <Paragraph>Leer más</Paragraph>
       </CenteredContent>
     </Modal>
   )
@@ -36,6 +63,7 @@ const BreaktimeModal = ({ onClickClose }) => {
 
 BreaktimeModal.propTypes = {
   onClickClose: PropTypes.func.isRequired,
+  breaktime: PropTypes.number.isRequired,
 }
 
 export default BreaktimeModal
