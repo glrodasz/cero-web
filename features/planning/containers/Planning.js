@@ -61,6 +61,7 @@ const Planning = ({ initialData }) => {
               />
             </PlanningOnboarding>
             <AddTaskButton
+              id="planning"
               tasksLength={tasksLength}
               onClickAddTask={handleClickAddTask({ tasks })}
             />

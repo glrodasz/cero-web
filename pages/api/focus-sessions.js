@@ -2,5 +2,6 @@
 
 export default (req, res) => {
   res.statusCode = 200
-  res.json({ name: 'John Doe' })
+  // FIXME: Mock filter active sessionss
+  res.json([])
 }

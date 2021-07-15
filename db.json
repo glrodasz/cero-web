@@ -1,34 +1,22 @@
 {
   "tasks": [
     {
-      "description": "Hello",
-      "priority": 0,
-      "status": "in-progress",
+      "description": "This is my first task",
+      "priority": 1,
+      "status": "pending",
       "id": 1
     },
     {
-      "description": "Hello",
-      "priority": 1,
-      "status": "in-progress",
+      "description": "This is my second task",
+      "priority": 0,
+      "status": "completed",
       "id": 2
     },
     {
-      "description": "Hello",
+      "description": "This is my third task",
       "priority": 0,
-      "status": "pending",
+      "status": "in-progress",
       "id": 3
-    },
-    {
-      "description": "Hello",
-      "priority": 1,
-      "status": "pending",
-      "id": 4
-    },
-    {
-      "description": "Hello",
-      "priority": 2,
-      "status": "pending",
-      "id": 5
     }
   ],
   "focus-sessions": [
@@ -81,8 +69,16 @@
       "id": 12
     },
     {
-      "status": "active",
+      "status": "finished",
       "id": 13
+    },
+    {
+      "status": "finished",
+      "id": 14
+    },
+    {
+      "status": "active",
+      "id": 15
     }
   ],
   "profile": {
