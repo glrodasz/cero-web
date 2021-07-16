@@ -2,12 +2,12 @@ import isObject from './isObject'
 import { renderToStaticMarkup } from 'react-dom/server'
 
 const EMPTY_SPACE = ' '
+const NEW_LINE = '\n'
 
-const objectStringify = (obj) =>
-  isObject(obj) && Object.keys(obj).length
-    ? `${EMPTY_SPACE}${JSON.stringify(obj)}`
-    : ''
-
+const objectStringify = (obj) => {
+  const isNotAnEmptyObject = isObject(obj) && Object.keys(obj).length
+  return isNotAnEmptyObject ? `${EMPTY_SPACE}${JSON.stringify(obj)}` : ''
+}
 const cleanMarkup = (markup) =>
   markup
     .replace(/&amp;quot;/g, '"')
@@ -15,13 +15,19 @@ const cleanMarkup = (markup) =>
     .replace(/&lt;/g, '[')
     .replace(/&gt;/g, ']')
 
-const renderStatic = (children) =>
-  cleanMarkup(`${renderToStaticMarkup(children)}`)
+const renderStatic = (children) => {
+  const isAnString = typeof children === 'string'
+  return !isAnString
+    ? cleanMarkup(`${renderToStaticMarkup(children)}`)
+    : children
+}
 
-const dummyComponent = ({ name, props, children }) =>
-  `[${name}${objectStringify(props)}${!children ? ' /' : ''}]${
-    children ? `${children}[/${name}]${EMPTY_SPACE}` : ''
-  }`
+const dummyComponent = ({ name, props, children }) => {
+  const stringifiedProps = objectStringify(props)
+  const closeTag = children ? `]${children}[/${name}]` : ' /]'
+
+  return `${NEW_LINE}[${name}${stringifiedProps}${closeTag}`
+}
 
 export const dummyRender = (name) => (props) => {
   if (props.children) {
@@ -29,9 +35,9 @@ export const dummyRender = (name) => (props) => {
     return dummyComponent({
       name,
       props: rest,
-      children: renderStatic(children),
+      children: `${renderStatic(children)}`,
     })
   }
 
-  return `${dummyComponent({ name, props })}${EMPTY_SPACE}`
+  return `${dummyComponent({ name, props })}`
 }

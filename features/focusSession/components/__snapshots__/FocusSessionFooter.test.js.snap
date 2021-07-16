@@ -2,7 +2,8 @@
 
 exports[`[ features / focusSession / components / FocusSessionFooter ] when \`FocusSessionFooter\` is mounted should render 1`] = `
 <DocumentFragment>
-  [Spacer {"size":"lg"} /] 
+  
+[Spacer {"size":"lg"} /]
   <button
     class="button type-primary"
   >
