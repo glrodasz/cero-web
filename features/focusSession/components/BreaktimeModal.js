@@ -8,6 +8,7 @@ import {
   Heading,
   Spacer,
   Paragraph,
+  Link,
 } from '@glrodasz/components'
 
 import { time } from '../../common/constants'
@@ -49,13 +50,13 @@ const BreaktimeModal = ({ onClickClose, breaktime }) => {
         <Heading size="xl" color="tertiary">
           DESCONÉCTATE
         </Heading>
-        <Spacer.Horizontal size=" sm" />
+        <Spacer.Horizontal size="sm" />
         <Paragraph>
           Trabajar cuando te levantas no te permite despertar completamente. Por
           eso, date un tiempo antes de empezar tu día.
         </Paragraph>
         <Spacer.Horizontal size="md" />
-        <Paragraph>Leer más</Paragraph>
+        <Link color="tertiary">Leer más</Link>
       </CenteredContent>
     </Modal>
   )

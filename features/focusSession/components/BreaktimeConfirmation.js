@@ -27,7 +27,7 @@ const BreaktimeConfirmation = ({ onClickClose, onClickChoose }) => {
         <Heading size="xl" color="tertiary">
           Tomate un tiempo para refrescarte
         </Heading>
-        <Spacer.Horizontal size=" sm" />
+        <Spacer.Horizontal size="sm" />
         <Paragraph>
           Siempre hay que celebrar los pequeños triunfos, por eso te invitamos a
           tomar un descanso para despejar tu mente.

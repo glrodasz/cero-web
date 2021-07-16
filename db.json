@@ -3,12 +3,12 @@
     {
       "description": "This is my first task",
       "priority": 1,
-      "status": "pending",
+      "status": "in-progress",
       "id": 1
     },
     {
       "description": "This is my second task",
-      "priority": 0,
+      "priority": 1,
       "status": "completed",
       "id": 2
     },
@@ -17,6 +17,18 @@
       "priority": 0,
       "status": "in-progress",
       "id": 3
+    },
+    {
+      "description": "Hola bievenidos todos",
+      "priority": 0,
+      "status": "pending",
+      "id": 4
+    },
+    {
+      "description": "Necesitamos revisar porque se daño la sombra",
+      "priority": 2,
+      "status": "in-progress",
+      "id": 5
     }
   ],
   "focus-sessions": [
@@ -77,8 +89,28 @@
       "id": 14
     },
     {
-      "status": "active",
+      "status": "finished",
       "id": 15
+    },
+    {
+      "status": "finished",
+      "id": 16
+    },
+    {
+      "status": "finished",
+      "id": 17
+    },
+    {
+      "status": "finished",
+      "id": 18
+    },
+    {
+      "status": "finished",
+      "id": 19
+    },
+    {
+      "status": "active",
+      "id": 20
     }
   ],
   "profile": {

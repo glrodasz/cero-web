@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { useQueryCache } from 'react-query'
 
-import { FullHeightContent, LoadingError } from '@glrodasz/components'
+import { FullHeightContent, LoadingError, Link } from '@glrodasz/components'
 
 import UserHeader from '../../common/components/UserHeader'
 import Board from '../../tasks/components/Board'
@@ -58,7 +58,11 @@ const FocusSession = ({ initialData }) => {
             <UserHeader
               avatar="https://placeimg.com/200/200/people"
               title="Hola, Cristian"
-              text="Conoce la metodologia RETO"
+              text={
+                <>
+                  <span>Conoce la metodologia</span> <Link>RETO</Link>
+                </>
+              }
             />
             <Board
               tasks={tasks.data}
