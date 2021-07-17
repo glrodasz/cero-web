@@ -5,12 +5,12 @@ const PlanningFooter = ({ tasksLength, onClickStartSession }) => {
   if (!!tasksLength >= 1) {
     return (
       <>
-        <Spacer.Horizontal size="lg" />
+        <Spacer.Vertical size="lg" />
         <Paragraph size="sm">
           Basados en la matriz de Eisenhower priorizamos tus tareas evitando
           listas de pendientes saturadas.
         </Paragraph>
-        <Spacer.Horizontal size="sm" />
+        <Spacer.Vertical size="sm" />
         <Button onClick={onClickStartSession} isDisabled type="primary">
           Empieza ahora
         </Button>

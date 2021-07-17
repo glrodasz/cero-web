@@ -7,7 +7,7 @@ const AddTaskButton = ({ id, tasksLength, onClickAddTask }) => {
   if (tasksLength < MAXIMUM_BACKLOG_QUANTITY) {
     return (
       <>
-        <Spacer.Horizontal size="md" />
+        <Spacer.Vertical size="md" />
         <AddButton
           id={id}
           onAdd={onClickAddTask}

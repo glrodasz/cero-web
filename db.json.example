@@ -1,0 +1,15 @@
+{
+  "tasks": [
+    {
+      "description": "This is my first task",
+      "priority": 0,
+      "status": "in-progress",
+      "id": 1
+    },
+  ],
+  "focus-sessions": [
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

@@ -15,13 +15,13 @@ const DeleteTaskModal = ({ onClickCancel, onClickConfirm }) => {
         <Heading size="xl">
           ¿Estás seguro de querer eliminar esta tarea?
         </Heading>
-        <Spacer.Horizontal size="md" />
+        <Spacer.Vertical size="md" />
         <Paragraph>La tarea se eliminará de manera permanente.</Paragraph>
-        <Spacer.Horizontal size="sm" />
+        <Spacer.Vertical size="sm" />
         <Button type="secondary" onClick={onClickCancel}>
           No, Regresar
         </Button>
-        <Spacer.Horizontal size="xs" />
+        <Spacer.Vertical size="xs" />
         <Button type="primary" onClick={onClickConfirm}>
           Sí, eliminar
         </Button>

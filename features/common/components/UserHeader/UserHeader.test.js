@@ -6,7 +6,7 @@ jest.mock('@glrodasz/components', () => {
 
   return {
     Avatar: dummyRender('Avatar'),
-    Spacer: { Vertical: dummyRender('Space.Vertical') },
+    Spacer: { Vertical: dummyRender('Space.Horizontal') },
     Heading: dummyRender('Heading'),
     Paragraph: dummyRender('Paragraph'),
   }

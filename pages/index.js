@@ -19,19 +19,19 @@ export default function Home() {
   return (
     <CenteredContent>
       <Heading size="xl">Cuentame sobre ti</Heading>
-      <Spacer.Horizontal size="md" />
+      <Spacer.Vertical size="md" />
       <Input
         value={formValues.name}
         onChange={onChange('name')}
         placeholder="Nombres"
       />
-      <Spacer.Horizontal size="sm" />
+      <Spacer.Vertical size="sm" />
       <Input
         value={formValues.lastname}
         onChange={onChange('lastname')}
         placeholder="Apellidos"
       />
-      <Spacer.Horizontal size="sm" />
+      <Spacer.Vertical size="sm" />
       <Input
         value={formValues.email}
         onChange={onChange('email')}
@@ -45,9 +45,9 @@ export default function Home() {
           alignItems: 'center',
         }}
       >
-        <Spacer.Horizontal size="lg" />
+        <Spacer.Vertical size="lg" />
         <Button type="primary">Completa tu perfil</Button>
-        <Spacer.Horizontal size="md" />
+        <Spacer.Vertical size="md" />
         <Button style={{}} type="tertiary">
           Saltar este paso por ahora
         </Button>

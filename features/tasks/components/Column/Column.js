@@ -21,7 +21,7 @@ const Column = ({
       current={getCurrent({ tasks, column, isActive })}
       total={getTotal({ column, isActive })}
     >
-      <Spacer.Horizontal size="md" />
+      <Spacer.Vertical size="md" />
       <Droppable droppableId={column.id}>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -36,7 +36,7 @@ const Column = ({
                   onClickDeleteTask={onClickDeleteTask}
                   onCheckCompleteTask={onCheckCompleteTask}
                 />
-                <Spacer.Horizontal size="sm" />
+                <Spacer.Vertical size="sm" />
               </>
             ))}
             {provided.placeholder}

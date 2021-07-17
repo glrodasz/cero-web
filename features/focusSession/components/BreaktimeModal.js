@@ -46,16 +46,16 @@ const BreaktimeModal = ({ onClickClose, breaktime }) => {
           {formatBreakTime(currentTime)}
         </Heading>
         <Picture src="/images/yoga-pause.svg" width={200}></Picture>
-        <Spacer.Horizontal size="md" />
+        <Spacer.Vertical size="md" />
         <Heading size="xl" color="tertiary">
           DESCONÉCTATE
         </Heading>
-        <Spacer.Horizontal size="sm" />
+        <Spacer.Vertical size="sm" />
         <Paragraph>
           Trabajar cuando te levantas no te permite despertar completamente. Por
           eso, date un tiempo antes de empezar tu día.
         </Paragraph>
-        <Spacer.Horizontal size="md" />
+        <Spacer.Vertical size="md" />
         <Link color="tertiary">Leer más</Link>
       </CenteredContent>
     </Modal>

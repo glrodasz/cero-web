@@ -23,16 +23,16 @@ const BreaktimeConfirmation = ({ onClickClose, onClickChoose }) => {
     <Modal isCentered onClose={onClickClose}>
       <CenteredContent>
         <Picture src="/images/couch-pause.svg" width={200}></Picture>
-        <Spacer.Horizontal size="md" />
+        <Spacer.Vertical size="md" />
         <Heading size="xl" color="tertiary">
           Tomate un tiempo para refrescarte
         </Heading>
-        <Spacer.Horizontal size="sm" />
+        <Spacer.Vertical size="sm" />
         <Paragraph>
           Siempre hay que celebrar los pequeños triunfos, por eso te invitamos a
           tomar un descanso para despejar tu mente.
         </Paragraph>
-        <Spacer.Horizontal size="md" />
+        <Spacer.Vertical size="md" />
         <div style={{ display: 'flex', gap: '0 20px' }}>
           <Button
             onClick={handleChooseBreaktime(time.FIVE_MINUTES_IN_MS)}

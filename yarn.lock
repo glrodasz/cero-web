@@ -2321,9 +2321,9 @@
     strip-json-comments "^3.1.1"
 
 "@glrodasz/components@*":
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/@glrodasz/components/-/components-1.13.0.tgz#584c30abffb6353430d0d740e0fc20f3053eb5f3"
-  integrity sha512-TixCcB7VbrcYSc4TxJMYEDlJAB9cVQVb4uxxFCzRe1ffYpvOuutB0SZwVax6xvql3dO1bb2H6UwGSmb1whRlSA==
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@glrodasz/components/-/components-2.0.0.tgz#afe1ccf7f5c83bfee4ce972b8282b1818cfa7f22"
+  integrity sha512-A0t7o1Wl4lGjh3mZeEmBCfvRansfCCQpw4J3JaWfEnOZqcdOVVGaaqNjcbWGC0I/AIU8BR3LXyRMSG66Tw3l2g==
 
 "@hapi/accept@5.0.1":
   version "5.0.1"
