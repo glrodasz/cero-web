@@ -1,6 +1,6 @@
 export const persistColorScheme = ({ isDarkMode, setIsDarkMode }) => {
   const colorScheme = isDarkMode ? 'dark' : 'light'
-  document.querySelector('body').dataset.colorScheme = colorScheme
+  document.querySelector('html').dataset.colorScheme = colorScheme
   localStorage.setItem('prefers-color-scheme', colorScheme)
   setIsDarkMode(isDarkMode)
 }

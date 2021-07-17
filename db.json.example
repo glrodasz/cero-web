@@ -5,10 +5,9 @@
       "priority": 0,
       "status": "in-progress",
       "id": 1
-    },
+    }
   ],
-  "focus-sessions": [
-  ],
+  "focus-sessions": [],
   "profile": {
     "name": "typicode"
   }

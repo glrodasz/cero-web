@@ -28,7 +28,7 @@ const BreaktimeConfirmation = ({ onClickClose, onClickChoose }) => {
           Tomate un tiempo para refrescarte
         </Heading>
         <Spacer.Vertical size="sm" />
-        <Paragraph>
+        <Paragraph color="inverted">
           Siempre hay que celebrar los pequeños triunfos, por eso te invitamos a
           tomar un descanso para despejar tu mente.
         </Paragraph>

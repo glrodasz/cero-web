@@ -1,18 +1,18 @@
-import { ReactQueryCacheProvider, QueryCache } from 'react-query'
-import { ReactQueryDevtools } from 'react-query-devtools'
-import PropTypes from 'prop-types'
-import { Button, Container } from '@glrodasz/components'
 import Head from 'next/head'
 import Link from 'next/link'
+import PropTypes from 'prop-types'
+import { Button, Container } from '@glrodasz/components'
+import { ReactQueryCacheProvider, QueryCache } from 'react-query'
+import { ReactQueryDevtools } from 'react-query-devtools'
+
+import ToggleColorScheme from '../features/common/components/ToggleColorScheme'
 
 import 'minireset.css'
 import '@glrodasz/components/styles/globals.css'
 import '@glrodasz/components/styles/tokens.css'
-import '../styles/globals.css'
-import ToggleColorScheme from '../features/common/components/ToggleColorScheme'
+import '../styles/globals.scss'
 
 const queryCache = new QueryCache()
-
 function MyApp({ Component, pageProps }) {
   return (
     <ReactQueryCacheProvider queryCache={queryCache}>

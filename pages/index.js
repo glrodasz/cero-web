@@ -48,9 +48,7 @@ export default function Home() {
         <Spacer.Vertical size="lg" />
         <Button type="primary">Completa tu perfil</Button>
         <Spacer.Vertical size="md" />
-        <Button style={{}} type="tertiary">
-          Saltar este paso por ahora
-        </Button>
+        <Button type="tertiary">Saltar este paso por ahora</Button>
       </div>
     </CenteredContent>
   )

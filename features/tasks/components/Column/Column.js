@@ -6,6 +6,8 @@ import { TaskCounter, Spacer } from '@glrodasz/components'
 import DraggableTask from '../DraggableTask/DraggableTask'
 import { getTitle, getTotal, getCurrent } from '../../helpers'
 
+import { COMPLETED_COLUMN_ID } from '../../constants'
+
 const Column = ({
   column,
   tasks,
@@ -16,10 +18,10 @@ const Column = ({
   return (
     <TaskCounter
       title={getTitle({ column, isActive })}
-      defaultIsCollapsed={isActive ? column.id !== 'in-progress' : false}
-      isToggleable={isActive}
+      defaultIsCollapsed={isActive && column.id === COMPLETED_COLUMN_ID}
       current={getCurrent({ tasks, column, isActive })}
       total={getTotal({ column, isActive })}
+      isToggleable={isActive}
     >
       <Spacer.Vertical size="md" />
       <Droppable droppableId={column.id}>

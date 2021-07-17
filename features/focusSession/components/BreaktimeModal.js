@@ -51,12 +51,14 @@ const BreaktimeModal = ({ onClickClose, breaktime }) => {
           DESCONÉCTATE
         </Heading>
         <Spacer.Vertical size="sm" />
-        <Paragraph>
+        <Paragraph color="inverted">
           Trabajar cuando te levantas no te permite despertar completamente. Por
           eso, date un tiempo antes de empezar tu día.
         </Paragraph>
         <Spacer.Vertical size="md" />
-        <Link color="tertiary">Leer más</Link>
+        <Link size="lg" color="tertiary">
+          Leer más
+        </Link>
       </CenteredContent>
     </Modal>
   )
