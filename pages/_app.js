@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps }) {
         }}
       >
         <div>
-          {['/', '/home', '/planning'].map((link) => (
+          {['/', '/home', '/planning', '/retrospective'].map((link) => (
             <span key={link} style={{ marginRight: 10 }}>
               <Link href={link}>
                 <Button type="tertiary">

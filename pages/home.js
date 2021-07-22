@@ -10,6 +10,7 @@ import {
 
 import UserHeader from '../features/common/components/UserHeader/UserHeader'
 
+// TODO: Move Home content to it's own container
 export default function Home() {
   return (
     <FullHeightContent
