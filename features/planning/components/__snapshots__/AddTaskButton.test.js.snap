@@ -3,7 +3,7 @@
 exports[`[ features / planning / components / AddTaskButton ] when \`AddTaskButton\` is mounted should render 1`] = `
 <DocumentFragment>
   
-[Spacer {"size":"md"} /]
+[Spacer.Vertical {"size":"md"} /]
 [Button {"id":"","focusHelpText":"Presiona enter","blurHelpText":"Clic para continuar"}]Toca para agregar la tarea[/Button]
 </DocumentFragment>
 `;

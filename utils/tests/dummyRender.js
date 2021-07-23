@@ -1,4 +1,4 @@
-import isObject from './isObject'
+import isObject from '../isObject'
 import { renderToStaticMarkup } from 'react-dom/server'
 
 const EMPTY_SPACE = ' '

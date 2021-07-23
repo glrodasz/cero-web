@@ -2,7 +2,7 @@ import ToggleColorScheme from './ToggleColorScheme'
 import { render } from '@testing-library/react'
 
 jest.mock('@glrodasz/components', () => {
-  const { dummyRender } = require('../../../../utils/testing')
+  const { dummyRender } = require('../../../../utils/tests/dummyRender')
   return {
     Check: dummyRender('Check'),
     Heading: dummyRender('Heading'),

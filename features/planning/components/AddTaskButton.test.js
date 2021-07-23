@@ -2,9 +2,9 @@ import AddTaskButton from './AddTaskButton'
 import { render } from '@testing-library/react'
 
 jest.mock('@glrodasz/components', () => {
-  const { dummyRender } = require('../../../utils/testing')
+  const { dummyRender } = require('../../../utils/tests/dummyRender')
   return {
-    Spacer: { Horizontal: dummyRender('Spacer') },
+    Spacer: { Vertical: dummyRender('Spacer.Vertical') },
     AddButton: dummyRender('Button'),
   }
 })

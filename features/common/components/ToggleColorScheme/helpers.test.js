@@ -3,7 +3,7 @@ import { persistColorScheme, loadAndListenColorScheme } from './helpers'
 describe('[ features / common / ToggleColorS≈heme / helpers ]', () => {
   describe('#persistColorScheme', () => {
     describe('when `persistColorScheme` is called with `isDarkMode` as `true`', () => {
-      it('should set `body.dataset.colorScheme` with `dark` value', () => {
+      it('should set `html.dataset.colorScheme` with `dark` value', () => {
         // Arrange
         const params = {
           isDarkMode: true,
@@ -12,7 +12,7 @@ describe('[ features / common / ToggleColorS≈heme / helpers ]', () => {
 
         // Act
         persistColorScheme(params)
-        const result = document.querySelector('body').dataset.colorScheme
+        const result = document.querySelector('html').dataset.colorScheme
         const expected = 'dark'
 
         // Assert
@@ -52,7 +52,7 @@ describe('[ features / common / ToggleColorS≈heme / helpers ]', () => {
     })
 
     describe('when `persistColorScheme` is called with `isDarkMode` as `false`', () => {
-      it('should set `body.dataset.colorScheme` with `light` value', () => {
+      it('should set `html.dataset.colorScheme` with `light` value', () => {
         // Arrange
         const params = {
           isDarkMode: false,
@@ -61,7 +61,7 @@ describe('[ features / common / ToggleColorS≈heme / helpers ]', () => {
 
         // Act
         persistColorScheme(params)
-        const result = document.querySelector('body').dataset.colorScheme
+        const result = document.querySelector('html').dataset.colorScheme
         const expected = 'light'
 
         // Assert

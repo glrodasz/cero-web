@@ -2,13 +2,13 @@ import BreaktimeConfirmation from './BreaktimeConfirmation'
 import { render } from '@testing-library/react'
 
 jest.mock('@glrodasz/components', () => {
-  const { dummyRender } = require('../../../utils/testing')
+  const { dummyRender } = require('../../../utils/tests/dummyRender')
   return {
     Modal: dummyRender('Modal'),
     CenteredContent: dummyRender('CenteredContent'),
     Picture: dummyRender('Picture'),
     Heading: dummyRender('Heading'),
-    Spacer: { Horizontal: dummyRender('Spacer') },
+    Spacer: { Vertical: dummyRender('Spacer.Vertical') },
     Paragraph: dummyRender('Paragraph'),
     Button: dummyRender('Button'),
   }

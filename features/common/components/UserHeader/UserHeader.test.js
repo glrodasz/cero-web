@@ -2,11 +2,11 @@ import UserHeader from './UserHeader'
 import { render } from '@testing-library/react'
 
 jest.mock('@glrodasz/components', () => {
-  const { dummyRender } = require('../../../../utils/testing')
+  const { dummyRender } = require('../../../../utils/tests/dummyRender')
 
   return {
     Avatar: dummyRender('Avatar'),
-    Spacer: { Vertical: dummyRender('Space.Horizontal') },
+    Spacer: { Horizontal: dummyRender('Space.Horizontal') },
     Heading: dummyRender('Heading'),
     Paragraph: dummyRender('Paragraph'),
   }

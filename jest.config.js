@@ -13,6 +13,7 @@ module.exports = {
   },
   moduleNameMapper: {
     '\\.css$': 'identity-obj-proxy',
+    '\\.svg$': '<rootDir>/utils/tests/svgrMock.js',
   },
   setupFilesAfterEnv: ['./jest.setup.js'],
   testMatch: [

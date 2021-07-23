@@ -3,11 +3,11 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 jest.mock('@glrodasz/components', () => {
-  const { dummyRender } = require('../../../utils/testing')
+  const { dummyRender } = require('../../../utils/tests/dummyRender')
   const originalModule = jest.requireActual('@glrodasz/components')
   return {
     ...originalModule,
-    Spacer: { Horizontal: dummyRender('Spacer') },
+    Spacer: { Vertical: dummyRender('Spacer.Vertical') },
   }
 })
 
