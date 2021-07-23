@@ -9,6 +9,12 @@
       {
         "ignorePseudoClasses": ["global"]
       }
+    ],
+    "at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": ["mixin", "include"]
+      }
     ]
   }
 }

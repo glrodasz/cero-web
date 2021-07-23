@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / focusSession / components / BreaktimeConfirmation ] when \`BreaktimeConfirmation\` is mounted should render 1`] = `
+<DocumentFragment>
+  
+[Modal {"isCentered":true}]
+[CenteredContent]
+[Picture {"src":"/images/couch-pause.svg","width":200} /]
+[Spacer.Vertical {"size":"md"} /]
+[Heading {"size":"xl","color":"tertiary"}]Tomate un tiempo para refrescarte[/Heading]
+[Spacer.Vertical {"size":"sm"} /]
+[Paragraph {"color":"inverted"}]Siempre hay que celebrar los pequeños triunfos, por eso te invitamos a tomar un descanso para despejar tu mente.[/Paragraph]
+[Spacer.Vertical {"size":"md"} /][div style="display:flex;gap:0 20px"]
+[Button {"isMuted":true}]5 min[/Button]
+[Button {"isMuted":true}]10 min[/Button]
+[Button {"isMuted":true}]15 min[/Button][/div][/CenteredContent][/Modal]
+</DocumentFragment>
+`;

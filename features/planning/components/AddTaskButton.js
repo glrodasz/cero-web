@@ -3,12 +3,13 @@ import { Spacer, AddButton } from '@glrodasz/components'
 
 import { MAXIMUM_BACKLOG_QUANTITY } from '../constants'
 
-const AddTaskButton = ({ tasksLength, onClickAddTask }) => {
+const AddTaskButton = ({ id, tasksLength, onClickAddTask }) => {
   if (tasksLength < MAXIMUM_BACKLOG_QUANTITY) {
     return (
       <>
-        <Spacer.Horizontal size="md" />
+        <Spacer.Vertical size="md" />
         <AddButton
+          id={id}
           onAdd={onClickAddTask}
           focusHelpText="Presiona enter"
           blurHelpText="Clic para continuar"
@@ -22,7 +23,12 @@ const AddTaskButton = ({ tasksLength, onClickAddTask }) => {
   return null
 }
 
+AddTaskButton.defaultProps = {
+  id: '',
+}
+
 AddTaskButton.propTypes = {
+  id: PropTypes.string,
   onClickAddTask: PropTypes.func.isRequired,
   tasksLength: PropTypes.number,
 }

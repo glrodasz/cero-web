@@ -1,0 +1,53 @@
+@mixin dark-color-scheme {
+  --color-primary: var(--color-amber-600);
+  --color-primary-muted: var(--color-amber-800);
+  --color-primary-highlight: var(--color-orange-800);
+  --color-primary-inverted: var(--color-gray-50);
+
+  --color-secondary: var(--color-rose-600);
+  --color-secondary-muted: var(--color-rose-400);
+  --color-secondary-inverted: var(--color-rose-900);
+
+  --color-tertiary: var(--color-lime-50);
+
+  --color-font-base: var(--color-gray-50);
+  --color-font-muted: var(--color-gray-500);
+  --color-font-highlight: var(--color-gray-400);
+  --color-font-inverted: var(--color-cool-gray-800);
+
+  --background-color-primary: var(--color-cool-gray-900);
+  --background-color-primary-highlight: var(--color-cool-gray-800);
+
+  --button-border-radius-sm: var(--border-radius-xs);
+  --button-border-radius-md: var(--border-radius-xs);
+  --button-border-radius-lg: var(--border-radius-xs);
+
+  --input-height: 55px;
+  --input-background: var(--color-cool-gray-800);
+  --input-border-radius: 2;
+
+  --picture-border: 1px solid var(--color-cool-gray-200);
+
+  --card-border-radius: var(--border-radius-xs);
+
+  --task-border-radius: var(--border-radius-xs);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-color-scheme='light']) {
+    @include dark-color-scheme;
+  }
+}
+
+:root[data-color-scheme='dark'] {
+  @include dark-color-scheme;
+}
+
+html,
+body {
+  background: var(--background-color-primary);
+}
+
+#__next {
+  height: 100%;
+}

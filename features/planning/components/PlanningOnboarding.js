@@ -6,7 +6,7 @@ const PlanningOnboarding = ({ tasksLength, children }) => {
     <>
       {tasksLength == 0 && (
         <>
-          <Spacer.Horizontal size="lg" />
+          <Spacer.Vertical size="lg" />
           <Heading size="lg">
             Ahora dime, ¿cuál es la primera tarea en la que trabajarás hoy?
           </Heading>
@@ -15,7 +15,7 @@ const PlanningOnboarding = ({ tasksLength, children }) => {
       {children}
       {tasksLength === 1 && (
         <>
-          <Spacer.Horizontal size="md" />
+          <Spacer.Vertical size="md" />
           <Heading size="lg">
             Continúa listando las demás tareas de tu día...
           </Heading>

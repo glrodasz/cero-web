@@ -8,7 +8,7 @@ const UserHeader = ({ avatar, title, text, isPrimary }) => {
   return (
     <div className={styles['user-header']}>
       <Avatar src={avatar} />
-      <Spacer.Vertical size="sm" />
+      <Spacer.Horizontal size="sm" />
       <div className={styles['text']}>
         <Heading size="lg">{title}</Heading>
         {isPrimary ? (
