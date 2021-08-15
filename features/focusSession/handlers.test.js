@@ -1,6 +1,7 @@
 import {
   handleCheckCompleteTask,
   handleClickCloseBreaktimeConfirmation,
+  handleClickCloseBreaktimeTimer,
   handleClickEndSession,
 } from './handlers'
 
@@ -40,6 +41,41 @@ describe('[ features / focusSession / handlers ]', () => {
 
         // Assert
         expect(setShowDialogMock).toHaveBeenCalledWith(true)
+      })
+    })
+  })
+
+  describe('#handleClickCloseBreaktimeTimer', () => {
+    // Given, when, then
+    describe('when `handleClickCloseBreaktimeTimer` is called', () => {
+      it('should return a function', () => {
+        // Arrange
+        const params = {}
+
+        // Act
+        const result = typeof handleClickCloseBreaktimeTimer(params)
+        const expected = 'function'
+
+        // Assert
+        expect(result).toBe(expected)
+      })
+    })
+
+    describe('when `handleClickCloseBreaktimeTimer` returned is called', () => {
+      it('should call `setShowDialog` with `false`', () => {
+        // Arrange
+        const setShowDialogMock = jest.fn()
+        const params = {
+          breaktimeTimer: {
+            setShowDialog: setShowDialogMock,
+          },
+        }
+
+        // Act
+        handleClickCloseBreaktimeTimer(params)()
+
+        // Assert
+        expect(setShowDialogMock).toHaveBeenCalledWith(false)
       })
     })
   })

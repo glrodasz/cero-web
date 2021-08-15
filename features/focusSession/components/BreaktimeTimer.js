@@ -25,7 +25,7 @@ const reverseTick = ({ currentTime, setCurrentTime }) => () => {
   setCurrentTime(currentTime - time.ONE_SECOND_IN_MS)
 }
 
-const BreaktimeModal = ({ onClickClose, breaktime }) => {
+const BreaktimeTimer = ({ onClickClose, breaktime }) => {
   const [currentTime, setCurrentTime] = useState(breaktime)
 
   useEffect(() => {
@@ -64,9 +64,9 @@ const BreaktimeModal = ({ onClickClose, breaktime }) => {
   )
 }
 
-BreaktimeModal.propTypes = {
+BreaktimeTimer.propTypes = {
   onClickClose: PropTypes.func.isRequired,
   breaktime: PropTypes.number.isRequired,
 }
 
-export default BreaktimeModal
+export default BreaktimeTimer

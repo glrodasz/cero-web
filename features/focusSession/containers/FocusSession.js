@@ -7,7 +7,7 @@ import UserHeader from '../../common/components/UserHeader'
 import Board from '../../tasks/components/Board'
 import DeleteTaskModal from '../../tasks/components/DeleteTaskModal'
 import BreaktimeConfirmation from '../components/BreaktimeConfirmation'
-import BreaktimeModal from '../components/BreaktimeModal'
+import BreaktimeTimer from '../components/BreaktimeTimer'
 import FocusSessionFooter from '../components/FocusSessionFooter'
 
 // TODO: Move to tasks features
@@ -20,7 +20,7 @@ import {
 
 import {
   handleClickCloseBreaktimeConfirmation,
-  handleClickCloseBreaktimeModal,
+  handleClickCloseBreaktimeTimer,
   handleClickChooseBreaktime,
   handleClickEndSession,
   handleCheckCompleteTask,
@@ -29,7 +29,7 @@ import {
 import useTasks from '../../tasks/hooks/useTasks'
 import useDeleteConfirmation from '../../tasks/hooks/useDeleteConfirmation'
 import useBreaktimeConfirmation from '../hooks/useBreaktimeConfirmation'
-import useBreaktime from '../hooks/useBreaktime'
+import useBreaktimeTimer from '../hooks/useBreaktimeTimer'
 import useFocusSessions from '../hooks/useFocusSessions'
 
 const FocusSession = ({ initialData }) => {
@@ -37,7 +37,7 @@ const FocusSession = ({ initialData }) => {
 
   const deleteConfirmation = useDeleteConfirmation()
   const breaktimeConfirmation = useBreaktimeConfirmation()
-  const breaktime = useBreaktime()
+  const breaktimeTimer = useBreaktimeTimer()
 
   const tasks = useTasks({
     queryCache,
@@ -92,15 +92,15 @@ const FocusSession = ({ initialData }) => {
             breaktimeConfirmation,
           })}
           onClickChoose={handleClickChooseBreaktime({
-            breaktime,
+            breaktimeTimer,
             breaktimeConfirmation,
           })}
         />
       )}
-      {breaktime.showDialog && (
-        <BreaktimeModal
-          breaktime={breaktime.time}
-          onClickClose={handleClickCloseBreaktimeModal({ breaktime })}
+      {breaktimeTimer.showDialog && (
+        <BreaktimeTimer
+          breaktime={breaktimeTimer.time}
+          onClickClose={handleClickCloseBreaktimeTimer({ breaktimeTimer })}
         />
       )}
       {deleteConfirmation.showDialog && (
