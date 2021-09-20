@@ -13,8 +13,8 @@ import {
 
 import { time } from '../../common/constants'
 
-const formatBreakTime = (time) => {
-  const seconds = time / 1000
+export const formatBreakTime = (milliseconds) => {
+  const seconds = milliseconds / 1000
   const currentMinutes = String(Math.floor(seconds / 60)).padStart(2, '0')
   const currentSeconds = String(seconds % 60).padStart(2, '0')
 
