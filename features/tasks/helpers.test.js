@@ -1,4 +1,4 @@
-import { filterColumns, getTitle } from './helpers'
+import { filterColumns, getTitle, getCurrent } from './helpers'
 
 jest.mock('./constants', () => ({
   IN_PROGRESS_COLUMN_ID: 'IN_PROGRESS_COLUMN_ID',
@@ -66,7 +66,47 @@ describe('[ features / tasks / helpers ]', () => {
     })
   })
 
-  describe('#getCurrent', () => {})
+  describe('#getCurrent', () => {
+    describe('when `column.id` is `PENDING_COLUMN_ID` and `isActive` is `false`', () => {
+      it('should return `null`', () => {
+        // Arrange
+        const params = {
+          tasks: [],
+          isActive: false,
+          column: {
+            id: 'PENDING_COLUMN_ID',
+          },
+        }
+
+        // Act
+        const result = getCurrent(params)
+        const expected = null
+
+        // Assert
+        expect(result).toBe(expected)
+      })
+    })
+
+    describe('when `column.id` is `PENDING_COLUMN_ID` and `isActive` is `true`', () => {
+      it('should return the length of the `tasks`', () => {
+        // Arrange
+        const params = {
+          tasks: [null, null],
+          isActive: true,
+          column: {
+            id: 'PENDING_COLUMN_ID',
+          },
+        }
+
+        // Act
+        const result = getCurrent(params)
+        const expected = 2
+
+        // Assert
+        expect(result).toBe(expected)
+      })
+    })
+  })
 
   describe('#getTotal', () => {})
 
