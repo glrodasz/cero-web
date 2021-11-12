@@ -85,15 +85,15 @@ export const filterColumns = ({ tasksLength, isActive }) => (column) => {
     return true
   }
 
+  if (!isActive && column === PENDING_COLUMN_ID && tasksLength >= 3) {
+    return true
+  }
+
   if (!isActive && column === IN_PROGRESS_COLUMN_ID) {
     return true
   }
 
   if (!isActive && column === COMPLETED_COLUMN_ID) {
     return false
-  }
-
-  if (!isActive && column === PENDING_COLUMN_ID && tasksLength >= 3) {
-    return true
   }
 }

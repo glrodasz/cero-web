@@ -26,7 +26,10 @@ export const handleClickChooseBreaktime = ({
   breaktimeTimer.setTime(time)
 }
 
-export const handleClickEndSession = ({ focusSessions, initialData }) => () => {
-  focusSessions.api.finish({ id: initialData.activeFocusSession.id })
+export const handleClickEndSession = ({
+  focusSessions,
+  initialData,
+}) => async () => {
+  await focusSessions.api.finish({ id: initialData.activeFocusSession.id })
   Router.push('/planning')
 }
