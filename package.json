@@ -10,7 +10,9 @@
     "build": "next build",
     "dev:api": "json-server --watch db.json --port 3001",
     "dev:web": "next dev",
-    "dev": "concurrently 'npm:dev:*'",
+    "dev:web:debug": "NODE_OPTIONS='--inspect' next dev",
+    "dev": "concurrently npm:dev:api npm:dev:web",
+    "dev:debug": "concurrently npm:dev:api npm:dev:web:debug",
     "start": "next start",
     "commit": "cz",
     "lint:css:fix": "yarn lint:css:prettier:fix && yarn lint:css:stylelint:fix",
@@ -26,7 +28,10 @@
     "lint:json": "prettier '**/!(db).json' --list-different --ignore-path .gitignore",
     "lint": "run-p lint:js lint:json lint:css",
     "test:coverage": "yarn test --coverage",
+    "test:coverage:html": "yarn test:coverage & open coverage/lcov-report/index.html",
     "test:watch": "CONSOLE_LEVEL=debug yarn test --watch",
+    "testcafe:chrome": "testcafe chrome **/*.integration.test.js",
+    "test:integration": "NODE_ENV=test concurrently 'npm:dev:web' 'npm:testcafe:chrome'",
     "test": "jest"
   },
   "dependencies": {
@@ -44,13 +49,17 @@
     "@commitlint/cli": "11.0.0",
     "@commitlint/config-conventional": "11.0.0",
     "@mapbox/stylelint-processor-arbitrary-tags": "0.3.0",
+    "@svgr/webpack": "5.5.0",
     "@testing-library/react": "11.2.7",
+    "@testing-library/react-hooks": "7.0.0",
+    "@testing-library/user-event": "13.1.9",
     "commitizen": "4.2.2",
     "concurrently": "5.3.0",
     "eslint": "7.13.0",
     "eslint-config-prettier": "6.15.0",
     "eslint-plugin-prettier": "3.1.4",
     "eslint-plugin-react": "7.21.5",
+    "eslint-plugin-testcafe": "0.2.1",
     "husky": "4.3.0",
     "identity-obj-proxy": "3.0.0",
     "jest": "26.6.3",
@@ -58,8 +67,11 @@
     "lint-staged": "10.5.1",
     "npm-run-all": "4.1.5",
     "prettier": "2.1.2",
+    "sass": "1.35.2",
     "stylelint": "13.7.2",
     "stylelint-config-idiomatic-order": "8.1.0",
-    "stylelint-config-recommended": "3.0.0"
+    "stylelint-config-recommended": "3.0.0",
+    "testcafe": "1.15.0",
+    "testcafe-react-selectors": "4.1.5"
   }
 }

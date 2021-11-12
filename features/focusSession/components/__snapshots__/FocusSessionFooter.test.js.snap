@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / focusSession / components / FocusSessionFooter ] when \`FocusSessionFooter\` is mounted should render 1`] = `
+<DocumentFragment>
+  
+[Spacer.Vertical {"size":"lg"} /]
+  <button
+    class="button type-primary"
+  >
+    <header
+      class="heading color-inverted size-md weight-bold"
+    >
+      Finalizar tu sesión
+    </header>
+  </button>
+</DocumentFragment>
+`;

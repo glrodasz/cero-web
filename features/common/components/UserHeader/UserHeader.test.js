@@ -2,13 +2,13 @@ import UserHeader from './UserHeader'
 import { render } from '@testing-library/react'
 
 jest.mock('@glrodasz/components', () => {
-  const { shallowRender } = require('../../../../utils/testing')
+  const { dummyRender } = require('../../../../utils/tests/dummyRender')
 
   return {
-    Avatar: shallowRender('Avatar'),
-    Spacer: { Vertical: shallowRender('Space.Vertical') },
-    Heading: shallowRender('Heading'),
-    Paragraph: shallowRender('Paragraph'),
+    Avatar: dummyRender('Avatar'),
+    Spacer: { Horizontal: dummyRender('Space.Horizontal') },
+    Heading: dummyRender('Heading'),
+    Paragraph: dummyRender('Paragraph'),
   }
 })
 

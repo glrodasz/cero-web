@@ -77,7 +77,7 @@ export const handleDragEndTask = ({ tasks }) => ({
   return api.updatePriorities({ tasks: concatenatedTasks })
 }
 
-export const handleClickAddTask = ({ tasks }) => (value) => {
+export const handleClickAddTask = ({ tasks }) => ({ value }) => {
   const { api, data } = tasks
   api.create({ description: value, priority: data.length })
 }

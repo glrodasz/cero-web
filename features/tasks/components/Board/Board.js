@@ -34,7 +34,7 @@ const Board = ({
 
               return (
                 <>
-                  <Spacer.Horizontal size="md" />
+                  <Spacer.Vertical size="md" />
                   <Column
                     key={column.id}
                     column={column}
@@ -43,7 +43,7 @@ const Board = ({
                     onClickDeleteTask={onClickDeleteTask}
                     onCheckCompleteTask={onCheckCompleteTask}
                   />
-                  <Spacer.Horizontal size="md" />
+                  <Spacer.Vertical size="md" />
                 </>
               )
             })}

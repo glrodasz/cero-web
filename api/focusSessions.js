@@ -16,6 +16,7 @@ class FocusSession extends Request {
   }
 
   getActives() {
+    // FIXME: return this.request('focus-sessions/active')
     return this.request('focus-sessions?status=active')
   }
 }

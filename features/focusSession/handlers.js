@@ -5,12 +5,31 @@ export const handleCheckCompleteTask = ({ breaktimeConfirmation }) => () => {
   setShowDialog(true)
 }
 
-export const handleClickCloseBreaktime = ({ breaktimeConfirmation }) => () => {
+export const handleClickCloseBreaktimeConfirmation = ({
+  breaktimeConfirmation,
+}) => () => {
   const { setShowDialog } = breaktimeConfirmation
   setShowDialog(false)
 }
 
-export const handleClickEndSession = ({ focusSessions, initialData }) => () => {
-  focusSessions.api.finish({ id: initialData.activeFocusSession.id })
+export const handleClickCloseBreaktimeTimer = ({ breaktimeTimer }) => () => {
+  const { setShowDialog } = breaktimeTimer
+  setShowDialog(false)
+}
+
+export const handleClickChooseBreaktime = ({
+  breaktimeTimer,
+  breaktimeConfirmation,
+}) => (time) => {
+  breaktimeConfirmation.setShowDialog(false)
+  breaktimeTimer.setShowDialog(true)
+  breaktimeTimer.setTime(time)
+}
+
+export const handleClickEndSession = ({
+  focusSessions,
+  initialData,
+}) => async () => {
+  await focusSessions.api.finish({ id: initialData.activeFocusSession.id })
   Router.push('/planning')
 }

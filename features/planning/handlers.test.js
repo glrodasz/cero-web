@@ -184,7 +184,7 @@ describe('[ features / plannning / handlers ]', () => {
         const value = 'foo'
 
         // Act
-        handleClickAddTask(params)(value)
+        handleClickAddTask(params)({ value })
 
         // Assert
         expect(createMock).toHaveBeenCalledWith({
