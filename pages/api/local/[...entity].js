@@ -1,19 +1,21 @@
-// TODO: refactor Request utility an use it here
-const jsonFetch = (url, options) =>
-  fetch(url, options).then((response) => response.json())
+import Request from '../../../api/request'
 
 const JSON_SERVER_URL = process.env.JSON_SERVER_URL
+const API_BASENAME = '/api/local/'
 
 export default async function handler(req, res) {
-  const url = `${JSON_SERVER_URL}/${req.url.replace('/api/local/', '')}`
-  // FIXME: JSON.stringify the body
+  const [resource] = req.query.entity
+  const request = new Request(resource, JSON_SERVER_URL)
+
+  const url = `${req.url.replace(API_BASENAME, '')}`
+
   const options = {
     method: req.method.toUpperCase(),
     body: req.method !== 'GET' ? req.body : undefined,
   }
 
   try {
-    const jsonServerResponse = await jsonFetch(url, options)
+    const jsonServerResponse = await request.fetch(url, options)
     res.status(200).json(jsonServerResponse)
   } catch (error) {
     res.status(500).json({ error: error.message })

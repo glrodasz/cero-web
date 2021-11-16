@@ -2,22 +2,23 @@ import Request from './request'
 
 class FocusSession extends Request {
   create() {
-    return this.request('focus-sessions', {
+    return this.fetch('focus-sessions', {
       method: 'post',
       body: { status: 'active' },
     })
   }
 
   finish({ id }) {
-    return this.request(`focus-sessions/${id}`, {
+    // FIXME: return this.fetch(`focus-sessions/${id}/finish`, {
+    return this.fetch(`focus-sessions/${id}`, {
       method: 'patch',
       body: { status: 'finished' },
     })
   }
 
   getActives() {
-    // FIXME: return this.request('focus-sessions/active')
-    return this.request('focus-sessions?status=active')
+    // FIXME: return this.fetch('focus-sessions/active')
+    return this.fetch('focus-sessions?status=active')
   }
 }
 
