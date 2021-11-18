@@ -72,6 +72,7 @@ const FocusSession = ({ initialData }) => {
               })}
               onCheckCompleteTask={handleCheckCompleteTask({
                 breaktimeConfirmation,
+                tasks,
               })}
               isActive
             />

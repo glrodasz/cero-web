@@ -5,6 +5,12 @@ import PropTypes from 'prop-types'
 
 import { getTaskType } from '../../../planning/helpers'
 
+const handleCheckCompleteTask = ({ id, onCheckCompleteTask }) => ({
+  isChecked,
+}) => {
+  onCheckCompleteTask({ id, isChecked })
+}
+
 const DraggableTask = ({
   task,
   index,
@@ -26,7 +32,10 @@ const DraggableTask = ({
             onDelete={() => onClickDeleteTask({ id: task.id })}
             isPending={!isActive}
             type={columnId === 'in-progress' && getTaskType(index, columnId)}
-            onCheck={onCheckCompleteTask}
+            onCheck={handleCheckCompleteTask({
+              id: task.id,
+              onCheckCompleteTask,
+            })}
             defaultIsChecked={columnId === 'completed'}
           >
             {task.description}

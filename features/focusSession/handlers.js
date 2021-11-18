@@ -1,8 +1,12 @@
 import Router from 'next/router'
 
-export const handleCheckCompleteTask = ({ breaktimeConfirmation }) => () => {
+export const handleCheckCompleteTask = ({ breaktimeConfirmation, tasks }) => ({
+  id,
+  isChecked,
+}) => {
   const { setShowDialog } = breaktimeConfirmation
-  setShowDialog(true)
+  isChecked && setShowDialog(true)
+  tasks.api.updateStatus({ id, isChecked })
 }
 
 export const handleClickCloseBreaktimeConfirmation = ({

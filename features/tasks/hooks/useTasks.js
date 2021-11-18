@@ -26,6 +26,15 @@ const useTasks = ({ initialData, queryCache, onRemove }) => {
     },
   })
 
+  const [updateStatus] = useMutation(
+    (params) => tasksApi.updateStatus(params),
+    {
+      onSuccess: () => {
+        queryCache.invalidateQueries(QUERY_KEY)
+      },
+    }
+  )
+
   const [updatePriorities] = useMutation(
     (params) => tasksApi.updatePriorities(params),
     {
@@ -50,6 +59,7 @@ const useTasks = ({ initialData, queryCache, onRemove }) => {
       create,
       remove,
       updatePriorities,
+      updateStatus,
     },
   }
 }

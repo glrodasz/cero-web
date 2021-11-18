@@ -2,9 +2,7 @@ import Request from './request'
 
 class Task extends Request {
   getAll() {
-    // TODO: Implement a sort param, and remove the hardcoded
-    // FIXME: return this.fetch()
-    return this.fetch('tasks?_sort=priority&_order=asc')
+    return this.fetch()
   }
 
   getById({ id }) {
@@ -16,6 +14,11 @@ class Task extends Request {
       method: 'post',
       body: { description, priority, status: 'in-progress' },
     })
+  }
+
+  updateStatus({ id, isChecked }) {
+    const status = isChecked ? 'complete' : 'reset'
+    return this.fetch(`tasks/${id}/${status}`, { method: 'patch' })
   }
 
   updatePriorities({ tasks }) {
