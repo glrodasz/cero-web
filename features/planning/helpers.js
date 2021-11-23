@@ -1,5 +1,5 @@
 // FIXME: Create a Tasks feature and move to helpers there
-import { PRIOTIY_TASKS_QUANTITY } from './constants'
+import { maxInProgressTasks } from '../../config'
 
 export const reorderTasks = (
   tasks,
@@ -31,7 +31,7 @@ export const reorderTasks = (
 }
 
 export const getTaskType = (index) => {
-  if (index > PRIOTIY_TASKS_QUANTITY - 1) {
+  if (index > maxInProgressTasks - 1) {
     return null
   }
 

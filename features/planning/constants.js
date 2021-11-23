@@ -1,2 +1,1 @@
-export const PRIOTIY_TASKS_QUANTITY = 3
 export const MAXIMUM_BACKLOG_QUANTITY = 10

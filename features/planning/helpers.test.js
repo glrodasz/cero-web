@@ -1,7 +1,7 @@
 import { reorderTasks, getTaskType } from './helpers'
 
-jest.mock('./constants.js', () => ({
-  PRIOTIY_TASKS_QUANTITY: 10,
+jest.mock('../../config', () => ({
+  maxInProgressTasks: 10,
 }))
 
 describe('[ features / planning / helpers ]', () => {
@@ -26,7 +26,7 @@ describe('[ features / planning / helpers ]', () => {
   })
 
   describe('#getTaskType', () => {
-    describe('when `index` is bigger than `PRIOTIY_TASKS_QUANTITY - 1`', () => {
+    describe('when `index` is bigger than `maxInProgressTasks - 1`', () => {
       it('should return null', () => {
         // Arrange
         const index = 10
@@ -52,7 +52,7 @@ describe('[ features / planning / helpers ]', () => {
       })
     })
 
-    describe('when `index` is smaller than `PRIOTIY_TASKS_QUANTITY - 1`', () => {
+    describe('when `index` is smaller than `maxInProgressTasks - 1`', () => {
       it('should return "active"', () => {
         // Arrange
         const index = 1
