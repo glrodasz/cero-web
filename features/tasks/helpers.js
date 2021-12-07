@@ -1,9 +1,46 @@
-import { MAXIMUM_BACKLOG_QUANTITY } from '../planning/constants'
+import { MAX_IN_PROGRESS_TASKS, MAXIMUM_BACKLOG_QUANTITY } from '../../config'
 import {
   IN_PROGRESS_COLUMN_ID,
   PENDING_COLUMN_ID,
   COMPLETED_COLUMN_ID,
 } from './constants'
+
+export const reorderTasks = (
+  tasks,
+  startIndex,
+  endIndex,
+  taskStatus,
+  newTask
+) => {
+  const clonedTasks = Array.from(tasks)
+
+  if (endIndex !== null && startIndex !== null) {
+    const [removed] = clonedTasks.splice(startIndex, 1)
+    clonedTasks.splice(endIndex, 0, removed)
+  } else if (startIndex === null) {
+    clonedTasks.splice(endIndex, 0, newTask)
+  }
+
+  if (taskStatus) {
+    return clonedTasks.map((task, index) => ({
+      ...task,
+      priority: index,
+      status: taskStatus,
+    }))
+  }
+  return clonedTasks.map((task, index) => ({
+    ...task,
+    priority: index,
+  }))
+}
+
+export const getTaskType = (index) => {
+  if (index > MAX_IN_PROGRESS_TASKS - 1) {
+    return null
+  }
+
+  return index === 0 ? 'active' : 'standby'
+}
 
 export const getTitle = ({ column, isActive }) => {
   if (column.id === IN_PROGRESS_COLUMN_ID && !isActive) {

@@ -1,1 +1,0 @@
-export const MAXIMUM_BACKLOG_QUANTITY = 10

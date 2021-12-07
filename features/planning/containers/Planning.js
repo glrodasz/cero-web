@@ -23,7 +23,8 @@ import {
   handleClickStartSession,
   handleOpenEditTaskModal,
   handleCloseEditTaskModal,
-} from '../handlers'
+} from '../../tasks/handlers'
+
 import PlanningFooter from '../components/PlanningFooter'
 import AddTaskButton from '../components/AddTaskButton'
 import EditTaskModal from '../../tasks/components/EditTaskModal'

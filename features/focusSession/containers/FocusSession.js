@@ -9,14 +9,16 @@ import DeleteTaskModal from '../../tasks/components/DeleteTaskModal'
 import BreaktimeConfirmation from '../components/BreaktimeConfirmation'
 import BreaktimeTimer from '../components/BreaktimeTimer'
 import FocusSessionFooter from '../components/FocusSessionFooter'
+import EditTaskModal from '../../tasks/components/EditTaskModal'
 
-// TODO: Move to tasks features
 import {
   handleClickDeleteTask,
   handleClickCancelRemove,
   handleClickConfirmRemove,
   handleDragEndTask,
-} from '../../planning/handlers'
+  handleCloseEditTaskModal,
+  handleOpenEditTaskModal,
+} from '../../tasks/handlers'
 
 import {
   handleClickCloseBreaktimeConfirmation,
@@ -26,7 +28,9 @@ import {
   handleCheckCompleteTask,
 } from '../handlers.js'
 
+import useEditTaskModal from '../../tasks/hooks/useEditTaskModal'
 import useTasks from '../../tasks/hooks/useTasks'
+import useTask from '../../tasks/hooks/useTask'
 import useDeleteConfirmation from '../../tasks/hooks/useDeleteConfirmation'
 import useBreaktimeConfirmation from '../hooks/useBreaktimeConfirmation'
 import useBreaktimeTimer from '../hooks/useBreaktimeTimer'
@@ -38,11 +42,17 @@ const FocusSession = ({ initialData }) => {
   const deleteConfirmation = useDeleteConfirmation()
   const breaktimeConfirmation = useBreaktimeConfirmation()
   const breaktimeTimer = useBreaktimeTimer()
+  const editTaskModal = useEditTaskModal()
 
   const tasks = useTasks({
     queryCache,
     initialData: initialData.tasks,
     onRemove: () => deleteConfirmation.setTasksId(null),
+  })
+
+  const task = useTask({
+    id: editTaskModal.taskId,
+    queryCache,
   })
 
   const focusSessions = useFocusSessions({ queryCache })
@@ -73,6 +83,10 @@ const FocusSession = ({ initialData }) => {
               onCompleteTask={handleCheckCompleteTask({
                 breaktimeConfirmation,
                 tasks,
+              })}
+              onEditTask={handleOpenEditTaskModal({
+                tasks,
+                editTaskModal,
               })}
               isActive
             />
@@ -111,6 +125,12 @@ const FocusSession = ({ initialData }) => {
             tasks,
             deleteConfirmation,
           })}
+        />
+      )}
+      {editTaskModal.showDialog && (
+        <EditTaskModal
+          task={task?.data}
+          onClose={handleCloseEditTaskModal({ editTaskModal })}
         />
       )}
     </>

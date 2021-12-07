@@ -9,7 +9,7 @@ jest.mock('@glrodasz/components', () => {
   }
 })
 
-jest.mock('../constants', () => ({
+jest.mock('../../../config', () => ({
   MAXIMUM_BACKLOG_QUANTITY: 1,
 }))
 

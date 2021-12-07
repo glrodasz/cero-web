@@ -8,4 +8,9 @@ export default function handler(req, res) {
     const url = `tasks/${req.query.id}`
     fetchJsonServer({ resource: 'task', url, options, res })
   }
+
+  if (req.method === 'DELETE') {
+    const url = `tasks/${req.query.id}`
+    fetchJsonServer({ resource: 'task', url, options, res })
+  }
 }

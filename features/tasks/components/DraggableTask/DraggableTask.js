@@ -3,7 +3,7 @@ import { Task } from '@glrodasz/components'
 import { Draggable } from 'react-beautiful-dnd'
 import PropTypes from 'prop-types'
 
-import { getTaskType } from '../../../planning/helpers'
+import { getTaskType } from '../../../tasks/helpers'
 
 const handleCompleteTask = ({ id, onCompleteTask }) => ({ isChecked }) => {
   onCompleteTask({ id, isChecked })

@@ -27,20 +27,74 @@ describe('[ features / focusSession / handlers ]', () => {
     })
 
     describe('when `handleCheckCompleteTask` returned function is called', () => {
-      it('should call `setShowDialog` with `true`', () => {
+      describe('and `isChecked` is `true`', () => {
+        it('should call `setShowDialog` with `true`', () => {
+          // Arrange
+          const setShowDialogMock = jest.fn()
+          const params = {
+            breaktimeConfirmation: {
+              setShowDialog: setShowDialogMock,
+            },
+            tasks: {
+              api: {
+                updateStatus: () => {},
+              },
+            },
+          }
+
+          // Act
+          handleCheckCompleteTask(params)({ id: 'id', isChecked: true })
+
+          // Assert
+          expect(setShowDialogMock).toHaveBeenCalledWith(true)
+        })
+      })
+
+      describe('and `isChecked` is `false`', () => {
+        it('should call `setShowDialog` with `true`', () => {
+          // Arrange
+          const setShowDialogMock = jest.fn()
+          const params = {
+            breaktimeConfirmation: {
+              setShowDialog: setShowDialogMock,
+            },
+            tasks: {
+              api: {
+                updateStatus: () => {},
+              },
+            },
+          }
+
+          // Act
+          handleCheckCompleteTask(params)({ id: 'id', isChecked: false })
+
+          // Assert
+          expect(setShowDialogMock).not.toHaveBeenCalled()
+        })
+      })
+
+      it('should call `tasks.api.updateStatus` with the params', () => {
         // Arrange
-        const setShowDialogMock = jest.fn()
+        const updateStatusMock = jest.fn()
         const params = {
           breaktimeConfirmation: {
-            setShowDialog: setShowDialogMock,
+            setShowDialog: () => {},
+          },
+          tasks: {
+            api: {
+              updateStatus: updateStatusMock,
+            },
           },
         }
 
         // Act
-        handleCheckCompleteTask(params)()
+        handleCheckCompleteTask(params)({ id: 'id', isChecked: false })
 
         // Assert
-        expect(setShowDialogMock).toHaveBeenCalledWith(true)
+        expect(updateStatusMock).toHaveBeenCalledWith({
+          id: 'id',
+          isChecked: false,
+        })
       })
     })
   })

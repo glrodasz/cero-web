@@ -1,4 +1,4 @@
-import { apiUrl } from '../config'
+import { API_URL } from '../config'
 
 class Request {
   constructor(resource, baseUrl) {
@@ -6,8 +6,6 @@ class Request {
     this.baseUrl = baseUrl
   }
 
-  // TODO: Evaluate if is worthy to keep the this.resource or
-  // we do another approach far from the fetch standard
   fetch(resource = this.resource, options = {}) {
     const method = options.method ? options.method.toUpperCase() : 'GET'
     const requestOptions = { ...options, method }
@@ -21,7 +19,7 @@ class Request {
       requestOptions.body = JSON.stringify(options.body)
     }
 
-    const baseUrl = this.baseUrl ?? apiUrl
+    const baseUrl = this.baseUrl ?? API_URL
 
     return fetch(`${baseUrl}/${resource}`, requestOptions).then((data) =>
       data.json()

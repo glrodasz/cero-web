@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { Spacer, AddButton } from '@glrodasz/components'
 
-import { MAXIMUM_BACKLOG_QUANTITY } from '../constants'
+import { MAXIMUM_BACKLOG_QUANTITY } from '../../../config'
 
 const AddTaskButton = ({ id, tasksLength, onClickAddTask }) => {
   if (tasksLength < MAXIMUM_BACKLOG_QUANTITY) {

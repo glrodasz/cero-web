@@ -15,7 +15,7 @@ jest.mock('./helpers', () => ({
 import Router from 'next/router'
 jest.mock('next/router', () => ({ push: jest.fn() }))
 
-describe('[ features / plannning / handlers ]', () => {
+describe('[ features / tasks / handlers ]', () => {
   describe('#handleDragEndTask', () => {
     describe('when the handler is call', () => {
       it('should return a function', () => {
@@ -189,7 +189,6 @@ describe('[ features / plannning / handlers ]', () => {
         // Assert
         expect(createMock).toHaveBeenCalledWith({
           description: 'foo',
-          priority: 3,
         })
       })
     })
