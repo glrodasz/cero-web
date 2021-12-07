@@ -78,8 +78,8 @@ export const handleDragEndTask = ({ tasks }) => ({
 }
 
 export const handleClickAddTask = ({ tasks }) => ({ value }) => {
-  const { api, data } = tasks
-  api.create({ description: value, priority: data.length })
+  const { api } = tasks
+  api.create({ description: value })
 }
 
 export const handleClickDeleteTask = ({ deleteConfirmation }) => ({ id }) => {
@@ -106,4 +106,16 @@ export const handleClickConfirmRemove = ({
 export const handleClickStartSession = ({ focusSessions }) => () => {
   focusSessions.api.create()
   Router.push('/focus-session')
+}
+
+export const handleOpenEditTaskModal = ({ editTaskModal }) => ({ id }) => {
+  const { setTaskId, setShowDialog } = editTaskModal
+  setTaskId(id)
+  setShowDialog(true)
+}
+
+export const handleCloseEditTaskModal = ({ editTaskModal }) => () => {
+  const { setTaskId, setShowDialog } = editTaskModal
+  setTaskId(null)
+  setShowDialog(false)
 }

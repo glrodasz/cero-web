@@ -9,7 +9,9 @@ import DeleteTaskModal from '../../tasks/components/DeleteTaskModal'
 import PlanningOnboarding from '../components/PlanningOnboarding'
 
 import useDeleteConfirmation from '../../tasks/hooks/useDeleteConfirmation'
+import useEditTaskModal from '../../tasks/hooks/useEditTaskModal'
 import useTasks from '../../tasks/hooks/useTasks'
+import useTask from '../../tasks/hooks/useTask'
 import useFocusSessions from '../../focusSession/hooks/useFocusSessions'
 
 import {
@@ -19,19 +21,28 @@ import {
   handleClickCancelRemove,
   handleClickConfirmRemove,
   handleClickStartSession,
+  handleOpenEditTaskModal,
+  handleCloseEditTaskModal,
 } from '../handlers'
 import PlanningFooter from '../components/PlanningFooter'
 import AddTaskButton from '../components/AddTaskButton'
+import EditTaskModal from '../../tasks/components/EditTaskModal'
 
 const Planning = ({ initialData }) => {
   const queryCache = useQueryCache()
 
   const deleteConfirmation = useDeleteConfirmation()
+  const editTaskModal = useEditTaskModal()
 
   const tasks = useTasks({
     queryCache,
     initialData: initialData.tasks,
     onRemove: () => deleteConfirmation.setTasksId(null),
+  })
+
+  const task = useTask({
+    id: editTaskModal.taskId,
+    queryCache,
   })
 
   const focusSessions = useFocusSessions({ queryCache })
@@ -59,8 +70,12 @@ const Planning = ({ initialData }) => {
                 isActive={false}
                 tasks={tasks.data}
                 onDragEndTask={handleDragEndTask({ tasks })}
-                onClickDeleteTask={handleClickDeleteTask({
+                onDeleteTask={handleClickDeleteTask({
                   deleteConfirmation,
+                })}
+                onEditTask={handleOpenEditTaskModal({
+                  tasks,
+                  editTaskModal,
                 })}
               />
             </PlanningOnboarding>
@@ -85,6 +100,12 @@ const Planning = ({ initialData }) => {
             tasks,
             deleteConfirmation,
           })}
+        />
+      )}
+      {editTaskModal.showDialog && (
+        <EditTaskModal
+          task={task?.data}
+          onClose={handleCloseEditTaskModal({ editTaskModal })}
         />
       )}
     </>

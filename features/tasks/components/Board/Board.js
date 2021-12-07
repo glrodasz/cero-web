@@ -11,8 +11,9 @@ const Board = ({
   tasks,
   isActive,
   onDragEndTask,
-  onClickDeleteTask,
-  onCheckCompleteTask,
+  onDeleteTask,
+  onCompleteTask,
+  onEditTask,
 }) => {
   const [data, setData] = useState(normalizeData(tasks))
 
@@ -40,8 +41,9 @@ const Board = ({
                     column={column}
                     tasks={tasks}
                     isActive={isActive}
-                    onClickDeleteTask={onClickDeleteTask}
-                    onCheckCompleteTask={onCheckCompleteTask}
+                    onDeleteTask={onDeleteTask}
+                    onCompleteTask={onCompleteTask}
+                    onEditTask={onEditTask}
                   />
                   <Spacer.Vertical size="md" />
                 </>
@@ -56,8 +58,9 @@ Board.propTypes = {
   tasks: PropTypes.object,
   isActive: PropTypes.bool,
   onDragEndTask: PropTypes.bool,
-  onClickDeleteTask: PropTypes.func.isRequired,
-  onCheckCompleteTask: PropTypes.func.isRequired,
+  onDeleteTask: PropTypes.func.isRequired,
+  onCompleteTask: PropTypes.func.isRequired,
+  onEditTask: PropTypes.func.isRequired,
 }
 
 export default Board

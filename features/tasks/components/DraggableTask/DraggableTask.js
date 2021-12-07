@@ -5,10 +5,16 @@ import PropTypes from 'prop-types'
 
 import { getTaskType } from '../../../planning/helpers'
 
-const handleCheckCompleteTask = ({ id, onCheckCompleteTask }) => ({
-  isChecked,
-}) => {
-  onCheckCompleteTask({ id, isChecked })
+const handleCompleteTask = ({ id, onCompleteTask }) => ({ isChecked }) => {
+  onCompleteTask({ id, isChecked })
+}
+
+const handleDeleteTask = ({ id, onDeleteTask }) => () => {
+  onDeleteTask({ id })
+}
+
+const handleEditTask = ({ id, onEditTask }) => () => {
+  onEditTask({ id })
 }
 
 const DraggableTask = ({
@@ -16,8 +22,9 @@ const DraggableTask = ({
   index,
   columnId,
   isActive,
-  onClickDeleteTask,
-  onCheckCompleteTask,
+  onDeleteTask,
+  onCompleteTask,
+  onEditTask,
 }) => {
   return (
     <Draggable draggableId={String(task.id)} index={index}>
@@ -29,12 +36,16 @@ const DraggableTask = ({
         >
           <Task
             key={task.id}
-            onDelete={() => onClickDeleteTask({ id: task.id })}
+            onDelete={handleDeleteTask({ id: task.id, onDeleteTask })}
             isPending={!isActive}
             type={columnId === 'in-progress' && getTaskType(index, columnId)}
-            onCheck={handleCheckCompleteTask({
+            onCheck={handleCompleteTask({
               id: task.id,
-              onCheckCompleteTask,
+              onCompleteTask,
+            })}
+            onClick={handleEditTask({
+              id: task.id,
+              onEditTask,
             })}
             defaultIsChecked={columnId === 'completed'}
           >
@@ -51,8 +62,9 @@ DraggableTask.propTypes = {
   index: PropTypes.number,
   columnId: PropTypes.string,
   isActive: PropTypes.bool,
-  onClickDeleteTask: PropTypes.func.isRequired,
-  onCheckCompleteTask: PropTypes.func.isRequired,
+  onDeleteTask: PropTypes.func.isRequired,
+  onCompleteTask: PropTypes.func.isRequired,
+  onEditTask: PropTypes.func.isRequired,
 }
 
 export default DraggableTask

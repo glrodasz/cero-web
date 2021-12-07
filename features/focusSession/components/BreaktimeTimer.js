@@ -39,6 +39,7 @@ const BreaktimeTimer = ({ onClickClose, breaktime }) => {
     return () => clearInterval(intervalId)
   }, [currentTime])
 
+  // FIXME: Review if this onClose needs to be a handler closure
   return (
     <Modal isCentered onClose={onClickClose}>
       <CenteredContent>

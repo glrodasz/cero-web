@@ -12,8 +12,9 @@ const Column = ({
   column,
   tasks,
   isActive,
-  onClickDeleteTask,
-  onCheckCompleteTask,
+  onDeleteTask,
+  onCompleteTask,
+  onEditTask,
 }) => {
   return (
     <TaskCounter
@@ -35,8 +36,9 @@ const Column = ({
                   task={task}
                   index={index}
                   isActive={isActive}
-                  onClickDeleteTask={onClickDeleteTask}
-                  onCheckCompleteTask={onCheckCompleteTask}
+                  onDeleteTask={onDeleteTask}
+                  onEditTask={onEditTask}
+                  onCompleteTask={onCompleteTask}
                 />
                 <Spacer.Vertical size="sm" />
               </>
@@ -53,8 +55,9 @@ Column.propTypes = {
   column: PropTypes.object,
   tasks: PropTypes.array,
   isActive: PropTypes.bool,
-  onClickDeleteTask: PropTypes.func.isRequired,
-  onCheckCompleteTask: PropTypes.func.isRequired,
+  onDeleteTask: PropTypes.func.isRequired,
+  onCompleteTask: PropTypes.func.isRequired,
+  onEditTask: PropTypes.func.isRequired,
 }
 
 export default Column

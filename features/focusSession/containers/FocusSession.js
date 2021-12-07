@@ -67,10 +67,10 @@ const FocusSession = ({ initialData }) => {
             <Board
               tasks={tasks.data}
               onDragEndTask={handleDragEndTask({ tasks })}
-              onClickDeleteTask={handleClickDeleteTask({
+              onDeleteTask={handleClickDeleteTask({
                 deleteConfirmation,
               })}
-              onCheckCompleteTask={handleCheckCompleteTask({
+              onCompleteTask={handleCheckCompleteTask({
                 breaktimeConfirmation,
                 tasks,
               })}

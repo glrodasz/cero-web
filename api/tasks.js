@@ -6,13 +6,13 @@ class Task extends Request {
   }
 
   getById({ id }) {
-    return this.fetch(`tasks/${id}`)
+    return id && this.fetch(`tasks/${id}`)
   }
 
-  create({ description, priority }) {
+  create({ description }) {
     return this.fetch('tasks', {
       method: 'post',
-      body: { description, priority, status: 'in-progress' },
+      body: { description },
     })
   }
 
@@ -34,6 +34,10 @@ class Task extends Request {
 
   delete({ id }) {
     return this.fetch(`tasks/${id}`, { method: 'delete' })
+  }
+
+  update({ id, task }) {
+    return this.fetch(`tasks/${id}`, { method: 'put', body: { task } })
   }
 }
 
