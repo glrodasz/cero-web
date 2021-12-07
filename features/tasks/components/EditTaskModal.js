@@ -6,9 +6,8 @@ const handleClose = ({ onClose }) => () => {
   onClose()
 }
 
-const handleDelete = ({ id, onDelete, onClose }) => () => {
+const handleDelete = ({ id, onDelete }) => () => {
   onDelete({ id })
-  onClose()
 }
 
 const EditTaskModal = ({ task, onClose, onDelete }) => {
@@ -18,7 +17,7 @@ const EditTaskModal = ({ task, onClose, onDelete }) => {
       onClose={handleClose({ onClose })}
       secondaryAction={{
         icon: 'trash',
-        handler: handleDelete({ id: task?.id, onDelete, onClose }),
+        handler: handleDelete({ id: task?.id, onDelete }),
       }}
     >
       <Heading size="xl">{task?.description}</Heading>

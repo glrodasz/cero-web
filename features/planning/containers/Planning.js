@@ -38,7 +38,10 @@ const Planning = ({ initialData }) => {
   const tasks = useTasks({
     queryCache,
     initialData: initialData.tasks,
-    onRemove: () => deleteConfirmation.setTasksId(null),
+    onRemove: () => {
+      deleteConfirmation.setTaskId(null)
+      editTaskModal.setShowDialog(false)
+    },
   })
 
   const task = useTask({
