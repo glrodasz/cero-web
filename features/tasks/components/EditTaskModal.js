@@ -6,9 +6,21 @@ const handleClose = ({ onClose }) => () => {
   onClose()
 }
 
-const EditTaskModal = ({ task, onClose }) => {
+const handleDelete = ({ id, onDelete, onClose }) => () => {
+  onDelete({ id })
+  onClose()
+}
+
+const EditTaskModal = ({ task, onClose, onDelete }) => {
   return (
-    <Modal type="secondary" onClose={handleClose({ onClose })}>
+    <Modal
+      type="secondary"
+      onClose={handleClose({ onClose })}
+      secondaryAction={{
+        icon: 'trash',
+        handler: handleDelete({ id: task?.id, onDelete, onClose }),
+      }}
+    >
       <Heading size="xl">{task?.description}</Heading>
     </Modal>
   )
@@ -17,10 +29,12 @@ const EditTaskModal = ({ task, onClose }) => {
 EditTaskModal.propTypes = {
   task: PropTypes.object,
   onClose: PropTypes.func,
+  onDelete: PropTypes.func,
 }
 
 EditTaskModal.defaultProps = {
   onClose: () => {},
+  onDelete: () => {},
 }
 
 export default EditTaskModal
