@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 import { tasksApi } from '../../planning/api'
-import { useQuery, useMutation } from 'react-query'
+import { useQuery, useMutation, useQueryCache } from 'react-query'
 
 const QUERY_KEY = 'task'
 
-const useTask = ({ id, queryCache }) => {
+const useTask = ({ id }) => {
+  const queryCache = useQueryCache()
+
   const { isLoading, error, data: serverData } = useQuery([QUERY_KEY, id], () =>
     tasksApi.getById({ id })
   )

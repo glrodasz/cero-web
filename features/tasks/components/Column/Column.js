@@ -8,14 +8,7 @@ import { getTitle, getTotal, getCurrent } from '../../helpers'
 
 import { COMPLETED_COLUMN_ID } from '../../constants'
 
-const Column = ({
-  column,
-  tasks,
-  isActive,
-  onDeleteTask,
-  onCompleteTask,
-  onEditTask,
-}) => {
+const Column = ({ column, tasks, isActive, actions }) => {
   return (
     <TaskCounter
       title={getTitle({ column, isActive })}
@@ -36,9 +29,7 @@ const Column = ({
                   task={task}
                   index={index}
                   isActive={isActive}
-                  onDeleteTask={onDeleteTask}
-                  onEditTask={onEditTask}
-                  onCompleteTask={onCompleteTask}
+                  actions={actions}
                 />
                 <Spacer.Vertical size="sm" />
               </>
@@ -55,9 +46,11 @@ Column.propTypes = {
   column: PropTypes.object,
   tasks: PropTypes.array,
   isActive: PropTypes.bool,
-  onDeleteTask: PropTypes.func.isRequired,
-  onCompleteTask: PropTypes.func.isRequired,
-  onEditTask: PropTypes.func.isRequired,
+  actions: PropTypes.shape({
+    onDeleteTask: PropTypes.func.isRequired,
+    onCompleteTask: PropTypes.func.isRequired,
+    onEditTask: PropTypes.func.isRequired,
+  }).isRequired,
 }
 
 export default Column

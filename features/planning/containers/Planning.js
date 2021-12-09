@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { useQueryCache } from 'react-query'
 
 import { FullHeightContent, LoadingError, Link } from '@glrodasz/components'
 
@@ -11,7 +10,6 @@ import PlanningOnboarding from '../components/PlanningOnboarding'
 import useDeleteConfirmation from '../../tasks/hooks/useDeleteConfirmation'
 import useEditTaskModal from '../../tasks/hooks/useEditTaskModal'
 import useTasks from '../../tasks/hooks/useTasks'
-import useTask from '../../tasks/hooks/useTask'
 import useFocusSessions from '../../focusSession/hooks/useFocusSessions'
 
 import {
@@ -22,21 +20,17 @@ import {
   handleClickConfirmRemove,
   handleClickStartSession,
   handleOpenEditTaskModal,
-  handleCloseEditTaskModal,
 } from '../../tasks/handlers'
 
 import PlanningFooter from '../components/PlanningFooter'
 import AddTaskButton from '../components/AddTaskButton'
-import EditTaskModal from '../../tasks/components/EditTaskModal'
+import EditTask from '../../tasks/containers/EditTask'
 
 const Planning = ({ initialData }) => {
-  const queryCache = useQueryCache()
-
   const deleteConfirmation = useDeleteConfirmation()
   const editTaskModal = useEditTaskModal()
 
   const tasks = useTasks({
-    queryCache,
     initialData: initialData.tasks,
     onRemove: () => {
       deleteConfirmation.setTaskId(null)
@@ -44,12 +38,7 @@ const Planning = ({ initialData }) => {
     },
   })
 
-  const task = useTask({
-    id: editTaskModal.taskId,
-    queryCache,
-  })
-
-  const focusSessions = useFocusSessions({ queryCache })
+  const focusSessions = useFocusSessions()
   const tasksLength = tasks.data?.length
 
   return (
@@ -97,16 +86,7 @@ const Planning = ({ initialData }) => {
           />
         }
       />
-
-      {editTaskModal.showDialog && (
-        <EditTaskModal
-          task={task?.data}
-          onClose={handleCloseEditTaskModal({ editTaskModal })}
-          onDelete={handleClickDeleteTask({
-            deleteConfirmation,
-          })}
-        />
-      )}
+      <EditTask editTaskModal={editTaskModal} />
       {deleteConfirmation.showDialog && (
         <DeleteTaskModal
           onClickCancel={handleClickCancelRemove({ deleteConfirmation })}

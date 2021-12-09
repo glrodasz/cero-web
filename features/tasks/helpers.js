@@ -1,4 +1,5 @@
 import { MAX_IN_PROGRESS_TASKS, MAXIMUM_BACKLOG_QUANTITY } from '../../config'
+
 import {
   IN_PROGRESS_COLUMN_ID,
   PENDING_COLUMN_ID,
@@ -74,6 +75,13 @@ export const getTotal = ({ column, isActive }) => {
   return null
 }
 
+export const getSortedTaskIdsFilteredByStatus = (filteredStatus) => (tasks) => {
+  return tasks
+    .filter(({ status }) => status === filteredStatus)
+    .sort((a, b) => a.priority - b.priority)
+    .map((task) => task.id)
+}
+
 export const normalizeData = (tasks) => {
   const normalizeTasks = tasks.reduce((prev, cur) => {
     prev[cur.id] = { ...cur }
@@ -84,26 +92,17 @@ export const normalizeData = (tasks) => {
     [IN_PROGRESS_COLUMN_ID]: {
       id: IN_PROGRESS_COLUMN_ID,
       title: 'En Progreso',
-      taskIds: tasks
-        .filter(({ status }) => status === IN_PROGRESS_COLUMN_ID)
-        .sort((a, b) => a.priority - b.priority)
-        .map((task) => task.id),
+      taskIds: getSortedTaskIdsFilteredByStatus(IN_PROGRESS_COLUMN_ID)(tasks),
     },
     [PENDING_COLUMN_ID]: {
       id: PENDING_COLUMN_ID,
       title: 'Pendientes',
-      taskIds: tasks
-        .filter(({ status }) => status === PENDING_COLUMN_ID)
-        .sort((a, b) => a.priority - b.priority)
-        .map((task) => task.id),
+      taskIds: getSortedTaskIdsFilteredByStatus(PENDING_COLUMN_ID)(tasks),
     },
     [COMPLETED_COLUMN_ID]: {
       id: COMPLETED_COLUMN_ID,
       title: 'Completadas',
-      taskIds: tasks
-        .filter(({ status }) => status === COMPLETED_COLUMN_ID)
-        .sort((a, b) => a.priority - b.priority)
-        .map((task) => task.id),
+      taskIds: getSortedTaskIdsFilteredByStatus(COMPLETED_COLUMN_ID)(tasks),
     },
   }
 
@@ -116,21 +115,24 @@ export const normalizeData = (tasks) => {
   return { tasks: normalizeTasks, columns, columnOrder }
 }
 
-// TODO: Improve this filter
 export const filterColumns = ({ tasksLength, isActive }) => (column) => {
-  if (isActive) {
+  const AreWeInFocusSession = isActive
+  const AreWeInPlanning = !isActive
+  const DoWeHaveBacklogTasks = tasksLength >= MAX_IN_PROGRESS_TASKS
+
+  if (AreWeInFocusSession) {
     return true
   }
 
-  if (!isActive && column === PENDING_COLUMN_ID && tasksLength >= 3) {
+  if (AreWeInPlanning && column === IN_PROGRESS_COLUMN_ID) {
     return true
   }
 
-  if (!isActive && column === IN_PROGRESS_COLUMN_ID) {
+  if (AreWeInPlanning && DoWeHaveBacklogTasks && column === PENDING_COLUMN_ID) {
     return true
   }
 
-  if (!isActive && column === COMPLETED_COLUMN_ID) {
+  if (AreWeInPlanning && column === COMPLETED_COLUMN_ID) {
     return false
   }
 }

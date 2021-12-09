@@ -7,14 +7,7 @@ import Column from '../Column/Column'
 
 import { normalizeData, filterColumns } from '../../helpers'
 
-const Board = ({
-  tasks,
-  isActive,
-  onDragEndTask,
-  onDeleteTask,
-  onCompleteTask,
-  onEditTask,
-}) => {
+const Board = ({ tasks, isActive, onDragEnd, actions }) => {
   const [data, setData] = useState(normalizeData(tasks))
 
   useEffect(() => {
@@ -25,7 +18,7 @@ const Board = ({
 
   return (
     <>
-      <DragDropContext onDragEnd={onDragEndTask}>
+      <DragDropContext onDragEnd={onDragEnd}>
         {!!tasksLength &&
           data.columnOrder
             .filter(filterColumns({ tasksLength, isActive }))
@@ -41,9 +34,7 @@ const Board = ({
                     column={column}
                     tasks={tasks}
                     isActive={isActive}
-                    onDeleteTask={onDeleteTask}
-                    onCompleteTask={onCompleteTask}
-                    onEditTask={onEditTask}
+                    actions={actions}
                   />
                   <Spacer.Vertical size="md" />
                 </>
@@ -57,10 +48,12 @@ const Board = ({
 Board.propTypes = {
   tasks: PropTypes.object,
   isActive: PropTypes.bool,
-  onDragEndTask: PropTypes.bool,
-  onDeleteTask: PropTypes.func.isRequired,
-  onCompleteTask: PropTypes.func.isRequired,
-  onEditTask: PropTypes.func.isRequired,
+  onDragEnd: PropTypes.bool,
+  actions: PropTypes.shape({
+    onDeleteTask: PropTypes.func.isRequired,
+    onCompleteTask: PropTypes.func.isRequired,
+    onEditTask: PropTypes.func.isRequired,
+  }).isRequired,
 }
 
 export default Board

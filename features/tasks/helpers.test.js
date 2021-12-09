@@ -38,7 +38,7 @@ describe('[ features / tasks / helpers ]', () => {
   })
 
   describe('#getTaskType', () => {
-    describe('when `index` is bigger than `maxInProgressTasks - 1`', () => {
+    describe('when `index` is bigger than `MAX_IN_PROGRESS_TASKS - 1`', () => {
       it('should return null', () => {
         // Arrange
         const index = 10
@@ -64,7 +64,7 @@ describe('[ features / tasks / helpers ]', () => {
       })
     })
 
-    describe('when `index` is smaller than `maxInProgressTasks - 1`', () => {
+    describe('when `index` is smaller than `MAX_IN_PROGRESS_TASKS - 1`', () => {
       it('should return "active"', () => {
         // Arrange
         const index = 1
@@ -235,12 +235,12 @@ describe('[ features / tasks / helpers ]', () => {
       })
     })
 
-    describe('when `isActive` is `false`, and `column` is `PENDING_COLUMN_ID`, and `tasksLength` is greater or equal than `3` ', () => {
+    describe('when `isActive` is `false`, and `column` is `PENDING_COLUMN_ID`, and `tasksLength` is greater or equal than `MAX_IN_PROGRESS_TASKS` ', () => {
       it('should return `true`', () => {
         // Arrange
         const params = {
           isActive: false,
-          tasksLength: 3,
+          tasksLength: 10,
         }
         const column = 'PENDING_COLUMN_ID'
 

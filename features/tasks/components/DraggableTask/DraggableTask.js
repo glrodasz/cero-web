@@ -5,27 +5,15 @@ import PropTypes from 'prop-types'
 
 import { getTaskType } from '../../../tasks/helpers'
 
-const handleCompleteTask = ({ id, onCompleteTask }) => ({ isChecked }) => {
-  onCompleteTask({ id, isChecked })
-}
+import {
+  handleCompleteTask,
+  handleDeleteTask,
+  handleEditTask,
+} from './handlers'
 
-const handleDeleteTask = ({ id, onDeleteTask }) => () => {
-  onDeleteTask({ id })
-}
+const DraggableTask = ({ task, index, columnId, isActive, actions }) => {
+  const { onDeleteTask, onCompleteTask, onEditTask } = actions
 
-const handleEditTask = ({ id, onEditTask }) => () => {
-  onEditTask({ id })
-}
-
-const DraggableTask = ({
-  task,
-  index,
-  columnId,
-  isActive,
-  onDeleteTask,
-  onCompleteTask,
-  onEditTask,
-}) => {
   return (
     <Draggable draggableId={String(task.id)} index={index}>
       {(provided) => (
@@ -62,9 +50,11 @@ DraggableTask.propTypes = {
   index: PropTypes.number,
   columnId: PropTypes.string,
   isActive: PropTypes.bool,
-  onDeleteTask: PropTypes.func.isRequired,
-  onCompleteTask: PropTypes.func.isRequired,
-  onEditTask: PropTypes.func.isRequired,
+  actions: PropTypes.shape({
+    onDeleteTask: PropTypes.func.isRequired,
+    onCompleteTask: PropTypes.func.isRequired,
+    onEditTask: PropTypes.func.isRequired,
+  }).isRequired,
 }
 
 export default DraggableTask

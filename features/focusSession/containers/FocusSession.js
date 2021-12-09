@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { useQueryCache } from 'react-query'
 
 import { FullHeightContent, LoadingError, Link } from '@glrodasz/components'
 
@@ -9,14 +8,14 @@ import DeleteTaskModal from '../../tasks/components/DeleteTaskModal'
 import BreaktimeConfirmation from '../components/BreaktimeConfirmation'
 import BreaktimeTimer from '../components/BreaktimeTimer'
 import FocusSessionFooter from '../components/FocusSessionFooter'
-import EditTaskModal from '../../tasks/components/EditTaskModal'
+
+import EditTask from '../../tasks/containers/EditTask'
 
 import {
   handleClickDeleteTask,
   handleClickCancelRemove,
   handleClickConfirmRemove,
   handleDragEndTask,
-  handleCloseEditTaskModal,
   handleOpenEditTaskModal,
 } from '../../tasks/handlers'
 
@@ -30,32 +29,26 @@ import {
 
 import useEditTaskModal from '../../tasks/hooks/useEditTaskModal'
 import useTasks from '../../tasks/hooks/useTasks'
-import useTask from '../../tasks/hooks/useTask'
 import useDeleteConfirmation from '../../tasks/hooks/useDeleteConfirmation'
 import useBreaktimeConfirmation from '../hooks/useBreaktimeConfirmation'
 import useBreaktimeTimer from '../hooks/useBreaktimeTimer'
 import useFocusSessions from '../hooks/useFocusSessions'
 
 const FocusSession = ({ initialData }) => {
-  const queryCache = useQueryCache()
-
   const deleteConfirmation = useDeleteConfirmation()
   const breaktimeConfirmation = useBreaktimeConfirmation()
   const breaktimeTimer = useBreaktimeTimer()
   const editTaskModal = useEditTaskModal()
 
   const tasks = useTasks({
-    queryCache,
     initialData: initialData.tasks,
-    onRemove: () => deleteConfirmation.setTasksId(null),
+    onRemove: () => {
+      deleteConfirmation.setTaskId(null)
+      editTaskModal.setShowDialog(false)
+    },
   })
 
-  const task = useTask({
-    id: editTaskModal.taskId,
-    queryCache,
-  })
-
-  const focusSessions = useFocusSessions({ queryCache })
+  const focusSessions = useFocusSessions()
 
   return (
     <>
@@ -75,20 +68,22 @@ const FocusSession = ({ initialData }) => {
               }
             />
             <Board
-              tasks={tasks.data}
-              onDragEndTask={handleDragEndTask({ tasks })}
-              onDeleteTask={handleClickDeleteTask({
-                deleteConfirmation,
-              })}
-              onCompleteTask={handleCheckCompleteTask({
-                breaktimeConfirmation,
-                tasks,
-              })}
-              onEditTask={handleOpenEditTaskModal({
-                tasks,
-                editTaskModal,
-              })}
               isActive
+              tasks={tasks.data}
+              onDragEnd={handleDragEndTask({ tasks })}
+              actions={{
+                onDeleteTask: handleClickDeleteTask({
+                  deleteConfirmation,
+                }),
+                onCompleteTask: handleCheckCompleteTask({
+                  breaktimeConfirmation,
+                  tasks,
+                }),
+                onEditTask: handleOpenEditTaskModal({
+                  tasks,
+                  editTaskModal,
+                }),
+              }}
             />
           </LoadingError>
         }
@@ -118,6 +113,10 @@ const FocusSession = ({ initialData }) => {
           onClickClose={handleClickCloseBreaktimeTimer({ breaktimeTimer })}
         />
       )}
+      <EditTask
+        editTaskModal={editTaskModal}
+        deleteConfirmation={deleteConfirmation}
+      />
       {deleteConfirmation.showDialog && (
         <DeleteTaskModal
           onClickCancel={handleClickCancelRemove({ deleteConfirmation })}
@@ -125,12 +124,6 @@ const FocusSession = ({ initialData }) => {
             tasks,
             deleteConfirmation,
           })}
-        />
-      )}
-      {editTaskModal.showDialog && (
-        <EditTaskModal
-          task={task?.data}
-          onClose={handleCloseEditTaskModal({ editTaskModal })}
         />
       )}
     </>
