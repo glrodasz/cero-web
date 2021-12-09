@@ -51,10 +51,14 @@ DraggableTask.propTypes = {
   columnId: PropTypes.string,
   isActive: PropTypes.bool,
   actions: PropTypes.shape({
-    onDeleteTask: PropTypes.func.isRequired,
-    onCompleteTask: PropTypes.func.isRequired,
-    onEditTask: PropTypes.func.isRequired,
-  }).isRequired,
+    onDeleteTask: PropTypes.func,
+    onCompleteTask: PropTypes.func,
+    onEditTask: PropTypes.func,
+  }),
+}
+
+DraggableTask.defaultProps = {
+  actions: {},
 }
 
 export default DraggableTask

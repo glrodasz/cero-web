@@ -50,10 +50,10 @@ Board.propTypes = {
   isActive: PropTypes.bool,
   onDragEnd: PropTypes.bool,
   actions: PropTypes.shape({
-    onDeleteTask: PropTypes.func.isRequired,
-    onCompleteTask: PropTypes.func.isRequired,
-    onEditTask: PropTypes.func.isRequired,
-  }).isRequired,
+    onDeleteTask: PropTypes.func,
+    onCompleteTask: PropTypes.func,
+    onEditTask: PropTypes.func,
+  }),
 }
 
 export default Board

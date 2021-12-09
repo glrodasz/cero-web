@@ -62,14 +62,16 @@ const Planning = ({ initialData }) => {
               <Board
                 isActive={false}
                 tasks={tasks.data}
-                onDragEndTask={handleDragEndTask({ tasks })}
-                onDeleteTask={handleClickDeleteTask({
-                  deleteConfirmation,
-                })}
-                onEditTask={handleOpenEditTaskModal({
-                  tasks,
-                  editTaskModal,
-                })}
+                onDragEnd={handleDragEndTask({ tasks })}
+                actions={{
+                  onDeleteTask: handleClickDeleteTask({
+                    deleteConfirmation,
+                  }),
+                  onEditTask: handleOpenEditTaskModal({
+                    tasks,
+                    editTaskModal,
+                  }),
+                }}
               />
             </PlanningOnboarding>
             <AddTaskButton
