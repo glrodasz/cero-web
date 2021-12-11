@@ -14,11 +14,11 @@ import useFocusSessions from '../../focusSession/hooks/useFocusSessions'
 
 import {
   handleDragEndTask,
-  handleClickDeleteTask,
-  handleClickAddTask,
-  handleClickCancelRemove,
-  handleClickConfirmRemove,
-  handleClickStartSession,
+  handleDeleteTask,
+  handleAddTask,
+  handleCancelRemove,
+  handleConfirmRemove,
+  handleStartSession,
   handleOpenEditTaskModal,
 } from '../../tasks/handlers'
 
@@ -64,7 +64,7 @@ const Planning = ({ initialData }) => {
                 tasks={tasks.data}
                 onDragEnd={handleDragEndTask({ tasks })}
                 actions={{
-                  onDeleteTask: handleClickDeleteTask({
+                  onDeleteTask: handleDeleteTask({
                     deleteConfirmation,
                   }),
                   onEditTask: handleOpenEditTaskModal({
@@ -77,22 +77,22 @@ const Planning = ({ initialData }) => {
             <AddTaskButton
               id="planning"
               tasksLength={tasksLength}
-              onClickAddTask={handleClickAddTask({ tasks })}
+              onClickAddTask={handleAddTask({ tasks })}
             />
           </LoadingError>
         }
         footer={
           <PlanningFooter
             tasksLength={tasksLength}
-            onClickStartSession={handleClickStartSession({ focusSessions })}
+            onClickStartSession={handleStartSession({ focusSessions })}
           />
         }
       />
       <EditTask editTaskModal={editTaskModal} />
       {deleteConfirmation.showDialog && (
         <DeleteTaskModal
-          onClickCancel={handleClickCancelRemove({ deleteConfirmation })}
-          onClickConfirm={handleClickConfirmRemove({
+          onClickCancel={handleCancelRemove({ deleteConfirmation })}
+          onClickConfirm={handleConfirmRemove({
             tasks,
             deleteConfirmation,
           })}

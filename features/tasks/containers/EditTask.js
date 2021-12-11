@@ -4,7 +4,7 @@ import EditTaskModal from '../components/EditTaskModal'
 import useTask from '../hooks/useTask'
 
 import {
-  handleClickDeleteTask,
+  handleDeleteTask,
   handleCloseEditTaskModal,
 } from '../../tasks/handlers'
 
@@ -19,7 +19,7 @@ const EditTask = ({ editTaskModal, deleteConfirmation }) => {
         <EditTaskModal
           task={task?.data}
           onClose={handleCloseEditTaskModal({ editTaskModal })}
-          onDelete={handleClickDeleteTask({
+          onDelete={handleDeleteTask({
             deleteConfirmation,
           })}
         />

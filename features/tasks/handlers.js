@@ -77,33 +77,30 @@ export const handleDragEndTask = ({ tasks }) => ({
   return api.updatePriorities({ tasks: concatenatedTasks })
 }
 
-export const handleClickAddTask = ({ tasks }) => ({ value }) => {
+export const handleAddTask = ({ tasks }) => ({ value }) => {
   const { api } = tasks
   api.create({ description: value })
 }
 
-export const handleClickDeleteTask = ({ deleteConfirmation }) => ({ id }) => {
+export const handleDeleteTask = ({ deleteConfirmation }) => ({ id }) => {
   const { setTaskId, setShowDialog } = deleteConfirmation
   setTaskId(id)
   setShowDialog(true)
 }
 
-export const handleClickCancelRemove = ({ deleteConfirmation }) => () => {
+export const handleCancelRemove = ({ deleteConfirmation }) => () => {
   const { setTaskId, setShowDialog } = deleteConfirmation
   setTaskId(null)
   setShowDialog(false)
 }
 
-export const handleClickConfirmRemove = ({
-  tasks,
-  deleteConfirmation,
-}) => () => {
+export const handleConfirmRemove = ({ tasks, deleteConfirmation }) => () => {
   const { taskId, setShowDialog } = deleteConfirmation
   tasks.api.remove({ id: taskId })
   setShowDialog(false)
 }
 
-export const handleClickStartSession = ({ focusSessions }) => () => {
+export const handleStartSession = ({ focusSessions }) => () => {
   focusSessions.api.create()
   Router.push('/focus-session')
 }

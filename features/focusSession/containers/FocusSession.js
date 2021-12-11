@@ -12,9 +12,9 @@ import FocusSessionFooter from '../components/FocusSessionFooter'
 import EditTask from '../../tasks/containers/EditTask'
 
 import {
-  handleClickDeleteTask,
-  handleClickCancelRemove,
-  handleClickConfirmRemove,
+  handleDeleteTask,
+  handleCancelRemove,
+  handleConfirmRemove,
   handleDragEndTask,
   handleOpenEditTaskModal,
 } from '../../tasks/handlers'
@@ -72,7 +72,7 @@ const FocusSession = ({ initialData }) => {
               tasks={tasks.data}
               onDragEnd={handleDragEndTask({ tasks })}
               actions={{
-                onDeleteTask: handleClickDeleteTask({
+                onDeleteTask: handleDeleteTask({
                   deleteConfirmation,
                 }),
                 onCompleteTask: handleCheckCompleteTask({
@@ -119,8 +119,8 @@ const FocusSession = ({ initialData }) => {
       />
       {deleteConfirmation.showDialog && (
         <DeleteTaskModal
-          onClickCancel={handleClickCancelRemove({ deleteConfirmation })}
-          onClickConfirm={handleClickConfirmRemove({
+          onClickCancel={handleCancelRemove({ deleteConfirmation })}
+          onClickConfirm={handleConfirmRemove({
             tasks,
             deleteConfirmation,
           })}
