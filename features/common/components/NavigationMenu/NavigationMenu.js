@@ -36,12 +36,14 @@ const NavigationMenu = () => {
       <div className="navigation-menu">
         {pages.map(({ icon, label, href }) => (
           <Link key={label} href={href}>
-            <IconLabel
-              icon={icon}
-              label={label}
-              isActive={href === router.pathname}
-              direction={isDesktop ? 'horizontal' : 'vertical'}
-            />
+            <div className="menu-item">
+              <IconLabel
+                icon={icon}
+                label={label}
+                isActive={href === router.pathname}
+                direction={isDesktop ? 'horizontal' : 'vertical'}
+              />
+            </div>
           </Link>
         ))}
       </div>
@@ -49,13 +51,20 @@ const NavigationMenu = () => {
         .navigation-menu {
           display: flex;
           justify-content: space-evenly;
-          padding: 10px 20px;
+          width: 100%;
         }
 
         @media (min-width: 992px) {
           .navigation-menu {
             flex-direction: column;
             align-items: flex-start;
+            justify-content: flex-start;
+          }
+
+          .menu-item {
+            padding: 8px 20px;
+            border-bottom: 1px solid var(--color-brand-white-lilac);
+            width: 100%;
           }
         }
       `}</style>

@@ -9,8 +9,9 @@ jest.mock('@glrodasz/components', () => {
   }
 })
 
-jest.mock('./helpers.js', () => ({
-  loadAndListenColorScheme: () => {},
+jest.mock('../../hooks/useColorScheme', () => () => ({
+  isDarkMode: false,
+  setIsDarkMode: () => {},
 }))
 
 describe('[ features / common / components / ToggleColorScheme ]', () => {

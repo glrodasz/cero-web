@@ -1,15 +1,10 @@
-import { useState, useEffect } from 'react'
 import { Check, Heading } from '@glrodasz/components'
 
 import { handleClick } from './handlers'
-import { loadAndListenColorScheme } from './helpers'
+import useColorScheme from '../../hooks/useColorScheme'
 
 const ToggleColorScheme = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false)
-
-  useEffect(() => {
-    loadAndListenColorScheme({ setIsDarkMode })
-  }, [])
+  const { isDarkMode, setIsDarkMode } = useColorScheme()
 
   return (
     <div

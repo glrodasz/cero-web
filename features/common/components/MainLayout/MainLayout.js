@@ -24,15 +24,18 @@ const MainLayout = ({ menu, content, isPlayground }) => {
           display: flex;
           flex-direction: column-reverse;
           width: 100%;
-          height: 100vh;
+          min-height: 100vh;
           justify-content: space-between;
         }
 
         .menu {
+          display: flex;
+          margin-top: auto;
           background: var(--background-color-primary-highlight);
         }
 
         .content {
+          display: flex;
           background: var(--background-color-primary);
         }
 
@@ -43,7 +46,7 @@ const MainLayout = ({ menu, content, isPlayground }) => {
 
           .menu {
             max-width: 260px;
-            height: 100%;
+            margin-top: 0;
           }
         }
       `}</style>

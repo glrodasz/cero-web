@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
@@ -14,13 +13,11 @@ import '@glrodasz/components/styles/tokens.css'
 import '../styles/globals.scss'
 import NavigationMenu from '../features/common/components/NavigationMenu'
 import MainLayout from '../features/common/components/MainLayout'
-import { loadAndListenColorScheme } from '../features/common/components/ToggleColorScheme/helpers'
+import useColorScheme from '../features/common/hooks/useColorScheme'
 
 const queryCache = new QueryCache()
 function MyApp({ Component, pageProps }) {
-  useEffect(() => {
-    loadAndListenColorScheme()
-  }, [])
+  useColorScheme()
 
   return (
     <ReactQueryCacheProvider queryCache={queryCache}>
