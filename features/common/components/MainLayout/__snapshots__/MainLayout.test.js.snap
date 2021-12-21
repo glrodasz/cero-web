@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / common / components / MainLayout ] when \`MainLayout\` is mounted should render 1`] = `
+<DocumentFragment>
+  <main
+    class="jsx-1470150938 main-layout is-playground"
+  >
+    <section
+      class="jsx-1470150938 menu"
+    >
+      menu-component
+    </section>
+    <section
+      class="jsx-1470150938 content"
+    >
+      content-component
+    </section>
+  </main>
+</DocumentFragment>
+`;

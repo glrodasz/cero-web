@@ -42,6 +42,7 @@ const NavigationMenu = () => {
                 label={label}
                 isActive={href === router.pathname}
                 direction={isDesktop ? 'horizontal' : 'vertical'}
+                size={isDesktop ? 'md' : 'sm'}
               />
             </div>
           </Link>
@@ -52,6 +53,7 @@ const NavigationMenu = () => {
           display: flex;
           justify-content: space-evenly;
           width: 100%;
+          padding: 10px 0 15px;
         }
 
         @media (min-width: 992px) {
@@ -59,6 +61,7 @@ const NavigationMenu = () => {
             flex-direction: column;
             align-items: flex-start;
             justify-content: flex-start;
+            padding: 0;
           }
 
           .menu-item {
