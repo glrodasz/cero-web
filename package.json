@@ -35,6 +35,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "1.6.2",
     "@glrodasz/components": "*",
     "minireset.css": "0.0.6",
     "next": "10.0.0",

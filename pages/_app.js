@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { Accordion, Button, Container } from '@glrodasz/components'
 import { ReactQueryCacheProvider, QueryCache } from 'react-query'
 import { ReactQueryDevtools } from 'react-query-devtools'
+import { UserProvider } from '@auth0/nextjs-auth0'
 
 import ToggleColorScheme from '../features/common/components/ToggleColorScheme'
 
@@ -37,7 +38,14 @@ function MyApp({ Component, pageProps }) {
           }}
         >
           <div>
-            {['/', '/home', '/planning', '/retrospective'].map((link) => (
+            {[
+              '/',
+              '/api/auth/login',
+              '/api/auth/logout',
+              '/home',
+              '/planning',
+              '/retrospective',
+            ].map((link) => (
               <span key={link} style={{ marginRight: 10 }}>
                 <Link href={link}>
                   <Button type="tertiary">
@@ -55,7 +63,9 @@ function MyApp({ Component, pageProps }) {
         menu={<NavigationMenu />}
         content={
           <Container>
-            <Component {...pageProps} />
+            <UserProvider>
+              <Component {...pageProps} />
+            </UserProvider>
           </Container>
         }
       />

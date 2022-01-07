@@ -45,7 +45,10 @@
 
 html,
 body {
+  height: 100%;
   background: var(--background-color-primary);
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
 }
 
 #__next {

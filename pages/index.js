@@ -8,7 +8,7 @@ import {
   CenteredContent,
 } from '@glrodasz/components'
 
-export default function Home() {
+export default function Index() {
   const [formValues, setFormValues] = useState({})
 
   const onChange = (key) => (event) => {

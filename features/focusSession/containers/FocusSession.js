@@ -1,6 +1,11 @@
 import PropTypes from 'prop-types'
 
-import { FullHeightContent, LoadingError, Link } from '@glrodasz/components'
+import {
+  FullHeightContent,
+  LoadingError,
+  Link,
+  Spacer,
+} from '@glrodasz/components'
 
 import UserHeader from '../../common/components/UserHeader'
 import Board from '../../tasks/components/Board'
@@ -33,8 +38,11 @@ import useDeleteConfirmation from '../../tasks/hooks/useDeleteConfirmation'
 import useBreaktimeConfirmation from '../hooks/useBreaktimeConfirmation'
 import useBreaktimeTimer from '../hooks/useBreaktimeTimer'
 import useFocusSessions from '../hooks/useFocusSessions'
+import { useUser } from '@auth0/nextjs-auth0'
+import Chronometer from '../components/Chronometer'
 
 const FocusSession = ({ initialData }) => {
+  const { user, isLoading: isLoadingUser, error: errorUser } = useUser()
   const deleteConfirmation = useDeleteConfirmation()
   const breaktimeConfirmation = useBreaktimeConfirmation()
   const breaktimeTimer = useBreaktimeTimer()
@@ -58,15 +66,22 @@ const FocusSession = ({ initialData }) => {
             isLoading={tasks.isLoading}
             errorMessage={tasks.error?.message}
           >
-            <UserHeader
-              avatar="https://placeimg.com/200/200/people"
-              title="Hola, Cristian"
-              text={
-                <>
-                  <span>Conoce la metodologia</span> <Link>RETO</Link>
-                </>
-              }
-            />
+            <LoadingError
+              isLoading={isLoadingUser}
+              errorMessage={errorUser?.message}
+            >
+              <UserHeader
+                avatar={user?.picture}
+                title={`Hola, ${user?.name}`}
+                text={
+                  <>
+                    <span>Conoce la metodologia</span> <Link>RETO</Link>
+                  </>
+                }
+              />
+            </LoadingError>
+            <Spacer.Vertical size="sm" />
+            <Chronometer />
             <Board
               isActive
               tasks={tasks.data}
@@ -110,7 +125,7 @@ const FocusSession = ({ initialData }) => {
       {breaktimeTimer.showDialog && (
         <BreaktimeTimer
           breaktime={breaktimeTimer.time}
-          onClickClose={handleClickCloseBreaktimeTimer({ breaktimeTimer })}
+          onClose={handleClickCloseBreaktimeTimer({ breaktimeTimer })}
         />
       )}
       <EditTask

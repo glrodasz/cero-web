@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useUser } from '@auth0/nextjs-auth0'
 import {
   Spacer,
   Card,
@@ -6,22 +7,33 @@ import {
   Icon,
   FullHeightContent,
   Paragraph,
+  LoadingError,
 } from '@glrodasz/components'
+import { withPageAuthRequired } from '@auth0/nextjs-auth0'
 
 import UserHeader from '../features/common/components/UserHeader/UserHeader'
 
+export const getServerSideProps = withPageAuthRequired()
+
 // TODO: Move Home content to it's own container
 export default function Home() {
+  const { user, isLoading: isLoadingUser, error: errorUser } = useUser()
+
   return (
     <FullHeightContent
       content={
         <>
-          <UserHeader
-            avatar="https://placeimg.com/200/200/people"
-            title="Buenos días, Cristian"
-            text="¿Cómo quieres empezar?"
-            isPrimary
-          />
+          <LoadingError
+            isLoading={isLoadingUser}
+            errorMessage={errorUser?.message}
+          >
+            <UserHeader
+              avatar={user?.picture}
+              title={`Buenos días, ${user?.name}`}
+              text="¿Cómo quieres empezar?"
+              isPrimary
+            />
+          </LoadingError>
           <Spacer.Vertical size="lg" />
           <Card color="secondary" size="lg" isClickable>
             <Picture src="/images/search-coworking.svg" width={120}></Picture>

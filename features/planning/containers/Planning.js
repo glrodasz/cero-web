@@ -25,8 +25,10 @@ import {
 import PlanningFooter from '../components/PlanningFooter'
 import AddTaskButton from '../components/AddTaskButton'
 import EditTask from '../../tasks/containers/EditTask'
+import { useUser } from '@auth0/nextjs-auth0'
 
 const Planning = ({ initialData }) => {
+  const { user, isLoading: isLoadingUser, error: errorUser } = useUser()
   const deleteConfirmation = useDeleteConfirmation()
   const editTaskModal = useEditTaskModal()
 
@@ -49,15 +51,20 @@ const Planning = ({ initialData }) => {
             isLoading={tasks.isLoading}
             errorMessage={tasks.error?.message}
           >
-            <UserHeader
-              avatar="https://placeimg.com/200/200/people"
-              title="Hola, Cristian"
-              text={
-                <>
-                  <span>Conoce la metodologia</span> <Link>RETO</Link>
-                </>
-              }
-            />
+            <LoadingError
+              isLoading={isLoadingUser}
+              errorMessage={errorUser?.message}
+            >
+              <UserHeader
+                avatar={user?.picture}
+                title={`Hola, ${user?.name}`}
+                text={
+                  <>
+                    <span>Conoce la metodologia</span> <Link>RETO</Link>
+                  </>
+                }
+              />
+            </LoadingError>
             <PlanningOnboarding tasksLength={tasksLength}>
               <Board
                 isActive={false}
