@@ -2,19 +2,30 @@ import { Icon, Paragraph, Spacer } from '@glrodasz/components'
 import React from 'react'
 import formatMilliseconds from '../../../utils/formatMilliseconds'
 import useTime from '../../common/hooks/useTime'
+import { time } from '../../common/constants'
 
-const TWENTY_FIVE_MINUTES_IN_MS = 1 * 60 * 1000
+// TODO: Create tests and refactor to use mod (%)
+const getBarWidth = (currentTime, filledBarTime = time.ONE_HOUR_IN_MS) => {
+  const filledBarTimeElapsed = Math.floor(currentTime / filledBarTime)
+  const barWidth = (currentTime * 100) / filledBarTime
+  return filledBarTimeElapsed ? barWidth - filledBarTimeElapsed * 100 : barWidth
+}
 
 const Chronometer = () => {
-  const { currentTime } = useTime({ endTime: TWENTY_FIVE_MINUTES_IN_MS })
-
-  const currentBarWidth = (currentTime * 100) / TWENTY_FIVE_MINUTES_IN_MS
+  const { currentTime } = useTime()
+  const barWidth = getBarWidth(currentTime)
 
   return (
     <>
       <div className="chronometer">
         <div className="time">
-          <Paragraph color="muted" weight="medium" size="lg" isInline>
+          <Paragraph
+            color="muted"
+            weight="medium"
+            size="lg"
+            isInline
+            isMonospace
+          >
             {formatMilliseconds(currentTime)}
           </Paragraph>
         </div>
@@ -22,7 +33,7 @@ const Chronometer = () => {
         <div className="bar">
           <div
             className="inner-bar"
-            style={{ width: `${parseInt(currentBarWidth)}%` }}
+            style={{ width: `${parseInt(barWidth)}%` }}
           ></div>
         </div>
         <Spacer.Horizontal size="sm" />
@@ -32,11 +43,6 @@ const Chronometer = () => {
         .chronometer {
           display: flex;
           align-items: center;
-        }
-
-        .time {
-          width: 100%;
-          max-width: 60px;
         }
 
         .bar {
