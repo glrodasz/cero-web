@@ -2,14 +2,8 @@ import { Icon, Paragraph, Spacer } from '@glrodasz/components'
 import React from 'react'
 import formatMilliseconds from '../../../utils/formatMilliseconds'
 import useTime from '../../common/hooks/useTime'
-import { time } from '../../common/constants'
 
-// TODO: Create tests and refactor to use mod (%)
-const getBarWidth = (currentTime, filledBarTime = time.ONE_HOUR_IN_MS) => {
-  const filledBarTimeElapsed = Math.floor(currentTime / filledBarTime)
-  const barWidth = (currentTime * 100) / filledBarTime
-  return filledBarTimeElapsed ? barWidth - filledBarTimeElapsed * 100 : barWidth
-}
+import { getBarWidth } from '../helpers'
 
 const Chronometer = () => {
   const { currentTime } = useTime()
