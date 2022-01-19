@@ -4,7 +4,6 @@ class FocusSession extends Request {
   create() {
     return this.fetch('focus-sessions', {
       method: 'post',
-      body: { status: 'active' },
     })
   }
 
@@ -16,9 +15,8 @@ class FocusSession extends Request {
     })
   }
 
-  getActives() {
-    // FIXME: return this.fetch('focus-sessions/active')
-    return this.fetch('focus-sessions?status=active')
+  getActive() {
+    return this.fetch('focus-sessions/active')
   }
 }
 

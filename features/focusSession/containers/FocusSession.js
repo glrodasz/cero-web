@@ -38,8 +38,12 @@ import useDeleteConfirmation from '../../tasks/hooks/useDeleteConfirmation'
 import useBreaktimeConfirmation from '../hooks/useBreaktimeConfirmation'
 import useBreaktimeTimer from '../hooks/useBreaktimeTimer'
 import useFocusSessions from '../hooks/useFocusSessions'
+import useFocusSession from '../hooks/useFocusSession'
 import { useUser } from '@auth0/nextjs-auth0'
 import Chronometer from '../components/Chronometer'
+
+const getChronometerStartTime = ({ focusSessionTimestamp }) =>
+  Date.now() - focusSessionTimestamp
 
 const FocusSession = ({ initialData }) => {
   const { user, isLoading: isLoadingUser, error: errorUser } = useUser()
@@ -57,6 +61,11 @@ const FocusSession = ({ initialData }) => {
   })
 
   const focusSessions = useFocusSessions()
+  const focusSession = useFocusSession()
+
+  const activeFocusSessionStartTime = getChronometerStartTime({
+    focusSessionTimestamp: focusSession?.data?.startTime ?? 0,
+  })
 
   return (
     <>
@@ -81,7 +90,7 @@ const FocusSession = ({ initialData }) => {
               />
             </LoadingError>
             <Spacer.Vertical size="sm" />
-            <Chronometer />
+            <Chronometer startTime={activeFocusSessionStartTime} />
             <Board
               isActive
               tasks={tasks.data}

@@ -10,7 +10,7 @@ export async function getServerSideProps({ res }) {
   resetServerContext()
 
   const tasks = await tasksApi.getAll()
-  const [activeFocusSession] = await focusSessionsApi.getActives()
+  const activeFocusSession = await focusSessionsApi.getActive()
 
   if (!activeFocusSession) {
     res.statusCode = HTTP_FOUND

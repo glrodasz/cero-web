@@ -19,7 +19,7 @@ const createHandleClose = ({ onClose }) => () => {
 
 const BreaktimeTimer = ({ onClose, breaktime }) => {
   const { currentTime } = useTime({
-    isReverse: true,
+    isTimer: true,
     startTime: breaktime,
     callback: onClose,
   })

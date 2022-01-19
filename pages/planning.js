@@ -9,7 +9,7 @@ const HTTP_FOUND = 302
 export async function getServerSideProps({ res }) {
   resetServerContext()
 
-  const [activeFocusSession] = await focusSessionsApi.getActives()
+  const activeFocusSession = await focusSessionsApi.getActive()
 
   if (activeFocusSession) {
     res.statusCode = HTTP_FOUND

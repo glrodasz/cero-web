@@ -1,12 +1,13 @@
 import { Icon, Paragraph, Spacer } from '@glrodasz/components'
+import PropTypes from 'prop-types'
 import React from 'react'
 import formatMilliseconds from '../../../utils/formatMilliseconds'
 import useTime from '../../common/hooks/useTime'
 
 import { getBarWidth } from '../helpers'
 
-const Chronometer = () => {
-  const { currentTime } = useTime()
+const Chronometer = ({ startTime }) => {
+  const { currentTime } = useTime({ startTime })
   const barWidth = getBarWidth(currentTime)
 
   return (
@@ -54,6 +55,14 @@ const Chronometer = () => {
       `}</style>
     </>
   )
+}
+
+Chronometer.propTypes = {
+  startTime: PropTypes.number,
+}
+
+Chronometer.defaultProps = {
+  startTime: 0,
 }
 
 export default Chronometer
