@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import FocusSessionContainer from '../features/focusSession/containers/FocusSession'
 import { resetServerContext } from 'react-beautiful-dnd'
+import isEmpty from '../utils/isEmpty'
 
 import { tasksApi, focusSessionsApi } from '../features/planning/api'
 
@@ -12,7 +13,7 @@ export async function getServerSideProps({ res }) {
   const tasks = await tasksApi.getAll()
   const activeFocusSession = await focusSessionsApi.getActive()
 
-  if (!activeFocusSession) {
+  if (isEmpty(activeFocusSession)) {
     res.statusCode = HTTP_FOUND
     res.setHeader('Location', '/planning')
 

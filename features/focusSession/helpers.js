@@ -1,4 +1,4 @@
-import { time } from '../common/constants'
+import time from '../../utils/time'
 
 export const getBarWidth = (
   currentTime,
@@ -7,3 +7,6 @@ export const getBarWidth = (
   const timeRatio = currentTime % filledBarTime
   return (timeRatio * 100) / filledBarTime
 }
+
+export const getChronometerStartTime = ({ focusSessionTimestamp }) =>
+  focusSessionTimestamp ? Date.now() - focusSessionTimestamp : 0

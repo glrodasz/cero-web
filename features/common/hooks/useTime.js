@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { time } from '../constants'
+import time from '../../../utils/time'
 import useInterval from './useInterval'
 
 const tick = ({ currentTime, setCurrentTime, isTimer }) => () => {

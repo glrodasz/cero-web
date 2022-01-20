@@ -10,7 +10,7 @@ import {
   Button,
 } from '@glrodasz/components'
 
-import { time } from '../../common/constants'
+import time from '../../../utils/time'
 
 const handleClickChoose = ({ onClickChoose }) => (time) => () => {
   onClickChoose(time)

@@ -3,6 +3,7 @@ import { resetServerContext } from 'react-beautiful-dnd'
 
 import PlanningContainer from '../features/planning/containers/Planning'
 import { tasksApi, focusSessionsApi } from '../features/planning/api'
+import isEmpty from '../utils/isEmpty'
 
 const HTTP_FOUND = 302
 
@@ -11,7 +12,7 @@ export async function getServerSideProps({ res }) {
 
   const activeFocusSession = await focusSessionsApi.getActive()
 
-  if (activeFocusSession) {
+  if (!isEmpty(activeFocusSession)) {
     res.statusCode = HTTP_FOUND
     res.setHeader('Location', '/focus-session')
     return { props: {} }

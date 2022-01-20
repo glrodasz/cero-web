@@ -41,9 +41,7 @@ import useFocusSessions from '../hooks/useFocusSessions'
 import useFocusSession from '../hooks/useFocusSession'
 import { useUser } from '@auth0/nextjs-auth0'
 import Chronometer from '../components/Chronometer'
-
-const getChronometerStartTime = ({ focusSessionTimestamp }) =>
-  Date.now() - focusSessionTimestamp
+import { getChronometerStartTime } from '../helpers'
 
 const FocusSession = ({ initialData }) => {
   const { user, isLoading: isLoadingUser, error: errorUser } = useUser()
@@ -64,7 +62,7 @@ const FocusSession = ({ initialData }) => {
   const focusSession = useFocusSession()
 
   const activeFocusSessionStartTime = getChronometerStartTime({
-    focusSessionTimestamp: focusSession?.data?.startTime ?? 0,
+    focusSessionTimestamp: focusSession?.data?.startTime,
   })
 
   return (

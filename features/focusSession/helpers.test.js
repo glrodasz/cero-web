@@ -1,4 +1,5 @@
-import { getBarWidth } from './helpers'
+import time from '../../utils/time'
+import { getBarWidth, getChronometerStartTime } from './helpers'
 
 describe('[ features / focusSession / helpers ]', () => {
   describe('#getBarWidth', () => {
@@ -37,6 +38,40 @@ describe('[ features / focusSession / helpers ]', () => {
 
         // Act
         const result = getBarWidth(params)
+        const expected = 0
+
+        // Assert
+        expect(result).toBe(expected)
+      })
+    })
+  })
+
+  describe('#getChronometerStartTime', () => {
+    describe('when `focusSessionTimestamp` is 1 hour ago', () => {
+      it('should return `3_600_000` ms', () => {
+        // Arrange
+        const params = {
+          focusSessionTimestamp: Date.now() - time.ONE_HOUR_IN_MS,
+        }
+
+        // Act
+        const result = getChronometerStartTime(params)
+        const expected = time.ONE_HOUR_IN_MS
+
+        // Assert
+        expect(result).toBe(expected)
+      })
+    })
+
+    describe('when `focusSessionTimestamp` is `undefined`', () => {
+      it('should return `0` ms', () => {
+        // Arrange
+        const params = {
+          focusSessionTimestamp: undefined,
+        }
+
+        // Act
+        const result = getChronometerStartTime(params)
         const expected = 0
 
         // Assert

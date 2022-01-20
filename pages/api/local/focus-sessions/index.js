@@ -11,7 +11,6 @@ export default function handler(req, res) {
       url,
       options,
       res,
-      singular: true,
     })
   }
 

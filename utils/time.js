@@ -1,7 +1,9 @@
-export const time = {
+const time = {
   FIVE_MINUTES_IN_MS: 300000,
   TEN_MINUTES_IN_MS: 600000,
   FIFTY_MINUTES_IN_MS: 900000,
   ONE_SECOND_IN_MS: 1000,
   ONE_HOUR_IN_MS: 3600000,
 }
+
+export default time
