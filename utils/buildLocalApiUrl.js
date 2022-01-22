@@ -2,10 +2,12 @@ const API_BASENAME = '/api/local/'
 
 const buildLocalApiUrl = (req, fetchOptions = {}) => {
   const url = `${req.url.replace(API_BASENAME, '')}`
+  // https://fetch.spec.whatwg.org/#methods
+  const normalizedMethod = req.method.toUpperCase()
 
   const options = {
-    method: req.method.toUpperCase(),
-    body: req.method !== 'GET' ? req.body : undefined,
+    method: normalizedMethod,
+    body: normalizedMethod !== 'GET' ? req.body : undefined,
     ...fetchOptions,
   }
 

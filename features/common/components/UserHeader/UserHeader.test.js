@@ -2,7 +2,7 @@ import UserHeader from './UserHeader'
 import { render } from '@testing-library/react'
 
 jest.mock('@glrodasz/components', () => {
-  const { dummyRender } = require('../../../../utils/tests/dummyRender')
+  const { dummyRender } = require('../../../../utils/testUtils/dummyRender')
 
   return {
     Avatar: dummyRender('Avatar'),

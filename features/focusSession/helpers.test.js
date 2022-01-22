@@ -50,8 +50,9 @@ describe('[ features / focusSession / helpers ]', () => {
     describe('when `focusSessionTimestamp` is 1 hour ago', () => {
       it('should return `3_600_000` ms', () => {
         // Arrange
+        Date.now = jest.fn(() => new Date('1970-01-01T02:00:00.000Z').getTime())
         const params = {
-          focusSessionTimestamp: Date.now() - time.ONE_HOUR_IN_MS,
+          focusSessionTimestamp: new Date('1970-01-01T01:00:00.000Z').getTime(),
         }
 
         // Act

@@ -8,5 +8,6 @@ export const getBarWidth = (
   return (timeRatio * 100) / filledBarTime
 }
 
-export const getChronometerStartTime = ({ focusSessionTimestamp }) =>
-  focusSessionTimestamp ? Date.now() - focusSessionTimestamp : 0
+export const getChronometerStartTime = ({ focusSessionTimestamp }) => {
+  return focusSessionTimestamp ? Date.now() - focusSessionTimestamp : 0
+}

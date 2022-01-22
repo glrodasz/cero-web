@@ -12,7 +12,7 @@ jest.mock('../../hooks/useBreakpoints', () => () => ({
 }))
 
 jest.mock('@glrodasz/components', () => {
-  const { dummyRender } = require('../../../../utils/tests/dummyRender')
+  const { dummyRender } = require('../../../../utils/testUtils/dummyRender')
   return {
     IconLabel: dummyRender('IconLabel'),
   }
