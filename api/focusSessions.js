@@ -18,6 +18,14 @@ class FocusSession extends Request {
   getActive() {
     return this.fetch('focus-sessions/active')
   }
+
+  pause() {
+    return this.fetch(`focus-sessions/pause`)
+  }
+
+  resume() {
+    return this.fetch(`focus-sessions/resume`)
+  }
 }
 
 export default FocusSession
