@@ -1,26 +1,45 @@
-import { useEffect, useState } from 'react'
 import { focusSessionsApi } from '../api'
-import { useQuery } from 'react-query'
+import { useQuery, useMutation, useQueryCache } from 'react-query'
+import useLocalData from '../../common/hooks/useLocalData'
 
 const QUERY_KEY = 'focus-session'
 
-const useFocusSession = () => {
-  const { isLoading, error, data: serverData } = useQuery(QUERY_KEY, () =>
-    focusSessionsApi.getActive()
+export const pauseMutation = () => focusSessionsApi.pause()
+export const resumeMutation = () => focusSessionsApi.resume()
+
+const useFocusSession = ({ initialData, onResume }) => {
+  const queryCache = useQueryCache()
+
+  const { isLoading, error, data: fetchedData } = useQuery(
+    QUERY_KEY,
+    () => focusSessionsApi.getActive(),
+    { initialData }
   )
 
-  const [localData, setLocalData] = useState(serverData)
+  const [pause] = useMutation(pauseMutation, {
+    onSuccess: () => {
+      queryCache.invalidateQueries(QUERY_KEY)
+    },
+  })
 
-  useEffect(() => {
-    setLocalData(serverData)
-  }, [serverData])
+  const [resume] = useMutation(resumeMutation, {
+    onSuccess: () => {
+      queryCache.invalidateQueries(QUERY_KEY)
+      onResume?.()
+    },
+  })
+
+  const { localData, setLocalData } = useLocalData(fetchedData)
 
   return {
     isLoading,
     error,
     data: localData,
     setLocalData,
-    api: {},
+    api: {
+      pause,
+      resume,
+    },
   }
 }
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import time from '../../../utils/time'
 import useInterval from './useInterval'
 
@@ -13,15 +13,12 @@ const useTime = (
   }
 ) => {
   const [currentTime, setCurrentTime] = useState(startTime)
+  const [delay, setDelay] = useState(time.ONE_SECOND_IN_MS)
 
-  useEffect(() => {
-    setCurrentTime(startTime)
-  }, [startTime])
+  useInterval(tick({ currentTime, setCurrentTime, isTimer }), delay)
 
-  useInterval(
-    tick({ currentTime, setCurrentTime, isTimer }),
-    time.ONE_SECOND_IN_MS
-  )
+  const clearTime = useCallback(() => setDelay(null))
+  const resumeTime = useCallback(() => setDelay(time.ONE_SECOND_IN_MS))
 
   useEffect(() => {
     if ((isTimer && currentTime <= 0) || (endTime && currentTime >= endTime)) {
@@ -29,7 +26,11 @@ const useTime = (
     }
   }, [currentTime])
 
-  return { currentTime }
+  useEffect(() => {
+    setCurrentTime(startTime)
+  }, [startTime])
+
+  return { currentTime, clearTime, resumeTime }
 }
 
 export default useTime

@@ -95,7 +95,10 @@ const Planning = ({ initialData }) => {
           />
         }
       />
-      <EditTask editTaskModal={editTaskModal} />
+      <EditTask
+        editTaskModal={editTaskModal}
+        deleteConfirmation={deleteConfirmation}
+      />
       {deleteConfirmation.showDialog && (
         <DeleteTaskModal
           onClickCancel={handleCancelRemove({ deleteConfirmation })}

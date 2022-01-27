@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react'
 import { tasksApi } from '../../planning/api'
 import { useQuery, useMutation, useQueryCache } from 'react-query'
+import useLocalData from '../../common/hooks/useLocalData'
 
 const QUERY_KEY = 'tasks'
 
 const useTasks = ({ initialData, onRemove }) => {
   const queryCache = useQueryCache()
 
-  const { isLoading, error, data: serverData } = useQuery(
+  const { isLoading, error, data: fetchedData } = useQuery(
     QUERY_KEY,
     () => tasksApi.getAll(),
     {
@@ -24,7 +24,7 @@ const useTasks = ({ initialData, onRemove }) => {
   const [remove] = useMutation((params) => tasksApi.delete(params), {
     onSuccess: () => {
       queryCache.invalidateQueries(QUERY_KEY)
-      onRemove()
+      onRemove?.()
     },
   })
 
@@ -46,11 +46,7 @@ const useTasks = ({ initialData, onRemove }) => {
     }
   )
 
-  const [localData, setLocalData] = useState(serverData)
-
-  useEffect(() => {
-    setLocalData(serverData)
-  }, [serverData])
+  const { localData, setLocalData } = useLocalData(fetchedData)
 
   return {
     isLoading,

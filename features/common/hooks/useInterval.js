@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const useInterval = (callback, delay) => {
+  const [intervalId, setIntervalId] = useState(null)
   const savedCallback = useRef()
 
   useEffect(() => {
@@ -11,8 +12,10 @@ const useInterval = (callback, delay) => {
     const tick = () => savedCallback.current()
 
     if (delay !== null) {
-      const id = setInterval(tick, delay)
-      return () => clearInterval(id)
+      setIntervalId(setInterval(tick, delay))
+      return () => clearInterval(intervalId)
+    } else {
+      clearInterval(intervalId)
     }
   }, [delay])
 }

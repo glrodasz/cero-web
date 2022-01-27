@@ -7,11 +7,9 @@ class FocusSession extends Request {
     })
   }
 
-  finish({ id }) {
-    // FIXME: return this.fetch(`focus-sessions/${id}/finish`, {
-    return this.fetch(`focus-sessions/${id}`, {
+  finish() {
+    return this.fetch(`focus-sessions/finish`, {
       method: 'patch',
-      body: { status: 'finished' },
     })
   }
 
@@ -20,11 +18,15 @@ class FocusSession extends Request {
   }
 
   pause() {
-    return this.fetch(`focus-sessions/pause`)
+    return this.fetch(`focus-sessions/pause`, {
+      method: 'patch',
+    })
   }
 
   resume() {
-    return this.fetch(`focus-sessions/resume`)
+    return this.fetch(`focus-sessions/resume`, {
+      method: 'patch',
+    })
   }
 }
 

@@ -43,6 +43,10 @@ import { useUser } from '@auth0/nextjs-auth0'
 import Chronometer from '../components/Chronometer'
 import { getChronometerStartTime } from '../helpers'
 
+const getActivePause = ({ focusSession }) => {
+  return focusSession?.data?.pauses?.find((pause) => pause.endTime === null)
+}
+
 const FocusSession = ({ initialData }) => {
   const { user, isLoading: isLoadingUser, error: errorUser } = useUser()
   const deleteConfirmation = useDeleteConfirmation()
@@ -59,10 +63,16 @@ const FocusSession = ({ initialData }) => {
   })
 
   const focusSessions = useFocusSessions()
-  const focusSession = useFocusSession()
+  const focusSession = useFocusSession({
+    initialData: initialData.activeFocusSession,
+  })
+
+  const activePause = getActivePause({ focusSession })
 
   const activeFocusSessionStartTime = getChronometerStartTime({
-    focusSessionTimestamp: focusSession?.data?.startTime,
+    focusSessionTimestamp:
+      focusSession?.data?.startTime +
+      (activePause ? Date.now() - activePause.startTime : 0),
   })
 
   return (
@@ -88,7 +98,10 @@ const FocusSession = ({ initialData }) => {
               />
             </LoadingError>
             <Spacer.Vertical size="sm" />
-            <Chronometer startTime={activeFocusSessionStartTime} />
+            <Chronometer
+              startTime={activeFocusSessionStartTime}
+              activeFocusSession={initialData.activeFocusSession}
+            />
             <Board
               isActive
               tasks={tasks.data}
@@ -113,7 +126,6 @@ const FocusSession = ({ initialData }) => {
           <FocusSessionFooter
             onClickEndSession={handleClickEndSession({
               focusSessions,
-              initialData,
             })}
           />
         }
