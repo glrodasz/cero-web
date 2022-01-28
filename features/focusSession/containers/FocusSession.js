@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useEffect, useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useUser } from '@auth0/nextjs-auth0'
 
 import {
@@ -43,12 +43,9 @@ import useBreaktimeConfirmation from '../hooks/useBreaktimeConfirmation'
 import useBreaktimeTimer from '../hooks/useBreaktimeTimer'
 import useFocusSessions from '../hooks/useFocusSessions'
 import useFocusSession from '../hooks/useFocusSession'
-import useTime from '../../common/hooks/useTime'
 
-import { getChronometerStartTime } from '../helpers'
 import isEmpty from '../../../utils/isEmpty'
 import isObject from '../../../utils/isObject'
-import time from '../../../utils/time'
 
 import useChrommeter from '../hooks/useChronometer'
 
@@ -76,57 +73,21 @@ const FocusSession = ({ initialData }) => {
     onResume: () => resumeTime(),
   })
 
-  // const activePause = getActivePause({ focusSession })
-  // const isPaused = useMemo(
-  //   () => isObject(activePause) && !isEmpty(activePause),
-  //   [activePause]
-  // )
-
-  // const startTime = useMemo(() => focusSession?.data?.startTime ?? 0, [
-  //   focusSession?.data?.startTime,
-  // ])
-  // const pauseStartTime = useMemo(() => activePause?.startTime ?? 0, [
-  //   activePause?.startTime,
-  // ])
-
-  // useEffect(() => {
-  //   console.log(
-  //     '>>>startTime',
-  //     startTime,
-  //     '>>>pauseStartTime',
-  //     pauseStartTime,
-  //     isPaused
-  //   )
-  // }, [startTime, pauseStartTime, isPaused])
-
-  // const { currentTime, clearTime, resumeTime } = useChrommeter({
-  //   startTime,
-  //   pauseStartTime,
-  //   isPaused,
-  // })
-
   const activePause = getActivePause({ focusSession })
   const isPaused = isObject(activePause) && !isEmpty(activePause)
 
-  const activeFocusSessionStartTime = useMemo(
-    () =>
-      getChronometerStartTime({
-        focusSessionTimestamp:
-          focusSession?.data?.startTime +
-          (activePause ? Date.now() - activePause.startTime : 0),
-      }),
-    [focusSession?.data?.startTime, activePause]
-  )
+  const startTime = useMemo(() => focusSession?.data?.startTime ?? 0, [
+    focusSession?.data?.startTime,
+  ])
+  const pauseStartTime = useMemo(() => activePause?.startTime ?? 0, [
+    activePause?.startTime,
+  ])
 
-  const { currentTime, clearTime, resumeTime } = useTime({
-    startTime: activeFocusSessionStartTime,
+  const { currentTime, clearTime, resumeTime } = useChrommeter({
+    startTime,
+    pauseStartTime,
+    isPaused,
   })
-
-  useEffect(() => {
-    if (isPaused) {
-      clearTime()
-    }
-  }, [isPaused])
 
   const focusSessions = useFocusSessions()
 
