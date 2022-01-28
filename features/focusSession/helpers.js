@@ -11,3 +11,16 @@ export const getBarWidth = (
 export const getChronometerStartTime = ({ focusSessionTimestamp }) => {
   return focusSessionTimestamp ? Date.now() - focusSessionTimestamp : 0
 }
+
+// export const getChronometerStartTime = ({ startTime, pauseStartTime }) => {
+//   const nowTime = Date.now()
+//   if (startTime && pauseStartTime) {
+//     return nowTime - startTime + (nowTime - pauseStartTime)
+//   }
+
+//   if (startTime) {
+//     return nowTime - startTime
+//   }
+
+//   return 0
+// }

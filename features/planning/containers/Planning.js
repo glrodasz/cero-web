@@ -26,6 +26,7 @@ import PlanningFooter from '../components/PlanningFooter'
 import AddTaskButton from '../components/AddTaskButton'
 import EditTask from '../../tasks/containers/EditTask'
 import { useUser } from '@auth0/nextjs-auth0'
+import { useEffect } from 'react'
 
 const Planning = ({ initialData }) => {
   const { user, isLoading: isLoadingUser, error: errorUser } = useUser()

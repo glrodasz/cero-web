@@ -1,52 +1,14 @@
 import { Icon, Paragraph, Spacer } from '@glrodasz/components'
 import PropTypes from 'prop-types'
-import React, { useEffect } from 'react'
 import formatMilliseconds from '../../../utils/formatMilliseconds'
-import useTime from '../../common/hooks/useTime'
 import useToggle from '../../common/hooks/useToggle'
 
+import { createHandlerClickChronometer } from '../handlers'
 import { getBarWidth } from '../helpers'
-import useFocusSession from '../hooks/useFocusSession'
 
-const createHandleClick = ({
-  isPlaying,
-  toggle,
-  focusSession,
-  clearTime,
-}) => async () => {
-  if (isPlaying) {
-    await focusSession.api.resume()
-  } else {
-    await focusSession.api.pause()
-    clearTime()
-  }
-
-  toggle()
-}
-
-const getActivePause = ({ focusSession }) => {
-  return focusSession?.data?.pauses?.some((pause) => pause.endTime === null)
-}
-
-const Chronometer = ({ activeFocusSession, startTime }) => {
-  const { currentTime, clearTime, resumeTime } = useTime({
-    startTime,
-  })
-  // TODO: See if we can move the whole react-query logic to the
-  const focusSession = useFocusSession({
-    initialData: activeFocusSession,
-    onResume: () => resumeTime(),
-  })
-  const activePause = getActivePause({ focusSession })
-  const { isOn: isPlaying, toggle } = useToggle(activePause)
-
+const Chronometer = ({ currentTime, isPaused, onPause }) => {
+  const { isOn: isPlaying, toggle } = useToggle(isPaused)
   const barWidth = getBarWidth(currentTime)
-
-  useEffect(() => {
-    if (activePause) {
-      clearTime()
-    }
-  }, [activePause])
 
   return (
     <>
@@ -73,11 +35,10 @@ const Chronometer = ({ activeFocusSession, startTime }) => {
         <Icon
           name={isPlaying ? 'play' : 'pauseCircle'}
           size="lg"
-          onClick={createHandleClick({
+          onClick={createHandlerClickChronometer({
             isPlaying,
             toggle,
-            focusSession,
-            clearTime,
+            onPause,
           })}
           isClickable
         />
@@ -106,12 +67,14 @@ const Chronometer = ({ activeFocusSession, startTime }) => {
 }
 
 Chronometer.propTypes = {
-  startTime: PropTypes.number,
-  activeFocusSession: PropTypes.object,
+  currentTime: PropTypes.number,
+  isPaused: PropTypes.bool,
+  onPause: PropTypes.func.isRequired,
 }
 
 Chronometer.defaultProps = {
-  startTime: 0,
+  currentTime: 0,
+  isPaused: false,
 }
 
 export default Chronometer

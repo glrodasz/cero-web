@@ -34,3 +34,24 @@ export const handleClickEndSession = ({ focusSessions }) => async () => {
   await focusSessions.api.finish()
   Router.push('/planning')
 }
+
+export const createHandlerClickChronometer = ({
+  isPlaying,
+  toggle,
+  onPause,
+}) => async () => {
+  onPause(isPlaying)
+  toggle()
+}
+
+export const createHandlerPauseChronometer = ({
+  focusSession,
+  clearTime,
+}) => async (isPlaying) => {
+  if (isPlaying) {
+    await focusSession.api.resume()
+  } else {
+    await focusSession.api.pause()
+    clearTime()
+  }
+}

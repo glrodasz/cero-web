@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types'
+import { useEffect, useCallback, useMemo } from 'react'
+import { useUser } from '@auth0/nextjs-auth0'
 
 import {
   FullHeightContent,
@@ -13,6 +15,7 @@ import DeleteTaskModal from '../../tasks/components/DeleteTaskModal'
 import BreaktimeConfirmation from '../components/BreaktimeConfirmation'
 import BreaktimeTimer from '../components/BreaktimeTimer'
 import FocusSessionFooter from '../components/FocusSessionFooter'
+import Chronometer from '../components/Chronometer'
 
 import EditTask from '../../tasks/containers/EditTask'
 
@@ -30,6 +33,7 @@ import {
   handleClickChooseBreaktime,
   handleClickEndSession,
   handleCheckCompleteTask,
+  createHandlerPauseChronometer,
 } from '../handlers.js'
 
 import useEditTaskModal from '../../tasks/hooks/useEditTaskModal'
@@ -39,9 +43,14 @@ import useBreaktimeConfirmation from '../hooks/useBreaktimeConfirmation'
 import useBreaktimeTimer from '../hooks/useBreaktimeTimer'
 import useFocusSessions from '../hooks/useFocusSessions'
 import useFocusSession from '../hooks/useFocusSession'
-import { useUser } from '@auth0/nextjs-auth0'
-import Chronometer from '../components/Chronometer'
+import useTime from '../../common/hooks/useTime'
+
 import { getChronometerStartTime } from '../helpers'
+import isEmpty from '../../../utils/isEmpty'
+import isObject from '../../../utils/isObject'
+import time from '../../../utils/time'
+
+import useChrommeter from '../hooks/useChronometer'
 
 const getActivePause = ({ focusSession }) => {
   return focusSession?.data?.pauses?.find((pause) => pause.endTime === null)
@@ -62,18 +71,64 @@ const FocusSession = ({ initialData }) => {
     },
   })
 
-  const focusSessions = useFocusSessions()
   const focusSession = useFocusSession({
     initialData: initialData.activeFocusSession,
+    onResume: () => resumeTime(),
   })
+
+  // const activePause = getActivePause({ focusSession })
+  // const isPaused = useMemo(
+  //   () => isObject(activePause) && !isEmpty(activePause),
+  //   [activePause]
+  // )
+
+  // const startTime = useMemo(() => focusSession?.data?.startTime ?? 0, [
+  //   focusSession?.data?.startTime,
+  // ])
+  // const pauseStartTime = useMemo(() => activePause?.startTime ?? 0, [
+  //   activePause?.startTime,
+  // ])
+
+  // useEffect(() => {
+  //   console.log(
+  //     '>>>startTime',
+  //     startTime,
+  //     '>>>pauseStartTime',
+  //     pauseStartTime,
+  //     isPaused
+  //   )
+  // }, [startTime, pauseStartTime, isPaused])
+
+  // const { currentTime, clearTime, resumeTime } = useChrommeter({
+  //   startTime,
+  //   pauseStartTime,
+  //   isPaused,
+  // })
 
   const activePause = getActivePause({ focusSession })
+  const isPaused = isObject(activePause) && !isEmpty(activePause)
 
-  const activeFocusSessionStartTime = getChronometerStartTime({
-    focusSessionTimestamp:
-      focusSession?.data?.startTime +
-      (activePause ? Date.now() - activePause.startTime : 0),
+  const activeFocusSessionStartTime = useMemo(
+    () =>
+      getChronometerStartTime({
+        focusSessionTimestamp:
+          focusSession?.data?.startTime +
+          (activePause ? Date.now() - activePause.startTime : 0),
+      }),
+    [focusSession?.data?.startTime, activePause]
+  )
+
+  const { currentTime, clearTime, resumeTime } = useTime({
+    startTime: activeFocusSessionStartTime,
   })
+
+  useEffect(() => {
+    if (isPaused) {
+      clearTime()
+    }
+  }, [isPaused])
+
+  const focusSessions = useFocusSessions()
 
   return (
     <>
@@ -99,8 +154,12 @@ const FocusSession = ({ initialData }) => {
             </LoadingError>
             <Spacer.Vertical size="sm" />
             <Chronometer
-              startTime={activeFocusSessionStartTime}
-              activeFocusSession={initialData.activeFocusSession}
+              currentTime={currentTime}
+              isPaused={isPaused}
+              onPause={createHandlerPauseChronometer({
+                focusSession,
+                clearTime,
+              })}
             />
             <Board
               isActive
