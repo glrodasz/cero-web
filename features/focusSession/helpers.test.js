@@ -47,12 +47,12 @@ describe('[ features / focusSession / helpers ]', () => {
   })
 
   describe('#getChronometerStartTime', () => {
-    describe('when `focusSessionTimestamp` is 1 hour ago', () => {
+    describe('when `startTime` is 1 hour ago', () => {
       it('should return `3_600_000` ms', () => {
         // Arrange
         Date.now = jest.fn(() => new Date('1970-01-01T02:00:00.000Z').getTime())
         const params = {
-          focusSessionTimestamp: new Date('1970-01-01T01:00:00.000Z').getTime(),
+          startTime: new Date('1970-01-01T01:00:00.000Z').getTime(),
         }
 
         // Act
@@ -64,11 +64,29 @@ describe('[ features / focusSession / helpers ]', () => {
       })
     })
 
-    describe('when `focusSessionTimestamp` is `undefined`', () => {
+    describe('when `startTime` is 1 hour ago and `pauseStarTime` is 30 min ago', () => {
+      it('should return `1_800_000` ms', () => {
+        // Arrange
+        Date.now = jest.fn(() => new Date('1970-01-01T02:00:00.000Z').getTime())
+        const params = {
+          startTime: new Date('1970-01-01T01:00:00.000Z').getTime(),
+          pauseStartTime: new Date('1970-01-01T01:30:00.000Z').getTime(),
+        }
+
+        // Act
+        const result = getChronometerStartTime(params)
+        const expected = time.HALF_HOUR_IN_MS
+
+        // Assert
+        expect(result).toBe(expected)
+      })
+    })
+
+    describe('when `startTime` is `undefined`', () => {
       it('should return `0` ms', () => {
         // Arrange
         const params = {
-          focusSessionTimestamp: undefined,
+          startTime: undefined,
         }
 
         // Act

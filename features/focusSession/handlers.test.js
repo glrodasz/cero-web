@@ -193,18 +193,13 @@ describe('[ features / focusSession / handlers ]', () => {
               finish: finishMock,
             },
           },
-          initialData: {
-            activeFocusSession: {
-              id: 'foo',
-            },
-          },
         }
 
         // Act
         handleClickEndSession(params)()
 
         // Assert
-        expect(finishMock).toHaveBeenCalledWith({ id: 'foo' })
+        expect(finishMock).toHaveBeenCalledWith()
       })
 
       it('should call `Router.push` with an `/planning`', () => {
