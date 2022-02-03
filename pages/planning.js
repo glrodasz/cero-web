@@ -1,26 +1,28 @@
 import PropTypes from 'prop-types'
 import { resetServerContext } from 'react-beautiful-dnd'
+import { withPageAuthRequired } from '@auth0/nextjs-auth0'
 
 import PlanningContainer from '../features/planning/containers/Planning'
 import { tasksApi, focusSessionsApi } from '../features/planning/api'
 import isEmpty from '../utils/isEmpty'
+import httpCodes from '../utils/httpCodes'
 
-const HTTP_FOUND = 302
+export const getServerSideProps = withPageAuthRequired({
+  getServerSideProps: async ({ res }) => {
+    resetServerContext()
 
-export async function getServerSideProps({ res }) {
-  resetServerContext()
+    const activeFocusSession = await focusSessionsApi.getActive()
 
-  const activeFocusSession = await focusSessionsApi.getActive()
+    if (!isEmpty(activeFocusSession)) {
+      res.statusCode = httpCodes.FOUND
+      res.setHeader('Location', '/focus-session')
+      return { props: {} }
+    }
 
-  if (!isEmpty(activeFocusSession)) {
-    res.statusCode = HTTP_FOUND
-    res.setHeader('Location', '/focus-session')
-    return { props: {} }
-  }
-
-  const tasks = await tasksApi.getAll()
-  return { props: { tasks } }
-}
+    const tasks = await tasksApi.getAll()
+    return { props: { tasks } }
+  },
+})
 
 function Planning({ tasks }) {
   return <PlanningContainer initialData={{ tasks }} />

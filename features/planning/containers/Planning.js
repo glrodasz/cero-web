@@ -1,3 +1,4 @@
+import { useUser } from '@auth0/nextjs-auth0'
 import PropTypes from 'prop-types'
 
 import { FullHeightContent, LoadingError, Link } from '@glrodasz/components'
@@ -25,7 +26,11 @@ import {
 import PlanningFooter from '../components/PlanningFooter'
 import AddTaskButton from '../components/AddTaskButton'
 import EditTask from '../../tasks/containers/EditTask'
-import { useUser } from '@auth0/nextjs-auth0'
+
+import {
+  MAXIMUM_BACKLOG_QUANTITY,
+  MAXIMUN_IN_PRIORITY_TASKS,
+} from '../../../config/index'
 
 const Planning = ({ initialData }) => {
   const { user, isLoading: isLoadingUser, error: errorUser } = useUser()
@@ -41,7 +46,10 @@ const Planning = ({ initialData }) => {
   })
 
   const focusSessions = useFocusSessions()
+
   const tasksLength = tasks.data?.length
+  const shouldShowAddTaskButton =
+    tasksLength < MAXIMUM_BACKLOG_QUANTITY + MAXIMUN_IN_PRIORITY_TASKS
 
   return (
     <>
@@ -83,7 +91,7 @@ const Planning = ({ initialData }) => {
             </PlanningOnboarding>
             <AddTaskButton
               id="planning"
-              tasksLength={tasksLength}
+              isShown={shouldShowAddTaskButton}
               onClickAddTask={handleAddTask({ tasks })}
             />
           </LoadingError>

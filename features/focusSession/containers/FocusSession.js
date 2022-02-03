@@ -16,6 +16,7 @@ import BreaktimeConfirmation from '../components/BreaktimeConfirmation'
 import BreaktimeTimer from '../components/BreaktimeTimer'
 import FocusSessionFooter from '../components/FocusSessionFooter'
 import Chronometer from '../components/Chronometer'
+import AddTaskButton from '../../planning/components/AddTaskButton'
 
 import EditTask from '../../tasks/containers/EditTask'
 
@@ -43,11 +44,16 @@ import useBreaktimeConfirmation from '../hooks/useBreaktimeConfirmation'
 import useBreaktimeTimer from '../hooks/useBreaktimeTimer'
 import useFocusSessions from '../hooks/useFocusSessions'
 import useFocusSession from '../hooks/useFocusSession'
+import useChronometer from '../hooks/useChronometer'
 
 import isEmpty from '../../../utils/isEmpty'
 import isObject from '../../../utils/isObject'
 
-import useChrommeter from '../hooks/useChronometer'
+import {
+  MAXIMUM_BACKLOG_QUANTITY,
+  MAXIMUN_IN_PRIORITY_TASKS,
+} from '../../../config'
+import { COMPLETED_COLUMN_ID } from '../../tasks/constants'
 
 const getActivePause = ({ focusSession }) => {
   return focusSession?.data?.pauses?.find((pause) => pause.endTime === null)
@@ -83,13 +89,19 @@ const FocusSession = ({ initialData }) => {
     activePause?.startTime,
   ])
 
-  const { currentTime, clearTime, resumeTime } = useChrommeter({
+  const { currentTime, clearTime, resumeTime } = useChronometer({
     startTime,
     pauseStartTime,
     isPaused,
   })
 
   const focusSessions = useFocusSessions()
+
+  const tasksLength = tasks.data?.filter(
+    (task) => task.status !== COMPLETED_COLUMN_ID
+  )?.length
+  const shouldShowAddTaskButton =
+    tasksLength < MAXIMUM_BACKLOG_QUANTITY + MAXIMUN_IN_PRIORITY_TASKS
 
   return (
     <>
@@ -140,6 +152,16 @@ const FocusSession = ({ initialData }) => {
                 }),
               }}
             />
+            {shouldShowAddTaskButton && (
+              <>
+                <Spacer.Vertical size="lg" />
+                <AddTaskButton
+                  id="focus-session"
+                  isShown={shouldShowAddTaskButton}
+                  onClickAddTask={() => {}}
+                />
+              </>
+            )}
           </LoadingError>
         }
         footer={

@@ -1,4 +1,7 @@
-import { MAX_IN_PROGRESS_TASKS, MAXIMUM_BACKLOG_QUANTITY } from '../../config'
+import {
+  MAXIMUN_IN_PRIORITY_TASKS,
+  MAXIMUM_BACKLOG_QUANTITY,
+} from '../../config'
 
 import {
   IN_PROGRESS_COLUMN_ID,
@@ -36,7 +39,7 @@ export const reorderTasks = (
 }
 
 export const getTaskType = (index) => {
-  if (index > MAX_IN_PROGRESS_TASKS - 1) {
+  if (index > MAXIMUN_IN_PRIORITY_TASKS - 1) {
     return null
   }
 
@@ -65,7 +68,7 @@ export const getCurrent = ({ column, isActive, tasks }) => {
 
 export const getTotal = ({ column, isActive }) => {
   if (column.id === IN_PROGRESS_COLUMN_ID && !isActive) {
-    return MAXIMUM_BACKLOG_QUANTITY
+    return MAXIMUN_IN_PRIORITY_TASKS
   }
 
   if (column.id === PENDING_COLUMN_ID && isActive) {
@@ -118,7 +121,7 @@ export const normalizeData = (tasks) => {
 export const filterColumns = ({ tasksLength, isActive }) => (column) => {
   const AreWeInFocusSession = isActive
   const AreWeInPlanning = !isActive
-  const DoWeHaveBacklogTasks = tasksLength >= MAX_IN_PROGRESS_TASKS
+  const DoWeHaveBacklogTasks = tasksLength >= MAXIMUN_IN_PRIORITY_TASKS
 
   if (AreWeInFocusSession) {
     return true

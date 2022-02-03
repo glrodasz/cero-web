@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react'
 import { getChronometerStartTime } from '../helpers'
 import useTime from '../../common/hooks/useTime'
 
-const useChrommeter = ({ startTime, pauseStartTime, isPaused }) => {
+const useChronometer = ({ startTime, pauseStartTime, isPaused }) => {
   const totalStartTime = useCallback(
     () =>
       getChronometerStartTime({
@@ -25,4 +25,4 @@ const useChrommeter = ({ startTime, pauseStartTime, isPaused }) => {
   return { currentTime, clearTime, resumeTime }
 }
 
-export default useChrommeter
+export default useChronometer

@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Modal, Heading } from '@glrodasz/components'
+import { Modal, Heading, Paragraph } from '@glrodasz/components'
+
+import timeAgo from '../../../utils/timeAgo'
 
 const handleClose = ({ onClose }) => () => {
   onClose()
@@ -20,7 +22,14 @@ const EditTaskModal = ({ task, onClose, onDelete }) => {
         handler: handleDelete({ id: task?.id, onDelete }),
       }}
     >
-      <Heading size="xl">{task?.description}</Heading>
+      <div className="container">
+        <Heading size="xl">{task?.description}</Heading>
+        {task?.createdAt && (
+          <Paragraph size="md" color="muted">
+            Creada {timeAgo(task?.createdAt)}
+          </Paragraph>
+        )}
+      </div>
     </Modal>
   )
 }

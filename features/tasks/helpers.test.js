@@ -4,10 +4,12 @@ import {
   getCurrent,
   reorderTasks,
   getTaskType,
+  getTotal,
 } from './helpers'
 
 jest.mock('../../config', () => ({
-  MAX_IN_PROGRESS_TASKS: 10,
+  MAXIMUN_IN_PRIORITY_TASKS: 3,
+  MAXIMUM_BACKLOG_QUANTITY: 5,
 }))
 
 jest.mock('./constants', () => ({
@@ -38,7 +40,7 @@ describe('[ features / tasks / helpers ]', () => {
   })
 
   describe('#getTaskType', () => {
-    describe('when `index` is bigger than `MAX_IN_PROGRESS_TASKS - 1`', () => {
+    describe('when `index` is bigger than `MAXIMUN_IN_PRIORITY_TASKS - 1`', () => {
       it('should return null', () => {
         // Arrange
         const index = 10
@@ -64,7 +66,7 @@ describe('[ features / tasks / helpers ]', () => {
       })
     })
 
-    describe('when `index` is smaller than `MAX_IN_PROGRESS_TASKS - 1`', () => {
+    describe('when `index` is smaller than `MAXIMUN_IN_PRIORITY_TASKS - 1`', () => {
       it('should return "active"', () => {
         // Arrange
         const index = 1
@@ -179,9 +181,64 @@ describe('[ features / tasks / helpers ]', () => {
     })
   })
 
-  describe('#getTotal', () => {})
+  describe('#getTotal', () => {
+    describe('when `column.id` is `IN_PROGRESS_COLUMN_ID` and `isActive` is false', () => {
+      it('should return `MAXIMUN_IN_PRIORITY_TASKS`', () => {
+        // Arrange
+        const params = {
+          column: {
+            id: 'IN_PROGRESS_COLUMN_ID',
+          },
+          isActive: false,
+        }
 
-  describe('#normalizeData', () => {})
+        // Act
+        const result = getTotal(params)
+        const expected = 3
+
+        // Assert
+        expect(result).toBe(expected)
+      })
+    })
+
+    describe('when `column.id` is `PENDING_COLUMN_ID` and `isActive` is true', () => {
+      it('should return `MAXIMUM_BACKLOG_QUANTITY`', () => {
+        // Arrange
+        const params = {
+          column: {
+            id: 'PENDING_COLUMN_ID',
+          },
+          isActive: true,
+        }
+
+        // Act
+        const result = getTotal(params)
+        const expected = 5
+
+        // Assert
+        expect(result).toBe(expected)
+      })
+    })
+
+    describe('when `column.id` is `OTHER_COLUMN_ID` and `isActive` is true/false', () => {
+      it('should return `null`', () => {
+        // Arrange
+        const params = {
+          column: {
+            id: 'OTHER_COLUMN_ID',
+          },
+          isActive: true,
+        }
+
+        // Act
+        const result = getTotal(params)
+        const expected = null
+
+        // Assert
+        expect(result).toBe(expected)
+      })
+    })
+  })
 
   describe('#filterColumns', () => {
     describe('when `isActive` is `true`', () => {
@@ -235,7 +292,7 @@ describe('[ features / tasks / helpers ]', () => {
       })
     })
 
-    describe('when `isActive` is `false`, and `column` is `PENDING_COLUMN_ID`, and `tasksLength` is greater or equal than `MAX_IN_PROGRESS_TASKS` ', () => {
+    describe('when `isActive` is `false`, and `column` is `PENDING_COLUMN_ID`, and `tasksLength` is greater or equal than `MAXIMUN_IN_PRIORITY_TASKS` ', () => {
       it('should return `true`', () => {
         // Arrange
         const params = {

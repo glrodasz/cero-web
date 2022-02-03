@@ -36,7 +36,6 @@ const Board = ({ tasks, isActive, onDragEnd, actions }) => {
                     isActive={isActive}
                     actions={actions}
                   />
-                  <Spacer.Vertical size="md" />
                 </>
               )
             })}

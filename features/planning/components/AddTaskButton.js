@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types'
 import { Spacer, AddButton } from '@glrodasz/components'
 
-import { MAXIMUM_BACKLOG_QUANTITY } from '../../../config'
-
-const AddTaskButton = ({ id, tasksLength, onClickAddTask }) => {
-  if (tasksLength < MAXIMUM_BACKLOG_QUANTITY) {
+const AddTaskButton = ({ id, onClickAddTask, isShown }) => {
+  if (isShown) {
     return (
       <>
         <Spacer.Vertical size="md" />
@@ -30,7 +28,7 @@ AddTaskButton.defaultProps = {
 AddTaskButton.propTypes = {
   id: PropTypes.string,
   onClickAddTask: PropTypes.func.isRequired,
-  tasksLength: PropTypes.number,
+  isShown: PropTypes.bool,
 }
 
 export default AddTaskButton
