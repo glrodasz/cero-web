@@ -15,6 +15,20 @@ describe('[ utils / isEmpty ]', () => {
     })
   })
 
+  describe('when the `param` is `Object.create({})`', () => {
+    it('should return `true`', () => {
+      // Arrange
+      const param = Object.create({})
+
+      // Act
+      const result = isEmpty(param)
+      const expected = true
+
+      // Assert
+      expect(result).toBe(expected)
+    })
+  })
+
   describe('when the `param` is an empty array', () => {
     it('should return `true`', () => {
       // Arrange

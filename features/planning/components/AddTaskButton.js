@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types'
 import { Spacer, AddButton } from '@glrodasz/components'
 
-const AddTaskButton = ({ id, onClickAddTask, isShown }) => {
+const AddTaskButton = ({ id, onAddTask, isShown }) => {
   if (isShown) {
     return (
       <>
         <Spacer.Vertical size="md" />
         <AddButton
           id={id}
-          onAdd={onClickAddTask}
+          onAdd={onAddTask}
           focusHelpText="Presiona enter"
           blurHelpText="Clic para continuar"
         >
@@ -27,7 +27,7 @@ AddTaskButton.defaultProps = {
 
 AddTaskButton.propTypes = {
   id: PropTypes.string,
-  onClickAddTask: PropTypes.func.isRequired,
+  onAddTask: PropTypes.func.isRequired,
   isShown: PropTypes.bool,
 }
 

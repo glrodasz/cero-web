@@ -25,6 +25,7 @@ import {
   handleCancelRemove,
   handleConfirmRemove,
   handleDragEndTask,
+  handleAddTask,
   handleOpenEditTaskModal,
 } from '../../tasks/handlers'
 
@@ -158,7 +159,7 @@ const FocusSession = ({ initialData }) => {
                 <AddTaskButton
                   id="focus-session"
                   isShown={shouldShowAddTaskButton}
-                  onClickAddTask={() => {}}
+                  onAddTask={handleAddTask({ tasks })}
                 />
               </>
             )}

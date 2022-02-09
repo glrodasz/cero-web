@@ -15,7 +15,10 @@ const isEmpty = (value) => {
   }
 
   if (isObject(value)) {
-    return Object.keys(value).length === 0
+    return (
+      Object.keys(value).length === 0 &&
+      Object.keys(Object.getPrototypeOf(value)).length === 0
+    )
   }
 
   if (Array.isArray(value) || typeof value === 'string') {

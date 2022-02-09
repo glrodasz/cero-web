@@ -9,16 +9,12 @@ jest.mock('@glrodasz/components', () => {
   }
 })
 
-jest.mock('../../../config', () => ({
-  MAXIMUM_BACKLOG_QUANTITY: 1,
-}))
-
 describe('[ features / planning / components / AddTaskButton ]', () => {
   describe('when `AddTaskButton` is mounted', () => {
     it('should render', () => {
       const props = {
-        tasksLength: 0,
-        onClickAddTask: () => {},
+        isShown: true,
+        onAddTask: () => {},
       }
       const { asFragment } = render(<AddTaskButton {...props} />)
       expect(asFragment()).toMatchSnapshot()

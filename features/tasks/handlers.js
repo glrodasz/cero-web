@@ -1,5 +1,6 @@
 import { reorderTasks } from './helpers'
 import Router from 'next/router'
+import isEmpty from '../../utils/isEmpty'
 
 export const handleDragEndTask = ({ tasks }) => ({
   source,
@@ -79,7 +80,7 @@ export const handleDragEndTask = ({ tasks }) => ({
 
 export const handleAddTask = ({ tasks }) => ({ value }) => {
   const { api } = tasks
-  api.create({ description: value })
+  !isEmpty(value) && api.create({ description: value })
 }
 
 export const handleDeleteTask = ({ deleteConfirmation }) => ({ id }) => {

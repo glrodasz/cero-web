@@ -92,7 +92,7 @@ const Planning = ({ initialData }) => {
             <AddTaskButton
               id="planning"
               isShown={shouldShowAddTaskButton}
-              onClickAddTask={handleAddTask({ tasks })}
+              onAddTask={handleAddTask({ tasks })}
             />
           </LoadingError>
         }

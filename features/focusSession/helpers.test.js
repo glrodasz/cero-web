@@ -1,3 +1,4 @@
+import dateNowMock from '../../utils/testUtils/dateNowMock'
 import time from '../../utils/time'
 import { getBarWidth, getChronometerStartTime } from './helpers'
 
@@ -50,7 +51,7 @@ describe('[ features / focusSession / helpers ]', () => {
     describe('when `startTime` is 1 hour ago', () => {
       it('should return `3_600_000` ms', () => {
         // Arrange
-        Date.now = jest.fn(() => new Date('1970-01-01T02:00:00.000Z').getTime())
+        Date.now = dateNowMock()
         const params = {
           startTime: new Date('1970-01-01T01:00:00.000Z').getTime(),
         }
