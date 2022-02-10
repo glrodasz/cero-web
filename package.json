@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": ">=15.0.1",
-    "yarn": ">=1.22.5"
+    "node": ">=16.13.2",
+    "yarn": ">=1.22.17"
   },
   "scripts": {
     "build": "next build",
