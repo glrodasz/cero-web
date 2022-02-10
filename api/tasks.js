@@ -2,25 +2,29 @@ import Request from './request'
 
 class Task extends Request {
   getAll() {
-    // TODO: Implement a sort param, and remove the hardcoded
-    return this.request('tasks?_sort=priority&_order=asc')
+    return this.fetch()
   }
 
   getById({ id }) {
-    return this.request(`tasks/${id}`)
+    return id && this.fetch(`tasks/${id}`)
   }
 
-  create({ description, priority }) {
-    return this.request('tasks', {
+  create({ description }) {
+    return this.fetch('tasks', {
       method: 'post',
-      body: { description, priority, status: 'pending' },
+      body: { description },
     })
+  }
+
+  updateStatus({ id, isChecked }) {
+    const status = isChecked ? 'complete' : 'reset'
+    return this.fetch(`tasks/${id}/${status}`, { method: 'patch' })
   }
 
   updatePriorities({ tasks }) {
     return Promise.all(
       tasks.map(({ id, priority, status }) =>
-        this.request(`tasks/${id}`, {
+        this.fetch(`tasks/${id}`, {
           method: 'patch',
           body: { priority, status },
         })
@@ -29,7 +33,11 @@ class Task extends Request {
   }
 
   delete({ id }) {
-    return this.request(`tasks/${id}`, { method: 'delete' })
+    return this.fetch(`tasks/${id}`, { method: 'delete' })
+  }
+
+  update({ id, task }) {
+    return this.fetch(`tasks/${id}`, { method: 'put', body: { task } })
   }
 }
 

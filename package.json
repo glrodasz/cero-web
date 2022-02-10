@@ -3,16 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": ">=15.0.0",
+    "node": ">=15.0.1",
     "yarn": ">=1.22.5"
   },
   "scripts": {
     "build": "next build",
-    "dev:api": "json-server --watch db.json --port 3001",
+    "dev:json-server": "json-server --watch db.json --port 3001",
     "dev:web": "next dev",
     "dev:web:debug": "NODE_OPTIONS='--inspect' next dev",
-    "dev": "concurrently npm:dev:api npm:dev:web",
-    "dev:debug": "concurrently npm:dev:api npm:dev:web:debug",
+    "dev": "concurrently npm:dev:json-server npm:dev:web",
+    "dev:debug": "concurrently npm:dev:json-server npm:dev:web:debug",
     "start": "next start",
     "commit": "cz",
     "lint:css:fix": "yarn lint:css:prettier:fix && yarn lint:css:stylelint:fix",
@@ -35,6 +35,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "1.6.2",
     "@glrodasz/components": "*",
     "minireset.css": "0.0.6",
     "next": "10.0.0",
@@ -42,8 +43,7 @@
     "react": "16.13.1",
     "react-beautiful-dnd": "13.0.0",
     "react-dom": "16.13.1",
-    "react-query": "2.23.1",
-    "react-query-devtools": "2.5.1"
+    "react-query": "2.23.1"
   },
   "devDependencies": {
     "@commitlint/cli": "11.0.0",
@@ -67,6 +67,7 @@
     "lint-staged": "10.5.1",
     "npm-run-all": "4.1.5",
     "prettier": "2.1.2",
+    "react-query-devtools": "2.5.1",
     "sass": "1.35.2",
     "stylelint": "13.7.2",
     "stylelint-config-idiomatic-order": "8.1.0",

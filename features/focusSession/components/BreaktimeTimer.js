@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 import {
@@ -11,39 +10,25 @@ import {
   Link,
 } from '@glrodasz/components'
 
-import { time } from '../../common/constants'
+import useTime from '../../common/hooks/useTime'
+import formatMilliseconds from '../../../utils/formatMilliseconds'
 
-export const formatBreakTime = (milliseconds) => {
-  const seconds = milliseconds / 1000
-  const currentMinutes = String(Math.floor(seconds / 60)).padStart(2, '0')
-  const currentSeconds = String(seconds % 60).padStart(2, '0')
-
-  return `${currentMinutes}:${currentSeconds}`
+const createHandleClose = ({ onClose }) => () => {
+  onClose()
 }
 
-const reverseTick = ({ currentTime, setCurrentTime }) => () => {
-  setCurrentTime(currentTime - time.ONE_SECOND_IN_MS)
-}
-
-const BreaktimeTimer = ({ onClickClose, breaktime }) => {
-  const [currentTime, setCurrentTime] = useState(breaktime)
-
-  useEffect(() => {
-    currentTime <= 0 && onClickClose()
-
-    const intervalId = setInterval(
-      reverseTick({ currentTime, setCurrentTime }),
-      time.ONE_SECOND_IN_MS
-    )
-
-    return () => clearInterval(intervalId)
-  }, [currentTime])
+const BreaktimeTimer = ({ onClose, breaktime }) => {
+  const { currentTime } = useTime({
+    isTimer: true,
+    startTime: breaktime,
+    callback: onClose,
+  })
 
   return (
-    <Modal isCentered onClose={onClickClose}>
+    <Modal isCentered onClose={createHandleClose({ onClose })}>
       <CenteredContent>
         <Heading size="2xl" color="tertiary" weight="normal">
-          {formatBreakTime(currentTime)}
+          {formatMilliseconds(currentTime)}
         </Heading>
         <Picture src="/images/yoga-pause.svg" width={200}></Picture>
         <Spacer.Vertical size="md" />
@@ -65,7 +50,7 @@ const BreaktimeTimer = ({ onClickClose, breaktime }) => {
 }
 
 BreaktimeTimer.propTypes = {
-  onClickClose: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
   breaktime: PropTypes.number.isRequired,
 }
 

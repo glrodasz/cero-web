@@ -1,5 +1,6 @@
 import { reorderTasks } from './helpers'
 import Router from 'next/router'
+import isEmpty from '../../utils/isEmpty'
 
 export const handleDragEndTask = ({ tasks }) => ({
   source,
@@ -77,33 +78,42 @@ export const handleDragEndTask = ({ tasks }) => ({
   return api.updatePriorities({ tasks: concatenatedTasks })
 }
 
-export const handleClickAddTask = ({ tasks }) => ({ value }) => {
-  const { api, data } = tasks
-  api.create({ description: value, priority: data.length })
+export const handleAddTask = ({ tasks }) => ({ value }) => {
+  const { api } = tasks
+  !isEmpty(value) && api.create({ description: value })
 }
 
-export const handleClickDeleteTask = ({ deleteConfirmation }) => ({ id }) => {
+export const handleDeleteTask = ({ deleteConfirmation }) => ({ id }) => {
   const { setTaskId, setShowDialog } = deleteConfirmation
   setTaskId(id)
   setShowDialog(true)
 }
 
-export const handleClickCancelRemove = ({ deleteConfirmation }) => () => {
+export const handleCancelRemove = ({ deleteConfirmation }) => () => {
   const { setTaskId, setShowDialog } = deleteConfirmation
   setTaskId(null)
   setShowDialog(false)
 }
 
-export const handleClickConfirmRemove = ({
-  tasks,
-  deleteConfirmation,
-}) => () => {
+export const handleConfirmRemove = ({ tasks, deleteConfirmation }) => () => {
   const { taskId, setShowDialog } = deleteConfirmation
   tasks.api.remove({ id: taskId })
   setShowDialog(false)
 }
 
-export const handleClickStartSession = ({ focusSessions }) => () => {
+export const handleStartSession = ({ focusSessions }) => () => {
   focusSessions.api.create()
   Router.push('/focus-session')
+}
+
+export const handleOpenEditTaskModal = ({ editTaskModal }) => ({ id }) => {
+  const { setTaskId, setShowDialog } = editTaskModal
+  setTaskId(id)
+  setShowDialog(true)
+}
+
+export const handleCloseEditTaskModal = ({ editTaskModal }) => () => {
+  const { setTaskId, setShowDialog } = editTaskModal
+  setTaskId(null)
+  setShowDialog(false)
 }

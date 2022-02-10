@@ -1,9 +1,50 @@
-import { MAXIMUM_BACKLOG_QUANTITY } from '../planning/constants'
+import {
+  MAXIMUN_IN_PRIORITY_TASKS,
+  MAXIMUM_BACKLOG_QUANTITY,
+} from '../../config'
+
 import {
   IN_PROGRESS_COLUMN_ID,
   PENDING_COLUMN_ID,
   COMPLETED_COLUMN_ID,
 } from './constants'
+
+export const reorderTasks = (
+  tasks,
+  startIndex,
+  endIndex,
+  taskStatus,
+  newTask
+) => {
+  const clonedTasks = Array.from(tasks)
+
+  if (endIndex !== null && startIndex !== null) {
+    const [removed] = clonedTasks.splice(startIndex, 1)
+    clonedTasks.splice(endIndex, 0, removed)
+  } else if (startIndex === null) {
+    clonedTasks.splice(endIndex, 0, newTask)
+  }
+
+  if (taskStatus) {
+    return clonedTasks.map((task, index) => ({
+      ...task,
+      priority: index,
+      status: taskStatus,
+    }))
+  }
+  return clonedTasks.map((task, index) => ({
+    ...task,
+    priority: index,
+  }))
+}
+
+export const getTaskType = (index) => {
+  if (index > MAXIMUN_IN_PRIORITY_TASKS - 1) {
+    return null
+  }
+
+  return index === 0 ? 'active' : 'standby'
+}
 
 export const getTitle = ({ column, isActive }) => {
   if (column.id === IN_PROGRESS_COLUMN_ID && !isActive) {
@@ -27,7 +68,7 @@ export const getCurrent = ({ column, isActive, tasks }) => {
 
 export const getTotal = ({ column, isActive }) => {
   if (column.id === IN_PROGRESS_COLUMN_ID && !isActive) {
-    return MAXIMUM_BACKLOG_QUANTITY
+    return MAXIMUN_IN_PRIORITY_TASKS
   }
 
   if (column.id === PENDING_COLUMN_ID && isActive) {
@@ -35,6 +76,13 @@ export const getTotal = ({ column, isActive }) => {
   }
 
   return null
+}
+
+export const getSortedTaskIdsFilteredByStatus = (filteredStatus) => (tasks) => {
+  return tasks
+    .filter(({ status }) => status === filteredStatus)
+    .sort((a, b) => a.priority - b.priority)
+    .map((task) => task.id)
 }
 
 export const normalizeData = (tasks) => {
@@ -47,26 +95,17 @@ export const normalizeData = (tasks) => {
     [IN_PROGRESS_COLUMN_ID]: {
       id: IN_PROGRESS_COLUMN_ID,
       title: 'En Progreso',
-      taskIds: tasks
-        .filter(({ status }) => status === IN_PROGRESS_COLUMN_ID)
-        .sort((a, b) => a.priority - b.priority)
-        .map((task) => task.id),
+      taskIds: getSortedTaskIdsFilteredByStatus(IN_PROGRESS_COLUMN_ID)(tasks),
     },
     [PENDING_COLUMN_ID]: {
       id: PENDING_COLUMN_ID,
       title: 'Pendientes',
-      taskIds: tasks
-        .filter(({ status }) => status === PENDING_COLUMN_ID)
-        .sort((a, b) => a.priority - b.priority)
-        .map((task) => task.id),
+      taskIds: getSortedTaskIdsFilteredByStatus(PENDING_COLUMN_ID)(tasks),
     },
     [COMPLETED_COLUMN_ID]: {
       id: COMPLETED_COLUMN_ID,
       title: 'Completadas',
-      taskIds: tasks
-        .filter(({ status }) => status === COMPLETED_COLUMN_ID)
-        .sort((a, b) => a.priority - b.priority)
-        .map((task) => task.id),
+      taskIds: getSortedTaskIdsFilteredByStatus(COMPLETED_COLUMN_ID)(tasks),
     },
   }
 
@@ -79,21 +118,24 @@ export const normalizeData = (tasks) => {
   return { tasks: normalizeTasks, columns, columnOrder }
 }
 
-// TODO: Improve this filter
 export const filterColumns = ({ tasksLength, isActive }) => (column) => {
-  if (isActive) {
+  const AreWeInFocusSession = isActive
+  const AreWeInPlanning = !isActive
+  const DoWeHaveBacklogTasks = tasksLength >= MAXIMUN_IN_PRIORITY_TASKS
+
+  if (AreWeInFocusSession) {
     return true
   }
 
-  if (!isActive && column === PENDING_COLUMN_ID && tasksLength >= 3) {
+  if (AreWeInPlanning && column === IN_PROGRESS_COLUMN_ID) {
     return true
   }
 
-  if (!isActive && column === IN_PROGRESS_COLUMN_ID) {
+  if (AreWeInPlanning && DoWeHaveBacklogTasks && column === PENDING_COLUMN_ID) {
     return true
   }
 
-  if (!isActive && column === COMPLETED_COLUMN_ID) {
+  if (AreWeInPlanning && column === COMPLETED_COLUMN_ID) {
     return false
   }
 }

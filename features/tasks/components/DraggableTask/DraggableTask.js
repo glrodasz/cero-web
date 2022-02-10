@@ -3,16 +3,17 @@ import { Task } from '@glrodasz/components'
 import { Draggable } from 'react-beautiful-dnd'
 import PropTypes from 'prop-types'
 
-import { getTaskType } from '../../../planning/helpers'
+import { getTaskType } from '../../../tasks/helpers'
 
-const DraggableTask = ({
-  task,
-  index,
-  columnId,
-  isActive,
-  onClickDeleteTask,
-  onCheckCompleteTask,
-}) => {
+import {
+  handleCompleteTask,
+  handleDeleteTask,
+  handleEditTask,
+} from './handlers'
+
+const DraggableTask = ({ task, index, columnId, isActive, actions }) => {
+  const { onDeleteTask, onCompleteTask, onEditTask } = actions
+
   return (
     <Draggable draggableId={String(task.id)} index={index}>
       {(provided) => (
@@ -23,10 +24,17 @@ const DraggableTask = ({
         >
           <Task
             key={task.id}
-            onDelete={() => onClickDeleteTask({ id: task.id })}
+            onDelete={handleDeleteTask({ id: task.id, onDeleteTask })}
             isPending={!isActive}
             type={columnId === 'in-progress' && getTaskType(index, columnId)}
-            onCheck={onCheckCompleteTask}
+            onCheck={handleCompleteTask({
+              id: task.id,
+              onCompleteTask,
+            })}
+            onClick={handleEditTask({
+              id: task.id,
+              onEditTask,
+            })}
             defaultIsChecked={columnId === 'completed'}
           >
             {task.description}
@@ -42,8 +50,15 @@ DraggableTask.propTypes = {
   index: PropTypes.number,
   columnId: PropTypes.string,
   isActive: PropTypes.bool,
-  onClickDeleteTask: PropTypes.func.isRequired,
-  onCheckCompleteTask: PropTypes.func.isRequired,
+  actions: PropTypes.shape({
+    onDeleteTask: PropTypes.func,
+    onCompleteTask: PropTypes.func,
+    onEditTask: PropTypes.func,
+  }),
+}
+
+DraggableTask.defaultProps = {
+  actions: {},
 }
 
 export default DraggableTask

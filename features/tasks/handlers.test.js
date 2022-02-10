@@ -1,10 +1,10 @@
 import {
-  handleClickDeleteTask,
+  handleDeleteTask,
   handleDragEndTask,
-  handleClickAddTask,
-  handleClickCancelRemove,
-  handleClickConfirmRemove,
-  handleClickStartSession,
+  handleAddTask,
+  handleCancelRemove,
+  handleConfirmRemove,
+  handleStartSession,
 } from './handlers'
 
 import { reorderTasks } from './helpers'
@@ -15,7 +15,7 @@ jest.mock('./helpers', () => ({
 import Router from 'next/router'
 jest.mock('next/router', () => ({ push: jest.fn() }))
 
-describe('[ features / plannning / handlers ]', () => {
+describe('[ features / tasks / handlers ]', () => {
   describe('#handleDragEndTask', () => {
     describe('when the handler is call', () => {
       it('should return a function', () => {
@@ -158,14 +158,14 @@ describe('[ features / plannning / handlers ]', () => {
     })
   })
 
-  describe('#handleClickAddTask', () => {
+  describe('#handleAddTask', () => {
     describe('when the handler is call', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleClickAddTask(params)
+        const result = typeof handleAddTask(params)
         const expected = 'function'
 
         // Assert
@@ -184,25 +184,24 @@ describe('[ features / plannning / handlers ]', () => {
         const value = 'foo'
 
         // Act
-        handleClickAddTask(params)({ value })
+        handleAddTask(params)({ value })
 
         // Assert
         expect(createMock).toHaveBeenCalledWith({
           description: 'foo',
-          priority: 3,
         })
       })
     })
   })
 
-  describe('#handleClickDeleteTask', () => {
+  describe('#handleDeleteTask', () => {
     describe('when the handler is call', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleClickDeleteTask(params)
+        const result = typeof handleDeleteTask(params)
         const expected = 'function'
 
         // Assert
@@ -219,7 +218,7 @@ describe('[ features / plannning / handlers ]', () => {
         const params = { deleteConfirmation: { setShowDialog, setTaskId } }
 
         // Act
-        handleClickDeleteTask(params)({ id })
+        handleDeleteTask(params)({ id })
 
         // Assert
         expect(setShowDialog).toHaveBeenCalledWith(true)
@@ -233,7 +232,7 @@ describe('[ features / plannning / handlers ]', () => {
         const params = { deleteConfirmation: { setShowDialog, setTaskId } }
 
         // Act
-        handleClickDeleteTask(params)({ id })
+        handleDeleteTask(params)({ id })
 
         // Assert
         expect(setTaskId).toHaveBeenCalledWith('foo')
@@ -241,14 +240,14 @@ describe('[ features / plannning / handlers ]', () => {
     })
   })
 
-  describe('#handleClickCancelRemove', () => {
+  describe('#handleCancelRemove', () => {
     describe('when the handler is call', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleClickCancelRemove(params)
+        const result = typeof handleCancelRemove(params)
         const expected = 'function'
 
         // Assert
@@ -265,7 +264,7 @@ describe('[ features / plannning / handlers ]', () => {
         const params = { deleteConfirmation: { setShowDialog, setTaskId } }
 
         // Act
-        handleClickCancelRemove(params)({ id })
+        handleCancelRemove(params)({ id })
 
         // Assert
         expect(setShowDialog).toHaveBeenCalledWith(false)
@@ -278,7 +277,7 @@ describe('[ features / plannning / handlers ]', () => {
         const params = { deleteConfirmation: { setShowDialog, setTaskId } }
 
         // Act
-        handleClickCancelRemove(params)()
+        handleCancelRemove(params)()
 
         // Assert
         expect(setTaskId).toHaveBeenCalledWith(null)
@@ -286,14 +285,14 @@ describe('[ features / plannning / handlers ]', () => {
     })
   })
 
-  describe('#handleClickConfirmRemove', () => {
+  describe('#handleConfirmRemove', () => {
     describe('when the handler is call', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleClickConfirmRemove(params)
+        const result = typeof handleConfirmRemove(params)
         const expected = 'function'
 
         // Assert
@@ -310,7 +309,7 @@ describe('[ features / plannning / handlers ]', () => {
         const deleteConfirmation = { taskId: 'foo', setShowDialog: noop }
         const params = { tasks, deleteConfirmation }
         // Act
-        handleClickConfirmRemove(params)()
+        handleConfirmRemove(params)()
 
         // Assert
         expect(removeMock).toHaveBeenCalledWith({ id: 'foo' })
@@ -327,7 +326,7 @@ describe('[ features / plannning / handlers ]', () => {
         }
         const params = { tasks, deleteConfirmation }
         // Act
-        handleClickConfirmRemove(params)()
+        handleConfirmRemove(params)()
 
         // Assert
         expect(setShowDialogMock).toHaveBeenCalledWith(false)
@@ -335,14 +334,14 @@ describe('[ features / plannning / handlers ]', () => {
     })
   })
 
-  describe('#handleClickStartSession', () => {
+  describe('#handleStartSession', () => {
     describe('when the handler is call', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleClickStartSession(params)
+        const result = typeof handleStartSession(params)
         const expected = 'function'
 
         // Assert
@@ -358,7 +357,7 @@ describe('[ features / plannning / handlers ]', () => {
         const params = { focusSessions }
 
         // Act
-        handleClickStartSession(params)()
+        handleStartSession(params)()
 
         // Assert
         expect(createMock).toHaveBeenCalled()
@@ -370,7 +369,7 @@ describe('[ features / plannning / handlers ]', () => {
         const params = { focusSessions }
 
         // Act
-        handleClickStartSession(params)()
+        handleStartSession(params)()
 
         // Assert
         expect(Router.push).toHaveBeenCalledWith('/focus-session')

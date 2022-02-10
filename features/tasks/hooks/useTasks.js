@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react'
 import { tasksApi } from '../../planning/api'
-import { useQuery, useMutation } from 'react-query'
+import { useQuery, useMutation, useQueryCache } from 'react-query'
+import useLocalData from '../../common/hooks/useLocalData'
 
 const QUERY_KEY = 'tasks'
 
-const useTasks = ({ initialData, queryCache, onRemove }) => {
-  const { isLoading, error, data: serverData } = useQuery(
+const useTasks = ({ initialData, onRemove }) => {
+  const queryCache = useQueryCache()
+
+  const { isLoading, error, data: fetchedData } = useQuery(
     QUERY_KEY,
     () => tasksApi.getAll(),
     {
@@ -22,9 +24,18 @@ const useTasks = ({ initialData, queryCache, onRemove }) => {
   const [remove] = useMutation((params) => tasksApi.delete(params), {
     onSuccess: () => {
       queryCache.invalidateQueries(QUERY_KEY)
-      onRemove()
+      onRemove?.()
     },
   })
+
+  const [updateStatus] = useMutation(
+    (params) => tasksApi.updateStatus(params),
+    {
+      onSuccess: () => {
+        queryCache.invalidateQueries(QUERY_KEY)
+      },
+    }
+  )
 
   const [updatePriorities] = useMutation(
     (params) => tasksApi.updatePriorities(params),
@@ -35,11 +46,7 @@ const useTasks = ({ initialData, queryCache, onRemove }) => {
     }
   )
 
-  const [localData, setLocalData] = useState(serverData)
-
-  useEffect(() => {
-    setLocalData(serverData)
-  }, [serverData])
+  const { localData, setLocalData } = useLocalData(fetchedData)
 
   return {
     isLoading,
@@ -50,6 +57,7 @@ const useTasks = ({ initialData, queryCache, onRemove }) => {
       create,
       remove,
       updatePriorities,
+      updateStatus,
     },
   }
 }

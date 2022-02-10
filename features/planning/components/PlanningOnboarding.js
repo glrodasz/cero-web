@@ -8,7 +8,7 @@ const PlanningOnboarding = ({ tasksLength, children }) => {
         <>
           <Spacer.Vertical size="lg" />
           <Heading size="lg">
-            Ahora dime, ¿cuál es la primera tarea en la que trabajarás hoy?
+            ¿Cuál es la primera tarea en la que trabajarás hoy?
           </Heading>
         </>
       )}

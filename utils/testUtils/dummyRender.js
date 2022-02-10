@@ -1,13 +1,12 @@
-import isObject from '../isObject'
 import { renderToStaticMarkup } from 'react-dom/server'
+import isEmpty from '../isEmpty'
 
 const EMPTY_SPACE = ' '
 const NEW_LINE = '\n'
 
-const objectStringify = (obj) => {
-  const isNotAnEmptyObject = isObject(obj) && Object.keys(obj).length
-  return isNotAnEmptyObject ? `${EMPTY_SPACE}${JSON.stringify(obj)}` : ''
-}
+const objectStringify = (obj) =>
+  !isEmpty(obj) ? `${EMPTY_SPACE}${JSON.stringify(obj)}` : ''
+
 const cleanMarkup = (markup) =>
   markup
     .replace(/&amp;quot;/g, '"')

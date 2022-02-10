@@ -7,13 +7,7 @@ import Column from '../Column/Column'
 
 import { normalizeData, filterColumns } from '../../helpers'
 
-const Board = ({
-  tasks,
-  isActive,
-  onDragEndTask,
-  onClickDeleteTask,
-  onCheckCompleteTask,
-}) => {
+const Board = ({ tasks, isActive, onDragEnd, actions }) => {
   const [data, setData] = useState(normalizeData(tasks))
 
   useEffect(() => {
@@ -24,7 +18,7 @@ const Board = ({
 
   return (
     <>
-      <DragDropContext onDragEnd={onDragEndTask}>
+      <DragDropContext onDragEnd={onDragEnd}>
         {!!tasksLength &&
           data.columnOrder
             .filter(filterColumns({ tasksLength, isActive }))
@@ -40,10 +34,8 @@ const Board = ({
                     column={column}
                     tasks={tasks}
                     isActive={isActive}
-                    onClickDeleteTask={onClickDeleteTask}
-                    onCheckCompleteTask={onCheckCompleteTask}
+                    actions={actions}
                   />
-                  <Spacer.Vertical size="md" />
                 </>
               )
             })}
@@ -55,9 +47,12 @@ const Board = ({
 Board.propTypes = {
   tasks: PropTypes.object,
   isActive: PropTypes.bool,
-  onDragEndTask: PropTypes.bool,
-  onClickDeleteTask: PropTypes.func.isRequired,
-  onCheckCompleteTask: PropTypes.func.isRequired,
+  onDragEnd: PropTypes.bool,
+  actions: PropTypes.shape({
+    onDeleteTask: PropTypes.func,
+    onCompleteTask: PropTypes.func,
+    onEditTask: PropTypes.func,
+  }),
 }
 
 export default Board

@@ -1,84 +1,43 @@
-# Cero to Production — Web
+# Cero a Producción — Web
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/glrodasz/cero-web/Release)](https://github.com/glrodasz/cero-web/actions/workflows/release.yml) [![Codecov](https://img.shields.io/codecov/c/github/glrodasz/cero-web)](https://app.codecov.io/gh/glrodasz/cero-web)
 
-Cero to Production is a project where we are building a productivity management application called "RETO" in this series of live coding sessions. The idea behindd this sessions is to show all the complications and real thinking and decision making that common programmer do in daily basis with JavaScript.
 
-The project is live streaming in [Twitch](https://glrz.me/stream) in Spanish, every Tuesdays and Thursdays.
+0️⃣ 🚀 **Cero a Producción** is a project of live coding sessions where we develop a a productivity management app called **RETO** from the scratch to production.
 
-## Welcome to the Web
-### Install JSON Server
-- Install JSON server as a dev dependency `yarn add --dev json-server`
-- Create a file called `db.json`
-- Create an script `dev:api: "dev:api": "json-server --watch db.json --port 3001"`
-### React Query
-- Install React Query `yarn add react-query`
+## The idea behind
+The idea behind this sessions is to show a real developer experience where we explore every decision that a common programmer do in daily basis with JavaScript and other tools. You will see failing tests, refactors, Google and StackOverflow searchs, but also a lot of fun and the struggle of naming things.
 
-### Linting, Scritps
-Copy config files:
-* .commitlintrc.json
-* .eslintrc.json
-* .huskyrc.json
-* .lintstagedrc.json
-* .prettierrc.json
-* .stylelintrc.json
-* .jest.config.js (modified)
-* .jest.setup.js
-Add dependencies
+Watch the project in live streaming in 🇪🇸 Spanish, from **Tuesdays** to **Fridays**. [![Twitch Status](https://img.shields.io/twitch/status/guillermorodas?style=social)](https://glrz.me/stream)
+
+
+## Table of Contents
+
+- [Running the project locally](#Running-the-project-locally)
+- [Running the tests](#Running-the-tests)
+- [Throubleshooting](#Throubleshooting)
+
+## Running the project locally
+
+Follow these steps to `start the project` in development
+
+1. Clone repository. `git clone https://github.com/glrodasz/cero-web.git`
+2. Install dependencies in the project folder running `yarn` or `npm install`
+3. Copy the `.env.local.example` to `.env.local` and fill the env variables.
+4. Run the server with `yarn dev` or `npm run dev`, this command will run:
+
+ - The web project at `http://localhost:3000`
+ - The local api at `http://localhost:3000/local/api`
+ - The JSON server at `http://localhost:3001`
+
+
+## Running the tests
+
+1. Run `yarn run test`or `npm run test`
+2. To keep the tests running, run `yarn run test:watch`
+## Throubleshooting
+### M1 (Apple Silicon) Macs: npm ERR! sharp Prebuilt libvips 8.10.5 binaries are not yet available for darwin-arm64v8
+Update libvips to v0.29.0, running the following:
 ```
-yarn add --dev npm-run-all @commitlint/cli @commitlint/config-conventional commitizen eslint eslint-config-prettier eslint-plugin-prettier eslint-plugin-react husky jest lint-staged prettier stylelint stylelint-config-idiomatic-order stylelint-config-recommended @mapbox/stylelint-processor-arbitrary-tags
+brew install vips
 ```
-Copy scripts:
-```
-    "lint:css:fix": "yarn lint:css:prettier:fix && yarn lint:css:stylelint:fix",
-    "lint:css:prettier:fix": "yarn lint:css:prettier --write",
-    "lint:css:prettier": "prettier '**/*.css' --list-different --ignore-path .gitignore",
-    "lint:css:stylelint:fix": "yarn lint:css:stylelint --fix",
-    "lint:css:stylelint": "stylelint '**/*.css' --ignore-path .gitignore",
-    "lint:css": "run-s lint:css:stylelint lint:css:prettier",
-    "lint:fix": "run-p lint:js:fix lint:json:fix lint:css:fix ",
-    "lint:js:fix": "yarn lint:js --fix",
-    "lint:js": "eslint --cache --ignore-path .gitignore '**/*.js'",
-    "lint:json:fix": "yarn lint:json --write",
-    "lint:json": "prettier '**/*.json' --list-different --ignore-path .gitignore",
-    "lint": "run-p lint:js lint:json lint:css",
-    "test:watch": "CONSOLE_LEVEL=debug yarn test --watch",
-    "test": "jest"
-```
-### Folder Structure
-### Developing an Organism
-### Environment variables
-### Events in Components
-### Error handling
-### Unit testing
-### Snapshot testing
-### Visual tests
-### Integration test
-
-
-## Connecting both worlds
-### Configuring Hapi
-### Environment variables
-### Configuring Mongoose
-### Folder Structure
-### Developing a Service
-### Logging requests
-### Error handling
-### Unit testing
-### Integration test
-### End-to-end tests
-
-## i18n
-### Supporting languages [Web]
-### Supporting languages [Api]
-
-## Bundling
-### Webpack configuration [Web]
-### Frontend Optimization [Web]
-
-## Emailing layer
-### Email template system [Api]
-### Setup email service [Api]
-
-## Continuous integration & deployment
-### Docker
-### Kubernetes
-### Jenkins
+More info: https://sharp.pixelplumbing.com/install#apple-m1

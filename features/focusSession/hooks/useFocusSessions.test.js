@@ -5,6 +5,7 @@ import useFocusSessions, {
 } from './useFocusSessions'
 
 jest.mock('react-query', () => ({
+  useQueryCache: () => {},
   useMutation: jest
     .fn()
     .mockImplementationOnce(() => ['create'])

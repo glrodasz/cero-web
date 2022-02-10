@@ -2,15 +2,16 @@ import ToggleColorScheme from './ToggleColorScheme'
 import { render } from '@testing-library/react'
 
 jest.mock('@glrodasz/components', () => {
-  const { dummyRender } = require('../../../../utils/tests/dummyRender')
+  const { dummyRender } = require('../../../../utils/testUtils/dummyRender')
   return {
     Check: dummyRender('Check'),
     Heading: dummyRender('Heading'),
   }
 })
 
-jest.mock('./helpers.js', () => ({
-  loadAndListenColorScheme: () => {},
+jest.mock('../../hooks/useColorScheme', () => () => ({
+  isDarkMode: false,
+  setIsDarkMode: () => {},
 }))
 
 describe('[ features / common / components / ToggleColorScheme ]', () => {

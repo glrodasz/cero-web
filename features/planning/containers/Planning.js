@@ -1,5 +1,5 @@
+import { useUser } from '@auth0/nextjs-auth0'
 import PropTypes from 'prop-types'
-import { useQueryCache } from 'react-query'
 
 import { FullHeightContent, LoadingError, Link } from '@glrodasz/components'
 
@@ -9,33 +9,47 @@ import DeleteTaskModal from '../../tasks/components/DeleteTaskModal'
 import PlanningOnboarding from '../components/PlanningOnboarding'
 
 import useDeleteConfirmation from '../../tasks/hooks/useDeleteConfirmation'
+import useEditTaskModal from '../../tasks/hooks/useEditTaskModal'
 import useTasks from '../../tasks/hooks/useTasks'
 import useFocusSessions from '../../focusSession/hooks/useFocusSessions'
 
 import {
   handleDragEndTask,
-  handleClickDeleteTask,
-  handleClickAddTask,
-  handleClickCancelRemove,
-  handleClickConfirmRemove,
-  handleClickStartSession,
-} from '../handlers'
+  handleDeleteTask,
+  handleAddTask,
+  handleCancelRemove,
+  handleConfirmRemove,
+  handleStartSession,
+  handleOpenEditTaskModal,
+} from '../../tasks/handlers'
+
 import PlanningFooter from '../components/PlanningFooter'
 import AddTaskButton from '../components/AddTaskButton'
+import EditTask from '../../tasks/containers/EditTask'
+
+import {
+  MAXIMUM_BACKLOG_QUANTITY,
+  MAXIMUN_IN_PRIORITY_TASKS,
+} from '../../../config/index'
 
 const Planning = ({ initialData }) => {
-  const queryCache = useQueryCache()
-
+  const { user, isLoading: isLoadingUser, error: errorUser } = useUser()
   const deleteConfirmation = useDeleteConfirmation()
+  const editTaskModal = useEditTaskModal()
 
   const tasks = useTasks({
-    queryCache,
     initialData: initialData.tasks,
-    onRemove: () => deleteConfirmation.setTasksId(null),
+    onRemove: () => {
+      deleteConfirmation.setTaskId(null)
+      editTaskModal.setShowDialog(false)
+    },
   })
 
-  const focusSessions = useFocusSessions({ queryCache })
+  const focusSessions = useFocusSessions()
+
   const tasksLength = tasks.data?.length
+  const shouldShowAddTaskButton =
+    tasksLength < MAXIMUM_BACKLOG_QUANTITY + MAXIMUN_IN_PRIORITY_TASKS
 
   return (
     <>
@@ -45,43 +59,58 @@ const Planning = ({ initialData }) => {
             isLoading={tasks.isLoading}
             errorMessage={tasks.error?.message}
           >
-            <UserHeader
-              avatar="https://placeimg.com/200/200/people"
-              title="Hola, Cristian"
-              text={
-                <>
-                  <span>Conoce la metodologia</span> <Link>RETO</Link>
-                </>
-              }
-            />
+            <LoadingError
+              isLoading={isLoadingUser}
+              errorMessage={errorUser?.message}
+            >
+              <UserHeader
+                avatar={user?.picture}
+                title={`Hola, ${user?.name}`}
+                text={
+                  <>
+                    <span>Conoce la metodologia</span> <Link>RETO</Link>
+                  </>
+                }
+              />
+            </LoadingError>
             <PlanningOnboarding tasksLength={tasksLength}>
               <Board
                 isActive={false}
                 tasks={tasks.data}
-                onDragEndTask={handleDragEndTask({ tasks })}
-                onClickDeleteTask={handleClickDeleteTask({
-                  deleteConfirmation,
-                })}
+                onDragEnd={handleDragEndTask({ tasks })}
+                actions={{
+                  onDeleteTask: handleDeleteTask({
+                    deleteConfirmation,
+                  }),
+                  onEditTask: handleOpenEditTaskModal({
+                    tasks,
+                    editTaskModal,
+                  }),
+                }}
               />
             </PlanningOnboarding>
             <AddTaskButton
               id="planning"
-              tasksLength={tasksLength}
-              onClickAddTask={handleClickAddTask({ tasks })}
+              isShown={shouldShowAddTaskButton}
+              onAddTask={handleAddTask({ tasks })}
             />
           </LoadingError>
         }
         footer={
           <PlanningFooter
             tasksLength={tasksLength}
-            onClickStartSession={handleClickStartSession({ focusSessions })}
+            onClickStartSession={handleStartSession({ focusSessions })}
           />
         }
       />
+      <EditTask
+        editTaskModal={editTaskModal}
+        deleteConfirmation={deleteConfirmation}
+      />
       {deleteConfirmation.showDialog && (
         <DeleteTaskModal
-          onClickCancel={handleClickCancelRemove({ deleteConfirmation })}
-          onClickConfirm={handleClickConfirmRemove({
+          onClickCancel={handleCancelRemove({ deleteConfirmation })}
+          onClickConfirm={handleConfirmRemove({
             tasks,
             deleteConfirmation,
           })}

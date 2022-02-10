@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / common / components / NavigationMenu ] when \`NavigationMenu\` is mounted should render 1`] = `
+<DocumentFragment>
+  <div
+    class="jsx-2604570837 navigation-menu"
+  >
+    <div
+      class="jsx-2604570837 menu-item"
+    >
+      
+[IconLabel {"icon":"home","label":"Home","isActive":true,"direction":"horizontal","size":"md"} /]
+    </div>
+    <div
+      class="jsx-2604570837 menu-item"
+    >
+      
+[IconLabel {"icon":"tasks","label":"Tasks","isActive":false,"direction":"horizontal","size":"md"} /]
+    </div>
+    <div
+      class="jsx-2604570837 menu-item"
+    >
+      
+[IconLabel {"icon":"reports","label":"Reports","isActive":false,"direction":"horizontal","size":"md"} /]
+    </div>
+    <div
+      class="jsx-2604570837 menu-item"
+    >
+      
+[IconLabel {"icon":"settings","label":"Settings","isActive":false,"direction":"horizontal","size":"md"} /]
+    </div>
+  </div>
+</DocumentFragment>
+`;
