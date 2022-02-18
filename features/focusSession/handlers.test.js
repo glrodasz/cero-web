@@ -123,6 +123,11 @@ describe('[ features / focusSession / handlers ]', () => {
           breaktimeTimer: {
             setShowDialog: setShowDialogMock,
           },
+          focusSession: {
+            api: {
+              resume: () => {},
+            },
+          },
         }
 
         // Act
@@ -130,6 +135,27 @@ describe('[ features / focusSession / handlers ]', () => {
 
         // Assert
         expect(setShowDialogMock).toHaveBeenCalledWith(false)
+      })
+
+      it('should call `focusSession.api.resume`', () => {
+        // Arrange
+        const focusSessionApiResumeMock = jest.fn()
+        const params = {
+          breaktimeTimer: {
+            setShowDialog: () => {},
+          },
+          focusSession: {
+            api: {
+              resume: focusSessionApiResumeMock,
+            },
+          },
+        }
+
+        // Act
+        handleClickCloseBreaktimeTimer(params)()
+
+        // Assert
+        expect(focusSessionApiResumeMock).toHaveBeenCalled()
       })
     })
   })

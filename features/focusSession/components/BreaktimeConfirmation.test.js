@@ -18,8 +18,8 @@ describe('[ features / focusSession / components / BreaktimeConfirmation ]', () 
   describe('when `BreaktimeConfirmation` is mounted', () => {
     it('should render', () => {
       const props = {
-        onClickClose: () => {},
-        onClickChoose: () => {},
+        onClose: () => {},
+        onChoose: () => {},
       }
       const { asFragment } = render(<BreaktimeConfirmation {...props} />)
       expect(asFragment()).toMatchSnapshot()

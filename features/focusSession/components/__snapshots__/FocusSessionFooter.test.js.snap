@@ -7,11 +7,11 @@ exports[`[ features / focusSession / components / FocusSessionFooter ] when \`Fo
   <button
     class="button type-primary"
   >
-    <header
-      class="heading color-inverted size-md weight-bold"
+    <h1
+      class="heading color-inverted size-md weight-bold is-centered"
     >
       Finalizar tu sesión
-    </header>
+    </h1>
   </button>
 </DocumentFragment>
 `;
