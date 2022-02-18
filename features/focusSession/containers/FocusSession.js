@@ -175,19 +175,23 @@ const FocusSession = ({ initialData }) => {
       />
       {breaktimeConfirmation.showDialog && (
         <BreaktimeConfirmation
-          onClickClose={handleClickCloseBreaktimeConfirmation({
+          onClose={handleClickCloseBreaktimeConfirmation({
             breaktimeConfirmation,
           })}
-          onClickChoose={handleClickChooseBreaktime({
+          onChoose={handleClickChooseBreaktime({
             breaktimeTimer,
             breaktimeConfirmation,
+            focusSession,
           })}
         />
       )}
       {breaktimeTimer.showDialog && (
         <BreaktimeTimer
           breaktime={breaktimeTimer.time}
-          onClose={handleClickCloseBreaktimeTimer({ breaktimeTimer })}
+          onClose={handleClickCloseBreaktimeTimer({
+            breaktimeTimer,
+            focusSession,
+          })}
         />
       )}
       <EditTask

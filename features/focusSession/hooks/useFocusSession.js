@@ -4,7 +4,7 @@ import useLocalData from '../../common/hooks/useLocalData'
 
 const QUERY_KEY = 'focus-session'
 
-export const pauseMutation = () => focusSessionsApi.pause()
+export const pauseMutation = (params) => focusSessionsApi.pause(params)
 export const resumeMutation = () => focusSessionsApi.resume()
 
 const useFocusSession = ({ initialData, onResume }) => {

@@ -16,18 +16,24 @@ export const handleClickCloseBreaktimeConfirmation = ({
   setShowDialog(false)
 }
 
-export const handleClickCloseBreaktimeTimer = ({ breaktimeTimer }) => () => {
+export const handleClickCloseBreaktimeTimer = ({
+  breaktimeTimer,
+  focusSession,
+}) => () => {
   const { setShowDialog } = breaktimeTimer
   setShowDialog(false)
+  focusSession.api.resume()
 }
 
 export const handleClickChooseBreaktime = ({
   breaktimeTimer,
   breaktimeConfirmation,
+  focusSession,
 }) => (time) => {
   breaktimeConfirmation.setShowDialog(false)
   breaktimeTimer.setShowDialog(true)
   breaktimeTimer.setTime(time)
+  focusSession.api.pause({ time })
 }
 
 export const handleClickEndSession = ({ focusSessions }) => async () => {

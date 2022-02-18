@@ -25,7 +25,7 @@ const BreaktimeTimer = ({ onClose, breaktime }) => {
   })
 
   return (
-    <Modal isCentered onClose={createHandleClose({ onClose })}>
+    <Modal onClose={createHandleClose({ onClose })}>
       <CenteredContent>
         <Heading size="2xl" color="tertiary" weight="normal">
           {formatMilliseconds(currentTime)}
