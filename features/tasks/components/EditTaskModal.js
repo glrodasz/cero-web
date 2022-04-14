@@ -4,13 +4,17 @@ import { Modal, Heading, Paragraph } from '@glrodasz/components'
 
 import timeAgo from '../../../utils/timeAgo'
 
-const handleClose = ({ onClose }) => () => {
-  onClose()
-}
+const handleClose =
+  ({ onClose }) =>
+  () => {
+    onClose()
+  }
 
-const handleDelete = ({ id, onDelete }) => () => {
-  onDelete({ id })
-}
+const handleDelete =
+  ({ id, onDelete }) =>
+  () => {
+    onDelete({ id })
+  }
 
 const EditTaskModal = ({ task, onClose, onDelete }) => {
   return (

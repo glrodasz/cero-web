@@ -83,12 +83,14 @@ const FocusSession = ({ initialData }) => {
   const activePause = getActivePause({ focusSession })
   const isPaused = isObject(activePause) && !isEmpty(activePause)
 
-  const startTime = useMemo(() => focusSession?.data?.startTime ?? 0, [
-    focusSession?.data?.startTime,
-  ])
-  const pauseStartTime = useMemo(() => activePause?.startTime ?? 0, [
-    activePause?.startTime,
-  ])
+  const startTime = useMemo(
+    () => focusSession?.data?.startTime ?? 0,
+    [focusSession?.data?.startTime]
+  )
+  const pauseStartTime = useMemo(
+    () => activePause?.startTime ?? 0,
+    [activePause?.startTime]
+  )
 
   const { currentTime, clearTime, resumeTime } = useChronometer({
     startTime,
