@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "1.7.0",
-    "@glrodasz/components": "2.11.1",
+    "@glrodasz/components": "*",
     "minireset.css": "0.0.6",
     "next": "10.0.0",
     "next-transpile-modules": "4.1.0",
