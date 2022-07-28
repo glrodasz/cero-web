@@ -12,13 +12,18 @@ import {
 
 import time from '../../../utils/time'
 
-const createHandlerClose = ({ onClose }) => () => {
-  onClose()
-}
+const createHandlerClose =
+  ({ onClose }) =>
+  () => {
+    onClose()
+  }
 
-const createHandlerChoose = ({ onChoose }) => (time) => () => {
-  onChoose(time)
-}
+const createHandlerChoose =
+  ({ onChoose }) =>
+  (time) =>
+  () => {
+    onChoose(time)
+  }
 
 const BreaktimeConfirmation = ({ onClose, onChoose }) => {
   const handleChooseBreaktime = createHandlerChoose({ onChoose })

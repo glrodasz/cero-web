@@ -10,11 +10,11 @@ export const resumeMutation = () => focusSessionsApi.resume()
 const useFocusSession = ({ initialData, onResume }) => {
   const queryCache = useQueryCache()
 
-  const { isLoading, error, data: fetchedData } = useQuery(
-    QUERY_KEY,
-    () => focusSessionsApi.getActive(),
-    { initialData }
-  )
+  const {
+    isLoading,
+    error,
+    data: fetchedData,
+  } = useQuery(QUERY_KEY, () => focusSessionsApi.getActive(), { initialData })
 
   const [pause] = useMutation(pauseMutation, {
     onSuccess: () => {

@@ -7,13 +7,13 @@ const QUERY_KEY = 'tasks'
 const useTasks = ({ initialData, onRemove }) => {
   const queryCache = useQueryCache()
 
-  const { isLoading, error, data: fetchedData } = useQuery(
-    QUERY_KEY,
-    () => tasksApi.getAll(),
-    {
-      initialData,
-    }
-  )
+  const {
+    isLoading,
+    error,
+    data: fetchedData,
+  } = useQuery(QUERY_KEY, () => tasksApi.getAll(), {
+    initialData,
+  })
 
   const [create] = useMutation((params) => tasksApi.create(params), {
     onSuccess: () => {

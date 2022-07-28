@@ -13,9 +13,11 @@ import {
 import useTime from '../../common/hooks/useTime'
 import formatMilliseconds from '../../../utils/formatMilliseconds'
 
-const createHandleClose = ({ onClose }) => () => {
-  onClose()
-}
+const createHandleClose =
+  ({ onClose }) =>
+  () => {
+    onClose()
+  }
 
 const BreaktimeTimer = ({ onClose, breaktime }) => {
   const { currentTime } = useTime({

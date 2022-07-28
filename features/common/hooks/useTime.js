@@ -2,10 +2,14 @@ import { useState, useEffect, useCallback } from 'react'
 import time from '../../../utils/time'
 import useInterval from './useInterval'
 
-const tick = ({ currentTime, setCurrentTime, isTimer }) => () => {
-  const modifier = isTimer ? time.ONE_SECOND_IN_MS * -1 : time.ONE_SECOND_IN_MS
-  setCurrentTime(currentTime + modifier)
-}
+const tick =
+  ({ currentTime, setCurrentTime, isTimer }) =>
+  () => {
+    const modifier = isTimer
+      ? time.ONE_SECOND_IN_MS * -1
+      : time.ONE_SECOND_IN_MS
+    setCurrentTime(currentTime + modifier)
+  }
 
 const useTime = (
   { isTimer = false, startTime = 0, endTime = null, callback = () => {} } = {

@@ -1,3 +1,8 @@
+import { setGlobalConfig } from '@storybook/testing-react'
+import * as globalStorybookConfig from './.storybook/preview'
+
+setGlobalConfig(globalStorybookConfig)
+
 // https://console.spec.whatwg.org/#loglevel-severity
 const CONSOLE_LEVELS = ['debug', 'log', 'info', 'warn', 'error']
 
