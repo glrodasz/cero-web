@@ -9,6 +9,7 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
+    "next",
     "plugin:prettier/recommended",
     "plugin:testcafe/recommended"
   ],

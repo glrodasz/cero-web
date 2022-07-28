@@ -1,5 +1,5 @@
 import { focusSessionsApi } from '../../planning/api'
-import { useMutation, useQueryCache } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 
 const QUERY_KEY = 'focus-sessions'
 
@@ -7,17 +7,17 @@ export const createMutation = (params) => focusSessionsApi.create(params)
 export const finishMutation = (params) => focusSessionsApi.finish(params)
 
 const useFocusSessions = () => {
-  const queryCache = useQueryCache()
+  const queryClient = useQueryClient()
 
-  const [create] = useMutation(createMutation, {
+  const { mutateAsync: create } = useMutation(createMutation, {
     onSuccess: () => {
-      queryCache.invalidateQueries(QUERY_KEY)
+      queryClient.invalidateQueries(QUERY_KEY)
     },
   })
 
-  const [finish] = useMutation(finishMutation, {
+  const { mutateAsync: finish } = useMutation(finishMutation, {
     onSuccess: () => {
-      queryCache.invalidateQueries(QUERY_KEY)
+      queryClient.invalidateQueries(QUERY_KEY)
     },
   })
 

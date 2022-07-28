@@ -1,11 +1,11 @@
 import { tasksApi } from '../../planning/api'
-import { useQuery, useMutation, useQueryCache } from 'react-query'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
 import useLocalData from '../../common/hooks/useLocalData'
 
 const QUERY_KEY = 'tasks'
 
 const useTasks = ({ initialData, onRemove }) => {
-  const queryCache = useQueryCache()
+  const queryClient = useQueryClient()
 
   const {
     isLoading,
@@ -15,33 +15,39 @@ const useTasks = ({ initialData, onRemove }) => {
     initialData,
   })
 
-  const [create] = useMutation((params) => tasksApi.create(params), {
-    onSuccess: () => {
-      queryCache.invalidateQueries(QUERY_KEY)
-    },
-  })
-
-  const [remove] = useMutation((params) => tasksApi.delete(params), {
-    onSuccess: () => {
-      queryCache.invalidateQueries(QUERY_KEY)
-      onRemove?.()
-    },
-  })
-
-  const [updateStatus] = useMutation(
-    (params) => tasksApi.updateStatus(params),
+  const { mutateAsync: create } = useMutation(
+    (params) => tasksApi.create(params),
     {
       onSuccess: () => {
-        queryCache.invalidateQueries(QUERY_KEY)
+        queryClient.invalidateQueries(QUERY_KEY)
       },
     }
   )
 
-  const [updatePriorities] = useMutation(
+  const { mutateAsync: remove } = useMutation(
+    (params) => tasksApi.delete(params),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(QUERY_KEY)
+        onRemove?.()
+      },
+    }
+  )
+
+  const { mutateAsync: updateStatus } = useMutation(
+    (params) => tasksApi.updateStatus(params),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(QUERY_KEY)
+      },
+    }
+  )
+
+  const { mutateAsync: updatePriorities } = useMutation(
     (params) => tasksApi.updatePriorities(params),
     {
       onSuccess: () => {
-        queryCache.invalidateQueries(QUERY_KEY)
+        queryClient.invalidateQueries(QUERY_KEY)
       },
     }
   )

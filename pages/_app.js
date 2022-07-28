@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 import { Accordion, Button, Container } from '@glrodasz/components'
-import { ReactQueryCacheProvider, QueryCache } from 'react-query'
+import { QueryClientProvider, QueryClient } from 'react-query'
 import { ReactQueryDevtools } from 'react-query-devtools'
 import { UserProvider } from '@auth0/nextjs-auth0'
 
@@ -16,12 +16,12 @@ import NavigationMenu from '../features/common/components/NavigationMenu'
 import MainLayout from '../features/common/components/MainLayout'
 import useColorScheme from '../features/common/hooks/useColorScheme'
 
-const queryCache = new QueryCache()
+const queryClient = new QueryClient()
 function MyApp({ Component, pageProps }) {
   useColorScheme()
 
   return (
-    <ReactQueryCacheProvider queryCache={queryCache}>
+    <QueryClientProvider client={queryClient}>
       <Head>
         <link
           href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap"
@@ -74,7 +74,7 @@ function MyApp({ Component, pageProps }) {
         }
       />
       <ReactQueryDevtools initialIsOpen />
-    </ReactQueryCacheProvider>
+    </QueryClientProvider>
   )
 }
 
