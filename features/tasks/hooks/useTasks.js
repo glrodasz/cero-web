@@ -1,5 +1,5 @@
 import { tasksApi } from '../../planning/api'
-import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import useLocalData from '../../common/hooks/useLocalData'
 
 const QUERY_KEY = 'tasks'
@@ -11,7 +11,7 @@ const useTasks = ({ initialData, onRemove }) => {
     isLoading,
     error,
     data: fetchedData,
-  } = useQuery(QUERY_KEY, () => tasksApi.getAll(), {
+  } = useQuery([QUERY_KEY], () => tasksApi.getAll(), {
     initialData,
   })
 

@@ -16,6 +16,7 @@ module.exports = {
     '\\.svg$': '<rootDir>/utils/testUtils/svgrMock.js',
   },
   setupFilesAfterEnv: ['./jest.setup.js'],
+  testEnvironment: 'jsdom',
   testMatch: [
     '**/__tests__/**/*.[jt]s?(x)',
     '**/?!(*.integration.)+(spec|test).[jt]s?(x)',

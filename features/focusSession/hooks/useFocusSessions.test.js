@@ -4,7 +4,7 @@ import useFocusSessions, {
   finishMutation,
 } from './useFocusSessions'
 
-jest.mock('react-query', () => ({
+jest.mock('@tanstack/react-query', () => ({
   useQueryClient: () => {},
   useMutation: jest
     .fn()

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { tasksApi } from '../../planning/api'
-import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
 const QUERY_KEY = 'task'
 
