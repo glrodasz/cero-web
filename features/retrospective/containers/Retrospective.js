@@ -4,7 +4,7 @@ import {
   Accordion,
   FullHeightContent,
   Paragraph,
-  // Score,
+  Score,
   Textarea,
 } from '@glrodasz/components'
 
@@ -34,7 +34,7 @@ const Retrospective = () => {
               <div>
                 <Heading size="xl">¿Cómo te sentiste el día de hoy?</Heading>
                 <Spacer.Vertical size="sm" />
-                {/* <Score /> */}
+                <Score />
               </div>
               <Spacer.Vertical size="md" />
               <Heading size="xl">¿Qué bloqueos tuviste?</Heading>

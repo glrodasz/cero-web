@@ -21,5 +21,8 @@ module.exports = {
     '**/__tests__/**/*.[jt]s?(x)',
     '**/?!(*.integration.)+(spec|test).[jt]s?(x)',
   ],
+  transform: {
+    '^.+\\.jsx?$': ['babel-jest', { presets: ['next/babel'] }],
+  },
   transformIgnorePatterns: ['node_modules/(?!@glrodasz/components)'],
 }
