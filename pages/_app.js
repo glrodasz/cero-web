@@ -7,14 +7,14 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { UserProvider } from '@auth0/nextjs-auth0'
 
 import ToggleColorScheme from '../features/common/components/ToggleColorScheme'
+import NavigationMenu from '../features/common/components/NavigationMenu'
+import MainLayout from '../features/common/components/MainLayout'
+import useColorScheme from '../features/common/hooks/useColorScheme'
 
 import 'minireset.css'
 import '@glrodasz/components/styles/globals.css'
 import '@glrodasz/components/styles/tokens.css'
 import '../styles/globals.scss'
-import NavigationMenu from '../features/common/components/NavigationMenu'
-import MainLayout from '../features/common/components/MainLayout'
-import useColorScheme from '../features/common/hooks/useColorScheme'
 
 const queryClient = new QueryClient()
 function MyApp({ Component, pageProps }) {

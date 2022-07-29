@@ -1,5 +1,4 @@
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen, fireEvent } from '@testing-library/react'
 import PlanningFooter from './PlanningFooter'
 
 jest.mock('@glrodasz/components', () => {
@@ -59,7 +58,7 @@ describe('[ features / planning / components / PlanningFooter ]', () => {
 
       // Act
       render(<PlanningFooter {...props} />)
-      userEvent.click(screen.getByText('Empieza ahora'))
+      fireEvent.click(screen.getByText('Empieza ahora'))
 
       // Assert
       expect(onClickStartSessionStub).toHaveBeenCalled()

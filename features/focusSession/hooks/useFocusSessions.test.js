@@ -8,8 +8,8 @@ jest.mock('@tanstack/react-query', () => ({
   useQueryClient: () => {},
   useMutation: jest
     .fn()
-    .mockImplementationOnce(() => ['create'])
-    .mockImplementationOnce(() => ['finish']),
+    .mockImplementationOnce(() => ({ mutateAsync: 'create' }))
+    .mockImplementationOnce(() => ({ mutateAsync: 'finish' })),
 }))
 
 import { focusSessionsApi } from '../../planning/api'
