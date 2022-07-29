@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { renderHook } from '@testing-library/react-hooks'
 import useFocusSessions, {
   createMutation,
