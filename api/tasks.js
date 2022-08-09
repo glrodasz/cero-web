@@ -37,7 +37,7 @@ class Task extends Request {
   }
 
   update({ id, task }) {
-    return this.fetch(`tasks/${id}`, { method: 'put', body: { task } })
+    return this.fetch(`tasks/${id}`, { method: 'patch', body: task })
   }
 }
 

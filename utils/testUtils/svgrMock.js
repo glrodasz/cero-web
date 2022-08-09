@@ -1,4 +1,4 @@
 export const ReactComponent = 'div'
 
-const svgrUrl = 'svgrUrl'
-export default svgrUrl
+const SvgrURL = 'SvgrURL'
+export default SvgrURL

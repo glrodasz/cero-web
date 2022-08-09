@@ -130,3 +130,11 @@ export const handleCloseEditTaskModal =
     setTaskId(null)
     setShowDialog(false)
   }
+
+// TODO: Rethink the whole useTask, useTasks naming
+// maybe change task to taskApi? to be more specific
+export const handleUpdateTask =
+  ({ task }) =>
+  ({ id, data }) => {
+    task.api.update({ id, task: data })
+  }

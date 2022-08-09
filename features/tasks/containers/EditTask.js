@@ -6,11 +6,13 @@ import useTask from '../hooks/useTask'
 import {
   handleDeleteTask,
   handleCloseEditTaskModal,
+  handleUpdateTask,
 } from '../../tasks/handlers'
 
 const EditTask = ({ editTaskModal, deleteConfirmation }) => {
+  const { taskId } = editTaskModal
   const task = useTask({
-    id: editTaskModal.taskId,
+    id: taskId,
   })
 
   return (
@@ -21,6 +23,9 @@ const EditTask = ({ editTaskModal, deleteConfirmation }) => {
           onClose={handleCloseEditTaskModal({ editTaskModal })}
           onDelete={handleDeleteTask({
             deleteConfirmation,
+          })}
+          onUpdate={handleUpdateTask({
+            task,
           })}
         />
       )}
