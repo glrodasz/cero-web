@@ -38,7 +38,7 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     const activeFocusSession = await getActiveFocusSession({ options })
 
-    let url = `tasks?_sort=priority&_order=asc`
+    let url = `tasks?_sort=priority&_order=asc&focusSessionId=${activeFocusSession?.id}`
 
     if (isEmpty(activeFocusSession)) {
       url = `tasks?_sort=priority&_order=asc&status_like=in-progress|pending`
@@ -48,6 +48,7 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
+    const activeFocusSession = await getActiveFocusSession({ options })
     const inProgressTasks = await getInProgressTasks({ options })
 
     let status = 'in-progress'
@@ -59,7 +60,13 @@ export default async function handler(req, res) {
     const { description } = req.body
     const fetchOptions = {
       ...options,
-      body: { status, priority: 0, description, createdAt: Date.now() },
+      body: {
+        status,
+        priority: 0,
+        description,
+        focusSessionId: activeFocusSession.id,
+        createdAt: Date.now(),
+      },
     }
 
     return fetchJsonServer({

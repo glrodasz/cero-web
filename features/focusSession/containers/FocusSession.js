@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useUser } from '@auth0/nextjs-auth0'
 
 import {
@@ -17,6 +17,7 @@ import BreaktimeTimer from '../components/BreaktimeTimer'
 import FocusSessionFooter from '../components/FocusSessionFooter'
 import Chronometer from '../components/Chronometer'
 import AddTaskButton from '../../planning/components/AddTaskButton'
+import PauseTimer from '../components/PauseTimer'
 
 import EditTask from '../../tasks/containers/EditTask'
 
@@ -36,6 +37,7 @@ import {
   handleClickEndSession,
   handleCheckCompleteTask,
   createHandlerPauseChronometer,
+  createPauseTimerHandlerClose,
 } from '../handlers.js'
 
 import useEditTaskModal from '../../tasks/hooks/useEditTaskModal'
@@ -55,6 +57,7 @@ import {
   MAXIMUN_IN_PRIORITY_TASKS,
 } from '../../../config'
 import { COMPLETED_COLUMN_ID } from '../../tasks/constants'
+import useDialog from '../../common/hooks/useDialog'
 
 const getActivePause = ({ focusSession }) => {
   return focusSession?.data?.pauses?.find((pause) => pause.endTime === null)
@@ -66,6 +69,8 @@ const FocusSession = ({ initialData }) => {
   const breaktimeConfirmation = useBreaktimeConfirmation()
   const breaktimeTimer = useBreaktimeTimer()
   const editTaskModal = useEditTaskModal()
+  const pauseTimer = useDialog()
+  const [renderChronometer, setRenderChronometer] = useState(false)
 
   const tasks = useTasks({
     initialData: initialData.tasks,
@@ -98,6 +103,8 @@ const FocusSession = ({ initialData }) => {
     isPaused,
   })
 
+  useEffect(() => setRenderChronometer(true), [])
+
   const focusSessions = useFocusSessions()
 
   const tasksLength = tasks.data?.filter(
@@ -129,14 +136,17 @@ const FocusSession = ({ initialData }) => {
               />
             </LoadingError>
             <Spacer.Vertical size="sm" />
-            <Chronometer
-              currentTime={currentTime}
-              isPaused={isPaused}
-              onPause={createHandlerPauseChronometer({
-                focusSession,
-                clearTime,
-              })}
-            />
+            {renderChronometer && (
+              <Chronometer
+                currentTime={currentTime}
+                isPaused={isPaused}
+                onPause={createHandlerPauseChronometer({
+                  focusSession,
+                  pauseTimer,
+                  clearTime,
+                })}
+              />
+            )}
             <Board
               isActive
               tasks={tasks.data}
@@ -192,6 +202,14 @@ const FocusSession = ({ initialData }) => {
           breaktime={breaktimeTimer.time}
           onClose={handleClickCloseBreaktimeTimer({
             breaktimeTimer,
+            focusSession,
+          })}
+        />
+      )}
+      {pauseTimer.showDialog && (
+        <PauseTimer
+          onClose={createPauseTimerHandlerClose({
+            pauseTimer,
             focusSession,
           })}
         />

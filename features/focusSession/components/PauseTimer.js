@@ -1,13 +1,13 @@
-import PropTypes from 'prop-types'
+import React from 'react'
 
 import {
   Modal,
   CenteredContent,
   Picture,
-  Heading,
   Spacer,
+  Heading,
   Paragraph,
-  Link,
+  Button,
 } from '@glrodasz/components'
 
 import useTime from '../../common/hooks/useTime'
@@ -19,42 +19,34 @@ const createHandleClose =
     onClose()
   }
 
-const BreaktimeTimer = ({ onClose, breaktime }) => {
+const PauseTimer = ({ onClose }) => {
   const { currentTime } = useTime({
-    isTimer: true,
-    startTime: breaktime,
-    callback: onClose,
+    isTimer: false, // TODO: type: { isTimer: true, isStopwatch: false }
   })
 
   return (
-    <Modal onClose={createHandleClose({ onClose })}>
+    <Modal>
       <CenteredContent>
         <Heading size="2xl" color="tertiary" weight="normal" isCentered>
           {formatMilliseconds(currentTime)}
         </Heading>
         <Spacer.Vertical size="lg" />
-        <Picture src="/images/yoga-pause.svg" width={200}></Picture>
+        <Picture src="/images/forest-pause.svg" width={200}></Picture>
         <Spacer.Vertical size="md" />
         <Heading size="xl" color="tertiary">
-          DESCONÉCTATE
+          TU RETO ESTA EN PAUSA
         </Heading>
         <Spacer.Vertical size="sm" />
         <Paragraph color="inverted">
-          Trabajar cuando te levantas no te permite despertar completamente. Por
-          eso, date un tiempo antes de empezar tu día.
+          Durante esta pausa tu tiempo de productividad no será registrado.
         </Paragraph>
         <Spacer.Vertical size="md" />
-        <Link size="lg" color="tertiary">
-          Leer más
-        </Link>
+        <Button type="primary" onClick={createHandleClose({ onClose })} isMuted>
+          Volver a mis tareas
+        </Button>
       </CenteredContent>
     </Modal>
   )
 }
 
-BreaktimeTimer.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  breaktime: PropTypes.number.isRequired,
-}
-
-export default BreaktimeTimer
+export default PauseTimer

@@ -23,6 +23,13 @@ export const handleClickCloseBreaktimeTimer =
     focusSession.api.resume()
   }
 
+export const createPauseTimerHandlerClose =
+  ({ pauseTimer, focusSession }) =>
+  async () => {
+    await focusSession.api.resume()
+    pauseTimer.setShowDialog(false)
+  }
+
 export const handleClickChooseBreaktime =
   ({ breaktimeTimer, breaktimeConfirmation, focusSession }) =>
   (time) => {
@@ -40,18 +47,18 @@ export const handleClickEndSession =
   }
 
 export const createHandlerClickChronometer =
-  ({ isPlaying, toggle, onPause }) =>
+  ({ isPaused, onPause }) =>
   async () => {
-    onPause(isPlaying)
-    toggle()
+    onPause(isPaused)
   }
 
 export const createHandlerPauseChronometer =
-  ({ focusSession, clearTime }) =>
-  async (isPlaying) => {
-    if (isPlaying) {
+  ({ focusSession, pauseTimer, clearTime }) =>
+  async (isPaused) => {
+    if (isPaused) {
       await focusSession.api.resume()
     } else {
+      pauseTimer.setShowDialog(true)
       await focusSession.api.pause()
       clearTime()
     }
