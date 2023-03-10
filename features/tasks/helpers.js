@@ -118,24 +118,30 @@ export const normalizeData = (tasks) => {
   return { tasks: normalizeTasks, columns, columnOrder }
 }
 
-export const filterColumns = ({ tasksLength, isActive }) => (column) => {
-  const AreWeInFocusSession = isActive
-  const AreWeInPlanning = !isActive
-  const DoWeHaveBacklogTasks = tasksLength >= MAXIMUN_IN_PRIORITY_TASKS
+export const filterColumns =
+  ({ tasksLength, isActive }) =>
+  (column) => {
+    const AreWeInFocusSession = isActive
+    const AreWeInPlanning = !isActive
+    const DoWeHaveBacklogTasks = tasksLength >= MAXIMUN_IN_PRIORITY_TASKS
 
-  if (AreWeInFocusSession) {
-    return true
-  }
+    if (AreWeInFocusSession) {
+      return true
+    }
 
-  if (AreWeInPlanning && column === IN_PROGRESS_COLUMN_ID) {
-    return true
-  }
+    if (AreWeInPlanning && column === IN_PROGRESS_COLUMN_ID) {
+      return true
+    }
 
-  if (AreWeInPlanning && DoWeHaveBacklogTasks && column === PENDING_COLUMN_ID) {
-    return true
-  }
+    if (
+      AreWeInPlanning &&
+      DoWeHaveBacklogTasks &&
+      column === PENDING_COLUMN_ID
+    ) {
+      return true
+    }
 
-  if (AreWeInPlanning && column === COMPLETED_COLUMN_ID) {
-    return false
+    if (AreWeInPlanning && column === COMPLETED_COLUMN_ID) {
+      return false
+    }
   }
-}

@@ -17,9 +17,10 @@ class FocusSession extends Request {
     return this.fetch('focus-sessions/active')
   }
 
-  pause() {
+  pause({ time } = {}) {
     return this.fetch(`focus-sessions/pause`, {
       method: 'patch',
+      body: { time },
     })
   }
 

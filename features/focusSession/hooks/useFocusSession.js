@@ -1,30 +1,30 @@
 import { focusSessionsApi } from '../api'
-import { useQuery, useMutation, useQueryCache } from 'react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import useLocalData from '../../common/hooks/useLocalData'
 
 const QUERY_KEY = 'focus-session'
 
-export const pauseMutation = () => focusSessionsApi.pause()
+export const pauseMutation = (params) => focusSessionsApi.pause(params)
 export const resumeMutation = () => focusSessionsApi.resume()
 
 const useFocusSession = ({ initialData, onResume }) => {
-  const queryCache = useQueryCache()
+  const queryClient = useQueryClient()
 
-  const { isLoading, error, data: fetchedData } = useQuery(
-    QUERY_KEY,
-    () => focusSessionsApi.getActive(),
-    { initialData }
-  )
+  const {
+    isLoading,
+    error,
+    data: fetchedData,
+  } = useQuery([QUERY_KEY], () => focusSessionsApi.getActive(), { initialData })
 
-  const [pause] = useMutation(pauseMutation, {
+  const { mutateAsync: pause } = useMutation(pauseMutation, {
     onSuccess: () => {
-      queryCache.invalidateQueries(QUERY_KEY)
+      queryClient.invalidateQueries(QUERY_KEY)
     },
   })
 
-  const [resume] = useMutation(resumeMutation, {
+  const { mutateAsync: resume } = useMutation(resumeMutation, {
     onSuccess: () => {
-      queryCache.invalidateQueries(QUERY_KEY)
+      queryClient.invalidateQueries(QUERY_KEY)
       onResume?.()
     },
   })

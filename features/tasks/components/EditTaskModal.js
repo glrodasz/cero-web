@@ -4,15 +4,26 @@ import { Modal, Heading, Paragraph } from '@glrodasz/components'
 
 import timeAgo from '../../../utils/timeAgo'
 
-const handleClose = ({ onClose }) => () => {
-  onClose()
-}
+const handleClose =
+  ({ onClose }) =>
+  () => {
+    onClose()
+  }
 
-const handleDelete = ({ id, onDelete }) => () => {
-  onDelete({ id })
-}
+const handleDelete =
+  ({ id, onDelete }) =>
+  () => {
+    onDelete({ id })
+  }
 
-const EditTaskModal = ({ task, onClose, onDelete }) => {
+const handleUpdate =
+  ({ id, onUpdate }) =>
+  (event) => {
+    const description = event.currentTarget.textContent
+    onUpdate({ id, data: { description } })
+  }
+
+const EditTaskModal = ({ task, onClose, onDelete, onUpdate }) => {
   return (
     <Modal
       type="secondary"
@@ -23,7 +34,13 @@ const EditTaskModal = ({ task, onClose, onDelete }) => {
       }}
     >
       <div className="container">
-        <Heading size="xl">{task?.description}</Heading>
+        <Heading
+          size="xl"
+          onBlur={handleUpdate({ id: task?.id, onUpdate })}
+          isEditable
+        >
+          {task?.description}
+        </Heading>
         {task?.createdAt && (
           <Paragraph size="md" color="muted">
             Creada {timeAgo(task?.createdAt)}

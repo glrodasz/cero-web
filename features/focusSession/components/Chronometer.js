@@ -1,13 +1,11 @@
 import { Icon, Paragraph, Spacer } from '@glrodasz/components'
 import PropTypes from 'prop-types'
 import formatMilliseconds from '../../../utils/formatMilliseconds'
-import useToggle from '../../common/hooks/useToggle'
 
 import { createHandlerClickChronometer } from '../handlers'
 import { getBarWidth } from '../helpers'
 
 const Chronometer = ({ currentTime, isPaused, onPause }) => {
-  const { isOn: isPlaying, toggle } = useToggle(isPaused)
   const barWidth = getBarWidth(currentTime)
 
   return (
@@ -33,11 +31,10 @@ const Chronometer = ({ currentTime, isPaused, onPause }) => {
         </div>
         <Spacer.Horizontal size="sm" />
         <Icon
-          name={isPlaying ? 'play' : 'pauseCircle'}
+          name={isPaused ? 'play' : 'pauseCircle'}
           size="lg"
           onClick={createHandlerClickChronometer({
-            isPlaying,
-            toggle,
+            isPaused,
             onPause,
           })}
           isClickable

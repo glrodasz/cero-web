@@ -1,6 +1,5 @@
 import FocusSessionFooter from './FocusSessionFooter'
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen, fireEvent } from '@testing-library/react'
 
 jest.mock('@glrodasz/components', () => {
   const { dummyRender } = require('../../../utils/testUtils/dummyRender')
@@ -37,7 +36,7 @@ describe('[ features / focusSession / components / FocusSessionFooter ]', () => 
 
       // Act
       render(<FocusSessionFooter {...props} />)
-      userEvent.click(screen.getByText('Finalizar tu sesión'))
+      fireEvent.click(screen.getByText('Finalizar tu sesión'))
 
       // Assert
       expect(onClickEndSessionMock).toHaveBeenCalled()

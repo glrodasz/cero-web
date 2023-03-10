@@ -16,7 +16,11 @@ async function getActiveFocusSession({ options }) {
   })
 }
 
-async function updateActiveFocusSession({ activeFocusSession, options, res }) {
+export async function resumeActiveFocusSession({
+  activeFocusSession,
+  options,
+  res,
+}) {
   const currentPauses = activeFocusSession.pauses ?? []
 
   const activePause = currentPauses.find((pause) => pause.endTime === null)
@@ -49,6 +53,6 @@ export default async function handler(req, res) {
 
   if (req.method === 'PATCH') {
     const activeFocusSession = await getActiveFocusSession({ options })
-    await updateActiveFocusSession({ activeFocusSession, options, res })
+    await resumeActiveFocusSession({ activeFocusSession, options, res })
   }
 }

@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / planning / components / PlanningFooter ] when \`tasksLength\` is greater or equal to one should return the footer 1`] = `
+<DocumentFragment>
+  
+[Spacer.Vertical {"size":"lg"} /]
+[Paragraph {"size":"sm"}]Basados en la matriz de Eisenhower priorizamos tus tareas evitando listas de pendientes saturadas.[/Paragraph]
+[Spacer.Vertical {"size":"sm"} /]
+  <button
+    class="button type-primary"
+  >
+    <h1
+      class="heading color-inverted size-md weight-bold is-centered"
+    >
+      Empieza ahora
+    </h1>
+  </button>
+</DocumentFragment>
+`;

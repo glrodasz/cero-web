@@ -12,28 +12,37 @@ import {
 
 import time from '../../../utils/time'
 
-const handleClickChoose = ({ onClickChoose }) => (time) => () => {
-  onClickChoose(time)
-}
+const createHandlerClose =
+  ({ onClose }) =>
+  () => {
+    onClose()
+  }
 
-const BreaktimeConfirmation = ({ onClickClose, onClickChoose }) => {
-  const handleChooseBreaktime = handleClickChoose({ onClickChoose })
+const createHandlerChoose =
+  ({ onChoose }) =>
+  (time) =>
+  () => {
+    onChoose(time)
+  }
+
+const BreaktimeConfirmation = ({ onClose, onChoose }) => {
+  const handleChooseBreaktime = createHandlerChoose({ onChoose })
 
   return (
-    <Modal isCentered onClose={onClickClose}>
+    <Modal isCentered onClose={createHandlerClose({ onClose })}>
       <CenteredContent>
         <Picture src="/images/couch-pause.svg" width={200}></Picture>
         <Spacer.Vertical size="md" />
-        <Heading size="xl" color="tertiary">
+        <Heading size="xl" color="tertiary" isCentered>
           Tomate un tiempo para refrescarte
         </Heading>
         <Spacer.Vertical size="sm" />
-        <Paragraph color="inverted">
+        <Paragraph color="inverted" isCentered>
           Siempre hay que celebrar los pequeños triunfos, por eso te invitamos a
           tomar un descanso para despejar tu mente.
         </Paragraph>
-        <Spacer.Vertical size="md" />
-        <div style={{ display: 'flex', gap: '0 20px' }}>
+        <Spacer.Vertical size="lg" />
+        <div style={{ display: 'flex', gap: '0 20px', width: '100%' }}>
           <Button
             onClick={handleChooseBreaktime(time.FIVE_MINUTES_IN_MS)}
             isMuted
@@ -59,8 +68,8 @@ const BreaktimeConfirmation = ({ onClickClose, onClickChoose }) => {
 }
 
 BreaktimeConfirmation.propTypes = {
-  onClickClose: PropTypes.func.isRequired,
-  onClickChoose: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onChoose: PropTypes.func.isRequired,
 }
 
 export default BreaktimeConfirmation

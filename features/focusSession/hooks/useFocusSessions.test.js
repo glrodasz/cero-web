@@ -1,15 +1,16 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { renderHook } from '@testing-library/react-hooks'
 import useFocusSessions, {
   createMutation,
   finishMutation,
 } from './useFocusSessions'
 
-jest.mock('react-query', () => ({
-  useQueryCache: () => {},
+jest.mock('@tanstack/react-query', () => ({
+  useQueryClient: () => {},
   useMutation: jest
     .fn()
-    .mockImplementationOnce(() => ['create'])
-    .mockImplementationOnce(() => ['finish']),
+    .mockImplementationOnce(() => ({ mutateAsync: 'create' }))
+    .mockImplementationOnce(() => ({ mutateAsync: 'finish' })),
 }))
 
 import { focusSessionsApi } from '../../planning/api'

@@ -11,3 +11,8 @@ global.console = CONSOLE_LEVELS.reduce((levels, level) => {
     ? { ...levels, [level]: console[level] }
     : { ...levels, [level]: jest.fn() }
 }, {})
+
+// https://reactjs.org/blog/2022/03/08/react-18-upgrade-guide.html#updates-to-server-rendering-apis
+// TODO: dummyRender.js needs to be updated to use the Suspense SSR Architectue instead of renderToStaticMarkup
+const { TextEncoder } = require('util')
+global.TextEncoder = TextEncoder
