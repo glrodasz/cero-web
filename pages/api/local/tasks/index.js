@@ -64,7 +64,7 @@ export default async function handler(req, res) {
         status,
         priority: 0,
         description,
-        focusSessionId: activeFocusSession.id,
+        focusSessionId: activeFocusSession?.id ?? null,
         createdAt: Date.now(),
       },
     }
