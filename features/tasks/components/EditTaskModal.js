@@ -39,7 +39,7 @@ const EditTaskModal = ({ task, onClose, onDelete, onUpdate }) => {
           onBlur={handleUpdate({ id: task?.id, onUpdate })}
           isEditable
         >
-          {task?.description}
+          {task?.description || ''}
         </Heading>
         {task?.createdAt && (
           <Paragraph size="md" color="muted">
@@ -52,7 +52,7 @@ const EditTaskModal = ({ task, onClose, onDelete, onUpdate }) => {
 }
 
 EditTaskModal.propTypes = {
-  task: PropTypes.object,
+  task: PropTypes.shape({}),
   onClose: PropTypes.func,
   onDelete: PropTypes.func,
 }
