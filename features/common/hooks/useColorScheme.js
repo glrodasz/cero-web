@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 
 export const persistColorScheme = ({ isDarkMode, setIsDarkMode }) => {
+  // Only run on client side to prevent hydration errors
+  if (typeof window === 'undefined') return
+
   const colorScheme = isDarkMode ? 'dark' : 'light'
   document.querySelector('html').dataset.colorScheme = colorScheme
   localStorage.setItem('prefers-color-scheme', colorScheme)

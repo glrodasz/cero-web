@@ -22,9 +22,9 @@ const UserHeader = ({ avatar, title, text, isPrimary }) => {
 }
 
 UserHeader.propTypes = {
-  avatar: PropTypes.string.isRequired,
+  avatar: PropTypes.string,
   title: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
   isPrimary: PropTypes.bool,
 }
 

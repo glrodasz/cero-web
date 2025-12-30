@@ -9,12 +9,15 @@ import { getTitle, getTotal, getCurrent } from '../../helpers'
 import { COMPLETED_COLUMN_ID } from '../../constants'
 
 const Column = ({ column, tasks, isActive, actions }) => {
+  const current = getCurrent({ tasks, column, isActive })
+  const total = getTotal({ column, isActive })
+
   return (
     <TaskCounter
       title={getTitle({ column, isActive })}
       defaultIsCollapsed={isActive && column.id === COMPLETED_COLUMN_ID}
-      current={getCurrent({ tasks, column, isActive })}
-      total={getTotal({ column, isActive })}
+      current={current ?? 0}
+      total={total ?? 0}
       isToggleable={isActive}
     >
       <Spacer.Vertical size="md" />
@@ -22,17 +25,16 @@ const Column = ({ column, tasks, isActive, actions }) => {
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             {tasks.map((task, index) => (
-              <>
+              <React.Fragment key={task.id}>
                 <DraggableTask
                   columnId={column.id}
-                  key={task.id}
                   task={task}
                   index={index}
                   isActive={isActive}
                   actions={actions}
                 />
                 <Spacer.Vertical size="sm" />
-              </>
+              </React.Fragment>
             ))}
             {provided.placeholder}
           </div>

@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 import { Accordion, Button, Container } from '@glrodasz/components'
@@ -22,16 +21,6 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap"
-          rel="stylesheet"
-        ></link>
-      </Head>
       <Accordion title="Dev tools">
         <div
           style={{
@@ -79,8 +68,8 @@ function MyApp({ Component, pageProps }) {
 }
 
 MyApp.propTypes = {
-  Component: PropTypes.node.isRequired,
-  pageProps: PropTypes.object,
+  Component: PropTypes.elementType.isRequired,
+  pageProps: PropTypes.shape({}),
 }
 
 export default MyApp

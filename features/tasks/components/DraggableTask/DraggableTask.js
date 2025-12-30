@@ -46,7 +46,7 @@ const DraggableTask = ({ task, index, columnId, isActive, actions }) => {
 }
 
 DraggableTask.propTypes = {
-  task: PropTypes.array,
+  task: PropTypes.object.isRequired,
   index: PropTypes.number,
   columnId: PropTypes.string,
   isActive: PropTypes.bool,

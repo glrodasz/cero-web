@@ -35,13 +35,13 @@ const EditTask = ({ editTaskModal, deleteConfirmation }) => {
 
 EditTask.propTypes = {
   editTaskModal: PropTypes.shape({
-    taskId: PropTypes.string.isRequired,
+    taskId: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([null])]),
     setTaskId: PropTypes.func.isRequired,
     showDialog: PropTypes.bool.isRequired,
     setShowDialog: PropTypes.func.isRequired,
   }).isRequired,
   deleteConfirmation: PropTypes.shape({
-    taskId: PropTypes.string.isRequired,
+    taskId: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([null])]),
     setTaskId: PropTypes.func.isRequired,
     showDialog: PropTypes.bool.isRequired,
     setShowDialog: PropTypes.func.isRequired,

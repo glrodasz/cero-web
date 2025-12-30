@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Spacer } from '@glrodasz/components'
 import PropTypes from 'prop-types'
 import { DragDropContext } from 'react-beautiful-dnd'
@@ -27,16 +27,15 @@ const Board = ({ tasks, isActive, onDragEnd, actions }) => {
               const tasks = column.taskIds.map((taskId) => data.tasks[taskId])
 
               return (
-                <>
+                <React.Fragment key={column.id}>
                   <Spacer.Vertical size="md" />
                   <Column
-                    key={column.id}
                     column={column}
                     tasks={tasks}
                     isActive={isActive}
                     actions={actions}
                   />
-                </>
+                </React.Fragment>
               )
             })}
       </DragDropContext>
@@ -45,9 +44,9 @@ const Board = ({ tasks, isActive, onDragEnd, actions }) => {
 }
 
 Board.propTypes = {
-  tasks: PropTypes.object,
+  tasks: PropTypes.array,
   isActive: PropTypes.bool,
-  onDragEnd: PropTypes.bool,
+  onDragEnd: PropTypes.func.isRequired,
   actions: PropTypes.shape({
     onDeleteTask: PropTypes.func,
     onCompleteTask: PropTypes.func,
