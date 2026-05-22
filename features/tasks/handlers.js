@@ -2,15 +2,15 @@ import { reorderTasks } from './helpers'
 import Router from 'next/router'
 import isEmpty from '../../utils/isEmpty'
 
-export const handleDragEndTask =
+export const createDragEndTaskHandler =
   ({ tasks }) =>
   ({ source, destination, draggableId }) => {
-    const hasBeenMoveOutsideAColumn = !destination
+    const hasBeenMovedOutsideAColumn = !destination
     const hasBeenMovedToSamePlace =
       destination?.droppableId === source?.droppableId &&
       destination?.index === source?.index
 
-    if (hasBeenMoveOutsideAColumn || hasBeenMovedToSamePlace) {
+    if (hasBeenMovedOutsideAColumn || hasBeenMovedToSamePlace) {
       return
     }
 
@@ -54,7 +54,7 @@ export const handleDragEndTask =
     const destinationTasks = data.filter(
       (task) => task.status === destinationColumnId
     )
-    const orderedDestionationTasks = reorderTasks(
+    const orderedDestinationTasks = reorderTasks(
       destinationTasks,
       null,
       destination.index,
@@ -70,21 +70,21 @@ export const handleDragEndTask =
     const concatenatedTasks = [
       ...reorderTasks(otherTasks, null, null),
       ...orderedStartTasks,
-      ...orderedDestionationTasks,
+      ...orderedDestinationTasks,
     ]
 
     setLocalData(concatenatedTasks)
     return api.updatePriorities({ tasks: concatenatedTasks })
   }
 
-export const handleAddTask =
+export const createAddTaskHandler =
   ({ tasks }) =>
   ({ value }) => {
     const { api } = tasks
     !isEmpty(value) && api.create({ description: value })
   }
 
-export const handleDeleteTask =
+export const createDeleteTaskHandler =
   ({ deleteConfirmation }) =>
   ({ id }) => {
     const { setTaskId, setShowDialog } = deleteConfirmation
@@ -92,7 +92,7 @@ export const handleDeleteTask =
     setShowDialog(true)
   }
 
-export const handleCancelRemove =
+export const createCancelRemoveHandler =
   ({ deleteConfirmation }) =>
   () => {
     const { setTaskId, setShowDialog } = deleteConfirmation
@@ -100,7 +100,7 @@ export const handleCancelRemove =
     setShowDialog(false)
   }
 
-export const handleConfirmRemove =
+export const createConfirmRemoveHandler =
   ({ tasks, deleteConfirmation }) =>
   () => {
     const { taskId, setShowDialog } = deleteConfirmation
@@ -108,14 +108,14 @@ export const handleConfirmRemove =
     setShowDialog(false)
   }
 
-export const handleStartSession =
+export const createStartSessionHandler =
   ({ focusSessions }) =>
   () => {
     focusSessions.api.create()
     Router.push('/focus-session')
   }
 
-export const handleOpenEditTaskModal =
+export const createOpenEditTaskModalHandler =
   ({ editTaskModal }) =>
   ({ id }) => {
     const { setTaskId, setShowDialog } = editTaskModal
@@ -123,7 +123,7 @@ export const handleOpenEditTaskModal =
     setShowDialog(true)
   }
 
-export const handleCloseEditTaskModal =
+export const createCloseEditTaskModalHandler =
   ({ editTaskModal }) =>
   () => {
     const { setTaskId, setShowDialog } = editTaskModal
@@ -133,7 +133,7 @@ export const handleCloseEditTaskModal =
 
 // TODO: Rethink the whole useTask, useTasks naming
 // maybe change task to taskApi? to be more specific
-export const handleUpdateTask =
+export const createUpdateTaskHandler =
   ({ task }) =>
   ({ id, data }) => {
     task.api.update({ id, task: data })

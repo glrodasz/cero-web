@@ -1,10 +1,10 @@
 import {
-  handleDeleteTask,
-  handleDragEndTask,
-  handleAddTask,
-  handleCancelRemove,
-  handleConfirmRemove,
-  handleStartSession,
+  createDeleteTaskHandler,
+  createDragEndTaskHandler,
+  createAddTaskHandler,
+  createCancelRemoveHandler,
+  createConfirmRemoveHandler,
+  createStartSessionHandler,
 } from './handlers'
 
 import { reorderTasks } from './helpers'
@@ -16,14 +16,14 @@ import Router from 'next/router'
 jest.mock('next/router', () => ({ push: jest.fn() }))
 
 describe('[ features / tasks / handlers ]', () => {
-  describe('#handleDragEndTask', () => {
+  describe('#createDragEndTaskHandler', () => {
     describe('when the handler is call', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleDragEndTask(params)
+        const result = typeof createDragEndTaskHandler(params)
         const expected = 'function'
 
         // Assert
@@ -49,7 +49,7 @@ describe('[ features / tasks / handlers ]', () => {
           }
 
           // Act
-          handleDragEndTask(params)(event)
+          createDragEndTaskHandler(params)(event)
 
           // Assert
           expect(reorderTasks).toHaveBeenCalledWith(
@@ -73,7 +73,7 @@ describe('[ features / tasks / handlers ]', () => {
           }
 
           // Act
-          handleDragEndTask(params)(event)
+          createDragEndTaskHandler(params)(event)
 
           // Assert
           expect(setLocalDataMock).toHaveBeenCalledWith(['a', 'b', 'c'])
@@ -93,7 +93,7 @@ describe('[ features / tasks / handlers ]', () => {
           }
 
           // Act
-          handleDragEndTask(params)(event)
+          createDragEndTaskHandler(params)(event)
 
           // Assert
           expect(updatePrioritiesMock).toHaveBeenCalledWith({
@@ -110,7 +110,7 @@ describe('[ features / tasks / handlers ]', () => {
         const params = {}
 
         // Act
-        handleDragEndTask(params)(result)
+        createDragEndTaskHandler(params)(result)
 
         // Assert
         expect(reorderTasks).not.toHaveBeenCalledWith()
@@ -130,7 +130,7 @@ describe('[ features / tasks / handlers ]', () => {
         }
 
         // Act
-        handleDragEndTask(params)(event)
+        createDragEndTaskHandler(params)(event)
 
         // Assert
         expect(setLocalDataMock).not.toHaveBeenCalled()
@@ -150,7 +150,7 @@ describe('[ features / tasks / handlers ]', () => {
         }
 
         // Act
-        handleDragEndTask(params)(event)
+        createDragEndTaskHandler(params)(event)
 
         // Assert
         expect(updatePrioritiesMock).not.toHaveBeenCalledWith()
@@ -158,14 +158,14 @@ describe('[ features / tasks / handlers ]', () => {
     })
   })
 
-  describe('#handleAddTask', () => {
+  describe('#createAddTaskHandler', () => {
     describe('when the handler is call', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleAddTask(params)
+        const result = typeof createAddTaskHandler(params)
         const expected = 'function'
 
         // Assert
@@ -184,7 +184,7 @@ describe('[ features / tasks / handlers ]', () => {
         const value = 'foo'
 
         // Act
-        handleAddTask(params)({ value })
+        createAddTaskHandler(params)({ value })
 
         // Assert
         expect(createMock).toHaveBeenCalledWith({
@@ -194,14 +194,14 @@ describe('[ features / tasks / handlers ]', () => {
     })
   })
 
-  describe('#handleDeleteTask', () => {
+  describe('#createDeleteTaskHandler', () => {
     describe('when the handler is call', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleDeleteTask(params)
+        const result = typeof createDeleteTaskHandler(params)
         const expected = 'function'
 
         // Assert
@@ -218,7 +218,7 @@ describe('[ features / tasks / handlers ]', () => {
         const params = { deleteConfirmation: { setShowDialog, setTaskId } }
 
         // Act
-        handleDeleteTask(params)({ id })
+        createDeleteTaskHandler(params)({ id })
 
         // Assert
         expect(setShowDialog).toHaveBeenCalledWith(true)
@@ -232,7 +232,7 @@ describe('[ features / tasks / handlers ]', () => {
         const params = { deleteConfirmation: { setShowDialog, setTaskId } }
 
         // Act
-        handleDeleteTask(params)({ id })
+        createDeleteTaskHandler(params)({ id })
 
         // Assert
         expect(setTaskId).toHaveBeenCalledWith('foo')
@@ -240,14 +240,14 @@ describe('[ features / tasks / handlers ]', () => {
     })
   })
 
-  describe('#handleCancelRemove', () => {
+  describe('#createCancelRemoveHandler', () => {
     describe('when the handler is call', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleCancelRemove(params)
+        const result = typeof createCancelRemoveHandler(params)
         const expected = 'function'
 
         // Assert
@@ -264,7 +264,7 @@ describe('[ features / tasks / handlers ]', () => {
         const params = { deleteConfirmation: { setShowDialog, setTaskId } }
 
         // Act
-        handleCancelRemove(params)({ id })
+        createCancelRemoveHandler(params)({ id })
 
         // Assert
         expect(setShowDialog).toHaveBeenCalledWith(false)
@@ -277,7 +277,7 @@ describe('[ features / tasks / handlers ]', () => {
         const params = { deleteConfirmation: { setShowDialog, setTaskId } }
 
         // Act
-        handleCancelRemove(params)()
+        createCancelRemoveHandler(params)()
 
         // Assert
         expect(setTaskId).toHaveBeenCalledWith(null)
@@ -285,14 +285,14 @@ describe('[ features / tasks / handlers ]', () => {
     })
   })
 
-  describe('#handleConfirmRemove', () => {
+  describe('#createConfirmRemoveHandler', () => {
     describe('when the handler is call', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleConfirmRemove(params)
+        const result = typeof createConfirmRemoveHandler(params)
         const expected = 'function'
 
         // Assert
@@ -309,7 +309,7 @@ describe('[ features / tasks / handlers ]', () => {
         const deleteConfirmation = { taskId: 'foo', setShowDialog: noop }
         const params = { tasks, deleteConfirmation }
         // Act
-        handleConfirmRemove(params)()
+        createConfirmRemoveHandler(params)()
 
         // Assert
         expect(removeMock).toHaveBeenCalledWith({ id: 'foo' })
@@ -326,7 +326,7 @@ describe('[ features / tasks / handlers ]', () => {
         }
         const params = { tasks, deleteConfirmation }
         // Act
-        handleConfirmRemove(params)()
+        createConfirmRemoveHandler(params)()
 
         // Assert
         expect(setShowDialogMock).toHaveBeenCalledWith(false)
@@ -334,14 +334,14 @@ describe('[ features / tasks / handlers ]', () => {
     })
   })
 
-  describe('#handleStartSession', () => {
+  describe('#createStartSessionHandler', () => {
     describe('when the handler is call', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleStartSession(params)
+        const result = typeof createStartSessionHandler(params)
         const expected = 'function'
 
         // Assert
@@ -357,7 +357,7 @@ describe('[ features / tasks / handlers ]', () => {
         const params = { focusSessions }
 
         // Act
-        handleStartSession(params)()
+        createStartSessionHandler(params)()
 
         // Assert
         expect(createMock).toHaveBeenCalled()
@@ -369,7 +369,7 @@ describe('[ features / tasks / handlers ]', () => {
         const params = { focusSessions }
 
         // Act
-        handleStartSession(params)()
+        createStartSessionHandler(params)()
 
         // Assert
         expect(Router.push).toHaveBeenCalledWith('/focus-session')

@@ -1,6 +1,6 @@
 import { Check, Heading } from '@glrodasz/components'
 
-import { handleClick } from './handlers'
+import { createClickHandler } from './handlers'
 import useColorScheme from '../../hooks/useColorScheme'
 
 const ToggleColorScheme = () => {
@@ -14,7 +14,7 @@ const ToggleColorScheme = () => {
         cursor: 'pointer',
         width: 150,
       }}
-      onClick={handleClick({ isDarkMode, setIsDarkMode })}
+      onClick={createClickHandler({ isDarkMode, setIsDarkMode })}
     >
       <Check isChecked={isDarkMode} /> <Heading>Dark Mode</Heading>
     </div>

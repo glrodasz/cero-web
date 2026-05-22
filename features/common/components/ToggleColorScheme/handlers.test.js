@@ -1,4 +1,4 @@
-import { handleClick } from './handlers'
+import { createClickHandler } from './handlers'
 
 import { persistColorScheme } from './helpers'
 jest.mock('./helpers', () => ({
@@ -6,14 +6,14 @@ jest.mock('./helpers', () => ({
 }))
 
 describe('[ features / common / ToggleColorSheme / handlers ]', () => {
-  describe('#handleClick', () => {
-    describe('when `handleClick` is called', () => {
+  describe('#createClickHandler', () => {
+    describe('when `createClickHandler` is called', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleClick(params)
+        const result = typeof createClickHandler(params)
         const expected = 'function'
 
         // Assert
@@ -21,7 +21,7 @@ describe('[ features / common / ToggleColorSheme / handlers ]', () => {
       })
     })
 
-    describe('when `handleClick` returned function is called', () => {
+    describe('when `createClickHandler` returned function is called', () => {
       it('should called `persistColorScheme` with parameters', () => {
         // Arrange
         const setIsDarkModeMock = () => {}
@@ -31,7 +31,7 @@ describe('[ features / common / ToggleColorSheme / handlers ]', () => {
         }
 
         // Act
-        handleClick(params)()
+        createClickHandler(params)()
 
         // Assert
         expect(persistColorScheme).toHaveBeenCalledWith({

@@ -6,9 +6,9 @@ import PropTypes from 'prop-types'
 import { getTaskType } from '../../../tasks/helpers'
 
 import {
-  handleCompleteTask,
-  handleDeleteTask,
-  handleEditTask,
+  createCompleteTaskHandler,
+  createDeleteTaskHandler,
+  createEditTaskHandler,
 } from './handlers'
 
 const DraggableTask = ({ task, index, columnId, isActive, actions }) => {
@@ -24,14 +24,14 @@ const DraggableTask = ({ task, index, columnId, isActive, actions }) => {
         >
           <Task
             key={task.id}
-            onDelete={handleDeleteTask({ id: task.id, onDeleteTask })}
+            onDelete={createDeleteTaskHandler({ id: task.id, onDeleteTask })}
             isPending={!isActive}
             type={columnId === 'in-progress' && getTaskType(index, columnId)}
-            onCheck={handleCompleteTask({
+            onCheck={createCompleteTaskHandler({
               id: task.id,
               onCompleteTask,
             })}
-            onClick={handleEditTask({
+            onClick={createEditTaskHandler({
               id: task.id,
               onEditTask,
             })}

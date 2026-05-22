@@ -1,6 +1,6 @@
 import Router from 'next/router'
 
-export const handleCheckCompleteTask =
+export const createCheckCompleteTaskHandler =
   ({ breaktimeConfirmation, tasks }) =>
   ({ id, isChecked }) => {
     const { setShowDialog } = breaktimeConfirmation
@@ -8,14 +8,14 @@ export const handleCheckCompleteTask =
     tasks.api.updateStatus({ id, isChecked })
   }
 
-export const handleClickCloseBreaktimeConfirmation =
+export const createCloseBreaktimeConfirmationHandler =
   ({ breaktimeConfirmation }) =>
   () => {
     const { setShowDialog } = breaktimeConfirmation
     setShowDialog(false)
   }
 
-export const handleClickCloseBreaktimeTimer =
+export const createCloseBreaktimeTimerHandler =
   ({ breaktimeTimer, focusSession }) =>
   () => {
     const { setShowDialog } = breaktimeTimer
@@ -23,14 +23,14 @@ export const handleClickCloseBreaktimeTimer =
     focusSession.api.resume()
   }
 
-export const createPauseTimerHandlerClose =
+export const createClosePauseTimerHandler =
   ({ pauseTimer, focusSession }) =>
   async () => {
     await focusSession.api.resume()
     pauseTimer.setShowDialog(false)
   }
 
-export const handleClickChooseBreaktime =
+export const createChooseBreaktimeHandler =
   ({ breaktimeTimer, breaktimeConfirmation, focusSession }) =>
   (time) => {
     breaktimeConfirmation.setShowDialog(false)
@@ -39,20 +39,20 @@ export const handleClickChooseBreaktime =
     focusSession.api.pause({ time })
   }
 
-export const handleClickEndSession =
+export const createEndSessionHandler =
   ({ focusSessions }) =>
   async () => {
     await focusSessions.api.finish()
     Router.push('/planning')
   }
 
-export const createHandlerClickChronometer =
+export const createClickChronometerHandler =
   ({ isPaused, onPause }) =>
   async () => {
     onPause(isPaused)
   }
 
-export const createHandlerPauseChronometer =
+export const createPauseChronometerHandler =
   ({ focusSession, pauseTimer, clearTime }) =>
   async (isPaused) => {
     if (isPaused) {

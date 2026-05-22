@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
 import { tasksApi } from '../../planning/api'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import useLocalData from '../../common/hooks/useLocalData'
 
 const QUERY_KEY = 'task'
 
@@ -10,7 +10,7 @@ const useTask = ({ id }) => {
   const {
     isLoading,
     error,
-    data: serverData,
+    data: fetchedData,
   } = useQuery([QUERY_KEY, id], () => tasksApi.getById({ id }))
 
   const { mutateAsync: update } = useMutation(
@@ -22,11 +22,7 @@ const useTask = ({ id }) => {
     }
   )
 
-  const [localData, setLocalData] = useState(serverData)
-
-  useEffect(() => {
-    setLocalData(serverData)
-  }, [serverData])
+  const { localData, setLocalData } = useLocalData(fetchedData)
 
   return {
     isLoading,

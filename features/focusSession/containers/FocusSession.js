@@ -22,22 +22,22 @@ import PauseTimer from '../components/PauseTimer'
 import EditTask from '../../tasks/containers/EditTask'
 
 import {
-  handleDeleteTask,
-  handleCancelRemove,
-  handleConfirmRemove,
-  handleDragEndTask,
-  handleAddTask,
-  handleOpenEditTaskModal,
+  createDeleteTaskHandler,
+  createCancelRemoveHandler,
+  createConfirmRemoveHandler,
+  createDragEndTaskHandler,
+  createAddTaskHandler,
+  createOpenEditTaskModalHandler,
 } from '../../tasks/handlers'
 
 import {
-  handleClickCloseBreaktimeConfirmation,
-  handleClickCloseBreaktimeTimer,
-  handleClickChooseBreaktime,
-  handleClickEndSession,
-  handleCheckCompleteTask,
-  createHandlerPauseChronometer,
-  createPauseTimerHandlerClose,
+  createCloseBreaktimeConfirmationHandler,
+  createCloseBreaktimeTimerHandler,
+  createChooseBreaktimeHandler,
+  createEndSessionHandler,
+  createCheckCompleteTaskHandler,
+  createPauseChronometerHandler,
+  createClosePauseTimerHandler,
 } from '../handlers.js'
 
 import useEditTaskModal from '../../tasks/hooks/useEditTaskModal'
@@ -54,7 +54,7 @@ import isObject from '../../../utils/isObject'
 
 import {
   MAXIMUM_BACKLOG_QUANTITY,
-  MAXIMUN_IN_PRIORITY_TASKS,
+  MAXIMUM_IN_PRIORITY_TASKS,
 } from '../../../config'
 import { COMPLETED_COLUMN_ID } from '../../tasks/constants'
 import useDialog from '../../common/hooks/useDialog'
@@ -111,7 +111,7 @@ const FocusSession = ({ initialData }) => {
     (task) => task.status !== COMPLETED_COLUMN_ID
   )?.length
   const shouldShowAddTaskButton =
-    tasksLength < MAXIMUM_BACKLOG_QUANTITY + MAXIMUN_IN_PRIORITY_TASKS
+    tasksLength < MAXIMUM_BACKLOG_QUANTITY + MAXIMUM_IN_PRIORITY_TASKS
 
   return (
     <>
@@ -140,7 +140,7 @@ const FocusSession = ({ initialData }) => {
               <Chronometer
                 currentTime={currentTime}
                 isPaused={isPaused}
-                onPause={createHandlerPauseChronometer({
+                onPause={createPauseChronometerHandler({
                   focusSession,
                   pauseTimer,
                   clearTime,
@@ -150,16 +150,16 @@ const FocusSession = ({ initialData }) => {
             <Board
               isActive
               tasks={tasks.data}
-              onDragEnd={handleDragEndTask({ tasks })}
+              onDragEnd={createDragEndTaskHandler({ tasks })}
               actions={{
-                onDeleteTask: handleDeleteTask({
+                onDeleteTask: createDeleteTaskHandler({
                   deleteConfirmation,
                 }),
-                onCompleteTask: handleCheckCompleteTask({
+                onCompleteTask: createCheckCompleteTaskHandler({
                   breaktimeConfirmation,
                   tasks,
                 }),
-                onEditTask: handleOpenEditTaskModal({
+                onEditTask: createOpenEditTaskModalHandler({
                   tasks,
                   editTaskModal,
                 }),
@@ -171,7 +171,7 @@ const FocusSession = ({ initialData }) => {
                 <AddTaskButton
                   id="focus-session"
                   isShown={shouldShowAddTaskButton}
-                  onAddTask={handleAddTask({ tasks })}
+                  onAddTask={createAddTaskHandler({ tasks })}
                 />
               </>
             )}
@@ -179,7 +179,7 @@ const FocusSession = ({ initialData }) => {
         }
         footer={
           <FocusSessionFooter
-            onClickEndSession={handleClickEndSession({
+            onClickEndSession={createEndSessionHandler({
               focusSessions,
             })}
           />
@@ -187,10 +187,10 @@ const FocusSession = ({ initialData }) => {
       />
       {breaktimeConfirmation.showDialog && (
         <BreaktimeConfirmation
-          onClose={handleClickCloseBreaktimeConfirmation({
+          onClose={createCloseBreaktimeConfirmationHandler({
             breaktimeConfirmation,
           })}
-          onChoose={handleClickChooseBreaktime({
+          onChoose={createChooseBreaktimeHandler({
             breaktimeTimer,
             breaktimeConfirmation,
             focusSession,
@@ -200,7 +200,7 @@ const FocusSession = ({ initialData }) => {
       {breaktimeTimer.showDialog && (
         <BreaktimeTimer
           breaktime={breaktimeTimer.time}
-          onClose={handleClickCloseBreaktimeTimer({
+          onClose={createCloseBreaktimeTimerHandler({
             breaktimeTimer,
             focusSession,
           })}
@@ -208,7 +208,7 @@ const FocusSession = ({ initialData }) => {
       )}
       {pauseTimer.showDialog && (
         <PauseTimer
-          onClose={createPauseTimerHandlerClose({
+          onClose={createClosePauseTimerHandler({
             pauseTimer,
             focusSession,
           })}
@@ -220,8 +220,8 @@ const FocusSession = ({ initialData }) => {
       />
       {deleteConfirmation.showDialog && (
         <DeleteTaskModal
-          onClickCancel={handleCancelRemove({ deleteConfirmation })}
-          onClickConfirm={handleConfirmRemove({
+          onClickCancel={createCancelRemoveHandler({ deleteConfirmation })}
+          onClickConfirm={createConfirmRemoveHandler({
             tasks,
             deleteConfirmation,
           })}

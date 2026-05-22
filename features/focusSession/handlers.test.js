@@ -1,8 +1,8 @@
 import {
-  handleCheckCompleteTask,
-  handleClickCloseBreaktimeConfirmation,
-  handleClickCloseBreaktimeTimer,
-  handleClickEndSession,
+  createCheckCompleteTaskHandler,
+  createCloseBreaktimeConfirmationHandler,
+  createCloseBreaktimeTimerHandler,
+  createEndSessionHandler,
 } from './handlers'
 
 import Router from 'next/router'
@@ -11,14 +11,14 @@ jest.mock('next/router', () => ({
 }))
 
 describe('[ features / focusSession / handlers ]', () => {
-  describe('#handleCheckCompleteTask', () => {
-    describe('when `handleCheckCompleteTask` is called', () => {
+  describe('#createCheckCompleteTaskHandler', () => {
+    describe('when `createCheckCompleteTaskHandler` is called', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleCheckCompleteTask(params)
+        const result = typeof createCheckCompleteTaskHandler(params)
         const expected = 'function'
 
         // Assert
@@ -26,7 +26,7 @@ describe('[ features / focusSession / handlers ]', () => {
       })
     })
 
-    describe('when `handleCheckCompleteTask` returned function is called', () => {
+    describe('when `createCheckCompleteTaskHandler` returned function is called', () => {
       describe('and `isChecked` is `true`', () => {
         it('should call `setShowDialog` with `true`', () => {
           // Arrange
@@ -43,7 +43,7 @@ describe('[ features / focusSession / handlers ]', () => {
           }
 
           // Act
-          handleCheckCompleteTask(params)({ id: 'id', isChecked: true })
+          createCheckCompleteTaskHandler(params)({ id: 'id', isChecked: true })
 
           // Assert
           expect(setShowDialogMock).toHaveBeenCalledWith(true)
@@ -66,7 +66,7 @@ describe('[ features / focusSession / handlers ]', () => {
           }
 
           // Act
-          handleCheckCompleteTask(params)({ id: 'id', isChecked: false })
+          createCheckCompleteTaskHandler(params)({ id: 'id', isChecked: false })
 
           // Assert
           expect(setShowDialogMock).not.toHaveBeenCalled()
@@ -88,7 +88,7 @@ describe('[ features / focusSession / handlers ]', () => {
         }
 
         // Act
-        handleCheckCompleteTask(params)({ id: 'id', isChecked: false })
+        createCheckCompleteTaskHandler(params)({ id: 'id', isChecked: false })
 
         // Assert
         expect(updateStatusMock).toHaveBeenCalledWith({
@@ -99,15 +99,15 @@ describe('[ features / focusSession / handlers ]', () => {
     })
   })
 
-  describe('#handleClickCloseBreaktimeTimer', () => {
+  describe('#createCloseBreaktimeTimerHandler', () => {
     // Given, when, then
-    describe('when `handleClickCloseBreaktimeTimer` is called', () => {
+    describe('when `createCloseBreaktimeTimerHandler` is called', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleClickCloseBreaktimeTimer(params)
+        const result = typeof createCloseBreaktimeTimerHandler(params)
         const expected = 'function'
 
         // Assert
@@ -115,7 +115,7 @@ describe('[ features / focusSession / handlers ]', () => {
       })
     })
 
-    describe('when `handleClickCloseBreaktimeTimer` returned is called', () => {
+    describe('when `createCloseBreaktimeTimerHandler` returned is called', () => {
       it('should call `setShowDialog` with `false`', () => {
         // Arrange
         const setShowDialogMock = jest.fn()
@@ -131,7 +131,7 @@ describe('[ features / focusSession / handlers ]', () => {
         }
 
         // Act
-        handleClickCloseBreaktimeTimer(params)()
+        createCloseBreaktimeTimerHandler(params)()
 
         // Assert
         expect(setShowDialogMock).toHaveBeenCalledWith(false)
@@ -152,7 +152,7 @@ describe('[ features / focusSession / handlers ]', () => {
         }
 
         // Act
-        handleClickCloseBreaktimeTimer(params)()
+        createCloseBreaktimeTimerHandler(params)()
 
         // Assert
         expect(focusSessionApiResumeMock).toHaveBeenCalled()
@@ -160,14 +160,14 @@ describe('[ features / focusSession / handlers ]', () => {
     })
   })
 
-  describe('#handleClickCloseBreaktimeConfirmation', () => {
-    describe('when `handleClickCloseBreaktimeConfirmation` is called', () => {
+  describe('#createCloseBreaktimeConfirmationHandler', () => {
+    describe('when `createCloseBreaktimeConfirmationHandler` is called', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleClickCloseBreaktimeConfirmation(params)
+        const result = typeof createCloseBreaktimeConfirmationHandler(params)
         const expected = 'function'
 
         // Assert
@@ -175,7 +175,7 @@ describe('[ features / focusSession / handlers ]', () => {
       })
     })
 
-    describe('when `handleClickCloseBreaktimeConfirmation` returned function is called', () => {
+    describe('when `createCloseBreaktimeConfirmationHandler` returned function is called', () => {
       it('should call `setShowDialog` with `true`', () => {
         // Arrange
         const setShowDialogMock = jest.fn()
@@ -186,7 +186,7 @@ describe('[ features / focusSession / handlers ]', () => {
         }
 
         // Act
-        handleClickCloseBreaktimeConfirmation(params)()
+        createCloseBreaktimeConfirmationHandler(params)()
 
         // Assert
         expect(setShowDialogMock).toHaveBeenCalledWith(false)
@@ -194,14 +194,14 @@ describe('[ features / focusSession / handlers ]', () => {
     })
   })
 
-  describe('#handleClickEndSession', () => {
-    describe('when `handleClickEndSession` is called', () => {
+  describe('#createEndSessionHandler', () => {
+    describe('when `createEndSessionHandler` is called', () => {
       it('should return a function', () => {
         // Arrange
         const params = {}
 
         // Act
-        const result = typeof handleClickEndSession(params)
+        const result = typeof createEndSessionHandler(params)
         const expected = 'function'
 
         // Assert
@@ -209,7 +209,7 @@ describe('[ features / focusSession / handlers ]', () => {
       })
     })
 
-    describe('when `handleClickEndSession` returned function is called', () => {
+    describe('when `createEndSessionHandler` returned function is called', () => {
       it('should call `focusSessions.api.finish` with an `id`', () => {
         // Arrange
         const finishMock = jest.fn()
@@ -222,7 +222,7 @@ describe('[ features / focusSession / handlers ]', () => {
         }
 
         // Act
-        handleClickEndSession(params)()
+        createEndSessionHandler(params)()
 
         // Assert
         expect(finishMock).toHaveBeenCalledWith()
@@ -244,7 +244,7 @@ describe('[ features / focusSession / handlers ]', () => {
         }
 
         // Act
-        handleClickEndSession(params)()
+        createEndSessionHandler(params)()
 
         // Assert
         expect(Router.push).toHaveBeenCalledWith('/planning')

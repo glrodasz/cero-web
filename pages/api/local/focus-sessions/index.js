@@ -1,5 +1,6 @@
 import buildLocalApiUrl from '../../../../utils/buildLocalApiUrl'
 import fetchJsonServer from '../../../../utils/fetchJsonServer'
+import { getInProgressAndPendingTasks } from '../../../../utils/jsonServerQueries'
 
 async function updateTasksFocusSessionId({ tasks, focusSessionId, options }) {
   return await Promise.all(
@@ -19,20 +20,6 @@ async function updateTasksFocusSessionId({ tasks, focusSessionId, options }) {
   )
 }
 
-async function getInProgressAndPedingTasks({ options }) {
-  const fetchOptions = {
-    ...options,
-    method: 'get',
-    body: undefined,
-  }
-
-  return fetchJsonServer({
-    resource: 'task',
-    url: 'tasks?status=in-progress&status=pending',
-    options: fetchOptions,
-  })
-}
-
 export default async function handler(req, res) {
   const { options } = buildLocalApiUrl(req)
 
@@ -47,7 +34,7 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
-    const tasks = await getInProgressAndPedingTasks({ options })
+    const tasks = await getInProgressAndPendingTasks({ options })
 
     const fetchOptions = {
       ...options,

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { Spacer, Paragraph, Button } from '@glrodasz/components'
 
 const PlanningFooter = ({ tasksLength, onClickStartSession }) => {
-  if (!!tasksLength >= 1) {
+  if (tasksLength >= 1) {
     return (
       <>
         <Spacer.Vertical size="lg" />

@@ -1,7 +1,8 @@
-import { MAXIMUN_IN_PRIORITY_TASKS } from '../../../../config'
+import { MAXIMUM_IN_PRIORITY_TASKS } from '../../../../config'
 import buildLocalApiUrl from '../../../../utils/buildLocalApiUrl'
 import fetchJsonServer from '../../../../utils/fetchJsonServer'
 import isEmpty from '../../../../utils/isEmpty'
+import { getActiveFocusSession } from '../../../../utils/jsonServerQueries'
 
 async function getInProgressTasks({ options }) {
   const fetchOptions = {
@@ -14,21 +15,6 @@ async function getInProgressTasks({ options }) {
     resource: 'task',
     url: 'tasks?status=in-progress',
     options: fetchOptions,
-  })
-}
-
-async function getActiveFocusSession({ options }) {
-  const fetchOptions = {
-    ...options,
-    method: 'get',
-    body: undefined,
-  }
-
-  return fetchJsonServer({
-    resource: 'focus-sessions',
-    url: 'focus-sessions?status=active',
-    options: fetchOptions,
-    singular: true,
   })
 }
 
@@ -53,7 +39,7 @@ export default async function handler(req, res) {
 
     let status = 'in-progress'
 
-    if (inProgressTasks?.length === MAXIMUN_IN_PRIORITY_TASKS) {
+    if (inProgressTasks?.length === MAXIMUM_IN_PRIORITY_TASKS) {
       status = 'pending'
     }
 
