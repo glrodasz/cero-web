@@ -4,6 +4,7 @@ import {
   getActiveFocusSession,
   getInProgressAndPendingTasks,
 } from '../../../../utils/jsonServerQueries'
+import { FINISHED_FOCUS_SESSION_STATUS } from '../../../../features/focusSession/constants'
 
 async function updateTasksFocusSessionIdToNull({ tasks, options }) {
   return await Promise.all(
@@ -26,7 +27,7 @@ async function updateTasksFocusSessionIdToNull({ tasks, options }) {
 async function updateActiveFocusSession({ activeFocusSession, options, res }) {
   const fetchOptions = {
     ...options,
-    body: { status: 'finished' },
+    body: { status: FINISHED_FOCUS_SESSION_STATUS },
   }
 
   return fetchJsonServer({

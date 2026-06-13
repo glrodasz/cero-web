@@ -1,10 +1,9 @@
-import { useState } from 'react'
-import useDialog from '../../common/hooks/useDialog'
+import useDialogWithState from '../../common/hooks/useDialogWithState'
 
 const useEditTaskModal = () => {
-  const [taskId, setTaskId] = useState(null)
+  const { value: taskId, setValue: setTaskId, ...dialog } = useDialogWithState()
 
-  return { ...useDialog(), taskId, setTaskId }
+  return { ...dialog, taskId, setTaskId }
 }
 
 export default useEditTaskModal

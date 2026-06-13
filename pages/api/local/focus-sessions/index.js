@@ -1,6 +1,7 @@
 import buildLocalApiUrl from '../../../../utils/buildLocalApiUrl'
 import fetchJsonServer from '../../../../utils/fetchJsonServer'
 import { getInProgressAndPendingTasks } from '../../../../utils/jsonServerQueries'
+import { ACTIVE_FOCUS_SESSION_STATUS } from '../../../../features/focusSession/constants'
 
 async function updateTasksFocusSessionId({ tasks, focusSessionId, options }) {
   return await Promise.all(
@@ -39,7 +40,7 @@ export default async function handler(req, res) {
     const fetchOptions = {
       ...options,
       body: {
-        status: 'active',
+        status: ACTIVE_FOCUS_SESSION_STATUS,
         startTime: Date.now(),
         tasks: tasks.map((task) => task.id),
       },

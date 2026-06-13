@@ -43,7 +43,6 @@ import {
 import useEditTaskModal from '../../tasks/hooks/useEditTaskModal'
 import useTasks from '../../tasks/hooks/useTasks'
 import useDeleteConfirmation from '../../tasks/hooks/useDeleteConfirmation'
-import useBreaktimeConfirmation from '../hooks/useBreaktimeConfirmation'
 import useBreaktimeTimer from '../hooks/useBreaktimeTimer'
 import useFocusSessions from '../hooks/useFocusSessions'
 import useFocusSession from '../hooks/useFocusSession'
@@ -66,7 +65,7 @@ const getActivePause = ({ focusSession }) => {
 const FocusSession = ({ initialData }) => {
   const { user, isLoading: isLoadingUser, error: errorUser } = useUser()
   const deleteConfirmation = useDeleteConfirmation()
-  const breaktimeConfirmation = useBreaktimeConfirmation()
+  const breaktimeConfirmation = useDialog()
   const breaktimeTimer = useBreaktimeTimer()
   const editTaskModal = useEditTaskModal()
   const pauseTimer = useDialog()

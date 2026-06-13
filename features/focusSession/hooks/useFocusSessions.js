@@ -1,4 +1,4 @@
-import { focusSessionsApi } from '../../planning/api'
+import { focusSessionsApi } from '../../common/api'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const QUERY_KEY = 'focus-sessions'

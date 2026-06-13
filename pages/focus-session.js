@@ -5,7 +5,7 @@ import { resetServerContext } from 'react-beautiful-dnd'
 import isEmpty from '../utils/isEmpty'
 import httpCodes from '../utils/httpCodes'
 
-import { tasksApi, focusSessionsApi } from '../features/planning/api'
+import { tasksApi, focusSessionsApi } from '../features/common/api'
 
 export const getServerSideProps = withPageAuthRequired({
   getServerSideProps: async ({ res }) => {

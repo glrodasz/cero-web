@@ -13,8 +13,8 @@ jest.mock('@tanstack/react-query', () => ({
     .mockImplementationOnce(() => ({ mutateAsync: 'finish' })),
 }))
 
-import { focusSessionsApi } from '../../planning/api'
-jest.mock('../../planning/api', () => ({
+import { focusSessionsApi } from '../../common/api'
+jest.mock('../../common/api', () => ({
   focusSessionsApi: {
     create: jest.fn(),
     finish: jest.fn(),

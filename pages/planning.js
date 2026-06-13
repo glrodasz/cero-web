@@ -3,7 +3,7 @@ import { resetServerContext } from 'react-beautiful-dnd'
 import { withPageAuthRequired } from '@auth0/nextjs-auth0'
 
 import PlanningContainer from '../features/planning/containers/Planning'
-import { tasksApi, focusSessionsApi } from '../features/planning/api'
+import { tasksApi, focusSessionsApi } from '../features/common/api'
 import isEmpty from '../utils/isEmpty'
 import httpCodes from '../utils/httpCodes'
 

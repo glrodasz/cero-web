@@ -1,4 +1,4 @@
-import { tasksApi } from '../../planning/api'
+import { tasksApi } from '../../common/api'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import useLocalData from '../../common/hooks/useLocalData'
 

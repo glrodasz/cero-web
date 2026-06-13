@@ -1,5 +1,6 @@
 import buildLocalApiUrl from '../../../../../utils/buildLocalApiUrl'
 import fetchJsonServer from '../../../../../utils/fetchJsonServer'
+import { COMPLETED_COLUMN_ID } from '../../../../../features/tasks/constants'
 
 async function getCompletedTasks({ options }) {
   const fetchOptions = {
@@ -10,7 +11,7 @@ async function getCompletedTasks({ options }) {
 
   return fetchJsonServer({
     resource: 'task',
-    url: 'tasks?status=completed',
+    url: `tasks?status=${COMPLETED_COLUMN_ID}`,
     options: fetchOptions,
   })
 }
@@ -36,7 +37,7 @@ async function updateCompletedTasksPriority({ tasks, options }) {
 async function completeTask({ taskId, options, res }) {
   const fetchOptions = {
     ...options,
-    body: { status: 'completed', priority: 0 },
+    body: { status: COMPLETED_COLUMN_ID, priority: 0 },
   }
 
   return fetchJsonServer({
