@@ -363,13 +363,13 @@ describe('[ features / tasks / handlers ]', () => {
         expect(createMock).toHaveBeenCalled()
       })
 
-      it('should call `Router.push` with `/focus-session`', () => {
+      it('should call `Router.push` with `/focus-session`', async () => {
         // Arrange
         const focusSessions = { api: { create: () => {} } }
         const params = { focusSessions }
 
         // Act
-        createStartSessionHandler(params)()
+        await createStartSessionHandler(params)()
 
         // Assert
         expect(Router.push).toHaveBeenCalledWith('/focus-session')

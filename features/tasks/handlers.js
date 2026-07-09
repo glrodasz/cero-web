@@ -110,8 +110,8 @@ export const createConfirmRemoveHandler =
 
 export const createStartSessionHandler =
   ({ focusSessions }) =>
-  () => {
-    focusSessions.api.create()
+  async () => {
+    await focusSessions.api.create()
     Router.push('/focus-session')
   }
 

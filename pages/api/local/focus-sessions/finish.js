@@ -1,5 +1,6 @@
 import buildLocalApiUrl from '../../../../utils/buildLocalApiUrl'
 import fetchJsonServer from '../../../../utils/fetchJsonServer'
+import isEmpty from '../../../../utils/isEmpty'
 import {
   getActiveFocusSession,
   getInProgressAndPendingTasks,
@@ -43,6 +44,11 @@ export default async function handler(req, res) {
 
   if (req.method === 'PATCH') {
     const activeFocusSession = await getActiveFocusSession({ options })
+
+    if (isEmpty(activeFocusSession)) {
+      return res.status(404).json({ error: 'There is no active focus session' })
+    }
+
     await updateActiveFocusSession({ activeFocusSession, options, res })
 
     const tasks = await getInProgressAndPendingTasks({ options })

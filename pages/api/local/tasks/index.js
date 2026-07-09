@@ -43,7 +43,7 @@ export default async function handler(req, res) {
 
     let status = IN_PROGRESS_COLUMN_ID
 
-    if (inProgressTasks?.length === MAXIMUM_IN_PRIORITY_TASKS) {
+    if (inProgressTasks?.length >= MAXIMUM_IN_PRIORITY_TASKS) {
       status = PENDING_COLUMN_ID
     }
 
