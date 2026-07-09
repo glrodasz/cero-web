@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - main
 jobs:
   build:
     name: Build, Lint, and Test
@@ -10,13 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Setup Node.js v16
-        uses: actions/setup-node@v1
+        uses: actions/checkout@v4
+      - name: Setup Node.js v24
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 24
+      - name: Enable Corepack
+        run: corepack enable
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: Lint code
         run: yarn lint
       - name: Run tests
@@ -29,13 +32,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Setup Node.js v16
-        uses: actions/setup-node@v1
+        uses: actions/checkout@v4
+      - name: Setup Node.js v24
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 24
+      - name: Enable Corepack
+        run: corepack enable
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: Run coverage tests
         run: yarn test:coverage
       - name: Upload coverage
