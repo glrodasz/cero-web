@@ -8,7 +8,7 @@ import {
 } from './helpers'
 
 jest.mock('../../config', () => ({
-  MAXIMUN_IN_PRIORITY_TASKS: 3,
+  MAXIMUM_IN_PRIORITY_TASKS: 3,
   MAXIMUM_BACKLOG_QUANTITY: 5,
 }))
 
@@ -40,7 +40,7 @@ describe('[ features / tasks / helpers ]', () => {
   })
 
   describe('#getTaskType', () => {
-    describe('when `index` is bigger than `MAXIMUN_IN_PRIORITY_TASKS - 1`', () => {
+    describe('when `index` is bigger than `MAXIMUM_IN_PRIORITY_TASKS - 1`', () => {
       it('should return null', () => {
         // Arrange
         const index = 10
@@ -66,7 +66,7 @@ describe('[ features / tasks / helpers ]', () => {
       })
     })
 
-    describe('when `index` is smaller than `MAXIMUN_IN_PRIORITY_TASKS - 1`', () => {
+    describe('when `index` is smaller than `MAXIMUM_IN_PRIORITY_TASKS - 1`', () => {
       it('should return "active"', () => {
         // Arrange
         const index = 1
@@ -183,7 +183,7 @@ describe('[ features / tasks / helpers ]', () => {
 
   describe('#getTotal', () => {
     describe('when `column.id` is `IN_PROGRESS_COLUMN_ID` and `isActive` is false', () => {
-      it('should return `MAXIMUN_IN_PRIORITY_TASKS`', () => {
+      it('should return `MAXIMUM_IN_PRIORITY_TASKS`', () => {
         // Arrange
         const params = {
           column: {
@@ -292,7 +292,7 @@ describe('[ features / tasks / helpers ]', () => {
       })
     })
 
-    describe('when `isActive` is `false`, and `column` is `PENDING_COLUMN_ID`, and `tasksLength` is greater or equal than `MAXIMUN_IN_PRIORITY_TASKS` ', () => {
+    describe('when `isActive` is `false`, and `column` is `PENDING_COLUMN_ID`, and `tasksLength` is greater or equal than `MAXIMUM_IN_PRIORITY_TASKS` ', () => {
       it('should return `true`', () => {
         // Arrange
         const params = {

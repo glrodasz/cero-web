@@ -1,5 +1,11 @@
 import buildLocalApiUrl from '../../../../utils/buildLocalApiUrl'
 import fetchJsonServer from '../../../../utils/fetchJsonServer'
+import isEmpty from '../../../../utils/isEmpty'
+import {
+  getActiveFocusSession,
+  getInProgressAndPendingTasks,
+} from '../../../../utils/jsonServerQueries'
+import { FINISHED_FOCUS_SESSION_STATUS } from '../../../../features/focusSession/constants'
 
 async function updateTasksFocusSessionIdToNull({ tasks, options }) {
   return await Promise.all(
@@ -19,39 +25,10 @@ async function updateTasksFocusSessionIdToNull({ tasks, options }) {
   )
 }
 
-async function getInProgressAndPedingTasks({ options }) {
-  const fetchOptions = {
-    ...options,
-    method: 'get',
-    body: undefined,
-  }
-
-  return fetchJsonServer({
-    resource: 'task',
-    url: 'tasks?status=in-progress&status=pending',
-    options: fetchOptions,
-  })
-}
-
-async function getActiveFocusSession({ options }) {
-  const fetchOptions = {
-    ...options,
-    method: 'get',
-    body: undefined,
-  }
-
-  return fetchJsonServer({
-    resource: 'focus-sessions',
-    url: 'focus-sessions?status=active',
-    options: fetchOptions,
-    singular: true,
-  })
-}
-
 async function updateActiveFocusSession({ activeFocusSession, options, res }) {
   const fetchOptions = {
     ...options,
-    body: { status: 'finished' },
+    body: { status: FINISHED_FOCUS_SESSION_STATUS },
   }
 
   return fetchJsonServer({
@@ -67,9 +44,14 @@ export default async function handler(req, res) {
 
   if (req.method === 'PATCH') {
     const activeFocusSession = await getActiveFocusSession({ options })
+
+    if (isEmpty(activeFocusSession)) {
+      return res.status(404).json({ error: 'There is no active focus session' })
+    }
+
     await updateActiveFocusSession({ activeFocusSession, options, res })
 
-    const tasks = await getInProgressAndPedingTasks({ options })
+    const tasks = await getInProgressAndPendingTasks({ options })
     await updateTasksFocusSessionIdToNull({ tasks, options })
   }
 }

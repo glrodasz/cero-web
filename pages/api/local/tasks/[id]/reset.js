@@ -1,5 +1,6 @@
 import buildLocalApiUrl from '../../../../../utils/buildLocalApiUrl'
 import fetchJsonServer from '../../../../../utils/fetchJsonServer'
+import { PENDING_COLUMN_ID } from '../../../../../features/tasks/constants'
 
 async function getPendingTasks({ options }) {
   const fetchOptions = {
@@ -10,7 +11,7 @@ async function getPendingTasks({ options }) {
 
   return fetchJsonServer({
     resource: 'task',
-    url: 'tasks?status=pending',
+    url: `tasks?status=${PENDING_COLUMN_ID}`,
     options: fetchOptions,
   })
 }
@@ -36,7 +37,7 @@ async function updatePendingTasksPriority({ tasks, options }) {
 async function resetTask({ taskId, options, res }) {
   const fetchOptions = {
     ...options,
-    body: { status: 'pending', priority: 0 },
+    body: { status: PENDING_COLUMN_ID, priority: 0 },
   }
   return fetchJsonServer({
     resource: 'task',

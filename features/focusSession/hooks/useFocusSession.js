@@ -1,4 +1,4 @@
-import { focusSessionsApi } from '../api'
+import { focusSessionsApi } from '../../common/api'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import useLocalData from '../../common/hooks/useLocalData'
 

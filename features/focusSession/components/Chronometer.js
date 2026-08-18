@@ -2,7 +2,7 @@ import { Icon, Paragraph, Spacer } from '@glrodasz/components'
 import PropTypes from 'prop-types'
 import formatMilliseconds from '../../../utils/formatMilliseconds'
 
-import { createHandlerClickChronometer } from '../handlers'
+import { createClickChronometerHandler } from '../handlers'
 import { getBarWidth } from '../helpers'
 
 const Chronometer = ({ currentTime, isPaused, onPause }) => {
@@ -33,7 +33,7 @@ const Chronometer = ({ currentTime, isPaused, onPause }) => {
         <Icon
           name={isPaused ? 'play' : 'pauseCircle'}
           size="lg"
-          onClick={createHandlerClickChronometer({
+          onClick={createClickChronometerHandler({
             isPaused,
             onPause,
           })}

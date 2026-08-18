@@ -4,9 +4,9 @@ import EditTaskModal from '../components/EditTaskModal'
 import useTask from '../hooks/useTask'
 
 import {
-  handleDeleteTask,
-  handleCloseEditTaskModal,
-  handleUpdateTask,
+  createDeleteTaskHandler,
+  createCloseEditTaskModalHandler,
+  createUpdateTaskHandler,
 } from '../../tasks/handlers'
 
 const EditTask = ({ editTaskModal, deleteConfirmation }) => {
@@ -20,11 +20,11 @@ const EditTask = ({ editTaskModal, deleteConfirmation }) => {
       {editTaskModal.showDialog && (
         <EditTaskModal
           task={task?.data}
-          onClose={handleCloseEditTaskModal({ editTaskModal })}
-          onDelete={handleDeleteTask({
+          onClose={createCloseEditTaskModalHandler({ editTaskModal })}
+          onDelete={createDeleteTaskHandler({
             deleteConfirmation,
           })}
-          onUpdate={handleUpdateTask({
+          onUpdate={createUpdateTaskHandler({
             task,
           })}
         />

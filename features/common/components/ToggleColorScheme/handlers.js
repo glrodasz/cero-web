@@ -1,6 +1,6 @@
 import { persistColorScheme } from './helpers'
 
-export const handleClick =
+export const createClickHandler =
   ({ isDarkMode, setIsDarkMode }) =>
   () => {
     persistColorScheme({ isDarkMode: !isDarkMode, setIsDarkMode })

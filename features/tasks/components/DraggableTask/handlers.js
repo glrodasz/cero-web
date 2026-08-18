@@ -1,16 +1,16 @@
-export const handleCompleteTask =
+export const createCompleteTaskHandler =
   ({ id, onCompleteTask }) =>
   ({ isChecked }) => {
     onCompleteTask({ id, isChecked })
   }
 
-export const handleDeleteTask =
+export const createDeleteTaskHandler =
   ({ id, onDeleteTask }) =>
   () => {
     onDeleteTask({ id })
   }
 
-export const handleEditTask =
+export const createEditTaskHandler =
   ({ id, onEditTask }) =>
   () => {
     onEditTask({ id })

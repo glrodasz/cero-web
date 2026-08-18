@@ -1,10 +1,9 @@
-import { useState } from 'react'
-import useDialog from '../../common/hooks/useDialog'
+import useDialogWithState from '../../common/hooks/useDialogWithState'
 
 const useBreaktimeTimer = () => {
-  const [time, setTime] = useState(null)
+  const { value: time, setValue: setTime, ...dialog } = useDialogWithState()
 
-  return { ...useDialog(), time, setTime }
+  return { ...dialog, time, setTime }
 }
 
 export default useBreaktimeTimer

@@ -14,13 +14,13 @@ import useTasks from '../../tasks/hooks/useTasks'
 import useFocusSessions from '../../focusSession/hooks/useFocusSessions'
 
 import {
-  handleDragEndTask,
-  handleDeleteTask,
-  handleAddTask,
-  handleCancelRemove,
-  handleConfirmRemove,
-  handleStartSession,
-  handleOpenEditTaskModal,
+  createDragEndTaskHandler,
+  createDeleteTaskHandler,
+  createAddTaskHandler,
+  createCancelRemoveHandler,
+  createConfirmRemoveHandler,
+  createStartSessionHandler,
+  createOpenEditTaskModalHandler,
 } from '../../tasks/handlers'
 
 import PlanningFooter from '../components/PlanningFooter'
@@ -29,7 +29,7 @@ import EditTask from '../../tasks/containers/EditTask'
 
 import {
   MAXIMUM_BACKLOG_QUANTITY,
-  MAXIMUN_IN_PRIORITY_TASKS,
+  MAXIMUM_IN_PRIORITY_TASKS,
 } from '../../../config/index'
 
 const Planning = ({ initialData }) => {
@@ -49,7 +49,7 @@ const Planning = ({ initialData }) => {
 
   const tasksLength = tasks.data?.length
   const shouldShowAddTaskButton =
-    tasksLength < MAXIMUM_BACKLOG_QUANTITY + MAXIMUN_IN_PRIORITY_TASKS
+    tasksLength < MAXIMUM_BACKLOG_QUANTITY + MAXIMUM_IN_PRIORITY_TASKS
 
   return (
     <>
@@ -77,12 +77,12 @@ const Planning = ({ initialData }) => {
               <Board
                 isActive={false}
                 tasks={tasks.data}
-                onDragEnd={handleDragEndTask({ tasks })}
+                onDragEnd={createDragEndTaskHandler({ tasks })}
                 actions={{
-                  onDeleteTask: handleDeleteTask({
+                  onDeleteTask: createDeleteTaskHandler({
                     deleteConfirmation,
                   }),
-                  onEditTask: handleOpenEditTaskModal({
+                  onEditTask: createOpenEditTaskModalHandler({
                     tasks,
                     editTaskModal,
                   }),
@@ -92,14 +92,14 @@ const Planning = ({ initialData }) => {
             <AddTaskButton
               id="planning"
               isShown={shouldShowAddTaskButton}
-              onAddTask={handleAddTask({ tasks })}
+              onAddTask={createAddTaskHandler({ tasks })}
             />
           </LoadingError>
         }
         footer={
           <PlanningFooter
             tasksLength={tasksLength}
-            onClickStartSession={handleStartSession({ focusSessions })}
+            onClickStartSession={createStartSessionHandler({ focusSessions })}
           />
         }
       />
@@ -109,8 +109,8 @@ const Planning = ({ initialData }) => {
       />
       {deleteConfirmation.showDialog && (
         <DeleteTaskModal
-          onClickCancel={handleCancelRemove({ deleteConfirmation })}
-          onClickConfirm={handleConfirmRemove({
+          onClickCancel={createCancelRemoveHandler({ deleteConfirmation })}
+          onClickConfirm={createConfirmRemoveHandler({
             tasks,
             deleteConfirmation,
           })}

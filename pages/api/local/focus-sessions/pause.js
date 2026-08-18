@@ -3,21 +3,7 @@ import crypto from 'crypto'
 import buildLocalApiUrl from '../../../../utils/buildLocalApiUrl'
 import fetchJsonServer from '../../../../utils/fetchJsonServer'
 import { resumeActiveFocusSession } from './resume'
-
-async function getActiveFocusSession({ options }) {
-  const fetchOptions = {
-    ...options,
-    method: 'get',
-    body: undefined,
-  }
-
-  return fetchJsonServer({
-    resource: 'focus-sessions',
-    url: 'focus-sessions?status=active',
-    options: fetchOptions,
-    singular: true,
-  })
-}
+import { getActiveFocusSession } from '../../../../utils/jsonServerQueries'
 
 async function pauseActiveFocusSession({ activeFocusSession, options, res }) {
   const { time } = options.body

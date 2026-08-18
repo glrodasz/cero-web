@@ -1,20 +1,6 @@
 import buildLocalApiUrl from '../../../../utils/buildLocalApiUrl'
 import fetchJsonServer from '../../../../utils/fetchJsonServer'
-
-async function getActiveFocusSession({ options }) {
-  const fetchOptions = {
-    ...options,
-    method: 'get',
-    body: undefined,
-  }
-
-  return fetchJsonServer({
-    resource: 'focus-sessions',
-    url: 'focus-sessions?status=active',
-    options: fetchOptions,
-    singular: true,
-  })
-}
+import { getActiveFocusSession } from '../../../../utils/jsonServerQueries'
 
 export async function resumeActiveFocusSession({
   activeFocusSession,

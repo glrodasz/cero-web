@@ -4,19 +4,19 @@ import { Modal, Heading, Paragraph } from '@glrodasz/components'
 
 import timeAgo from '../../../utils/timeAgo'
 
-const handleClose =
+const createCloseHandler =
   ({ onClose }) =>
   () => {
     onClose()
   }
 
-const handleDelete =
+const createDeleteHandler =
   ({ id, onDelete }) =>
   () => {
     onDelete({ id })
   }
 
-const handleUpdate =
+const createUpdateHandler =
   ({ id, onUpdate }) =>
   (event) => {
     const description = event.currentTarget.textContent
@@ -27,16 +27,16 @@ const EditTaskModal = ({ task, onClose, onDelete, onUpdate }) => {
   return (
     <Modal
       type="secondary"
-      onClose={handleClose({ onClose })}
+      onClose={createCloseHandler({ onClose })}
       secondaryAction={{
         icon: 'trash',
-        handler: handleDelete({ id: task?.id, onDelete }),
+        handler: createDeleteHandler({ id: task?.id, onDelete }),
       }}
     >
       <div className="container">
         <Heading
           size="xl"
-          onBlur={handleUpdate({ id: task?.id, onUpdate })}
+          onBlur={createUpdateHandler({ id: task?.id, onUpdate })}
           isEditable
         >
           {task?.description || ''}

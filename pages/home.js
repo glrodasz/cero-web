@@ -11,7 +11,7 @@ import {
 } from '@glrodasz/components'
 import { withPageAuthRequired } from '@auth0/nextjs-auth0'
 
-import UserHeader from '../features/common/components/UserHeader/UserHeader'
+import UserHeader from '../features/common/components/UserHeader'
 
 export const getServerSideProps = withPageAuthRequired()
 

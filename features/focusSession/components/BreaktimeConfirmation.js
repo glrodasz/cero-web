@@ -12,13 +12,13 @@ import {
 
 import time from '../../../utils/time'
 
-const createHandlerClose =
+const createCloseHandler =
   ({ onClose }) =>
   () => {
     onClose()
   }
 
-const createHandlerChoose =
+const createChooseHandler =
   ({ onChoose }) =>
   (time) =>
   () => {
@@ -26,10 +26,10 @@ const createHandlerChoose =
   }
 
 const BreaktimeConfirmation = ({ onClose, onChoose }) => {
-  const handleChooseBreaktime = createHandlerChoose({ onChoose })
+  const createChooseBreaktimeHandler = createChooseHandler({ onChoose })
 
   return (
-    <Modal isCentered onClose={createHandlerClose({ onClose })}>
+    <Modal isCentered onClose={createCloseHandler({ onClose })}>
       <CenteredContent>
         <Picture src="/images/couch-pause.svg" width={200}></Picture>
         <Spacer.Vertical size="md" />
@@ -44,19 +44,19 @@ const BreaktimeConfirmation = ({ onClose, onChoose }) => {
         <Spacer.Vertical size="lg" />
         <div style={{ display: 'flex', gap: '0 20px', width: '100%' }}>
           <Button
-            onClick={handleChooseBreaktime(time.FIVE_MINUTES_IN_MS)}
+            onClick={createChooseBreaktimeHandler(time.FIVE_MINUTES_IN_MS)}
             isMuted
           >
             5 min
           </Button>
           <Button
-            onClick={handleChooseBreaktime(time.TEN_MINUTES_IN_MS)}
+            onClick={createChooseBreaktimeHandler(time.TEN_MINUTES_IN_MS)}
             isMuted
           >
             10 min
           </Button>
           <Button
-            onClick={handleChooseBreaktime(time.FIFTY_MINUTES_IN_MS)}
+            onClick={createChooseBreaktimeHandler(time.FIFTEEN_MINUTES_IN_MS)}
             isMuted
           >
             15 min

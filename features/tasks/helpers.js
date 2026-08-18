@@ -1,5 +1,5 @@
 import {
-  MAXIMUN_IN_PRIORITY_TASKS,
+  MAXIMUM_IN_PRIORITY_TASKS,
   MAXIMUM_BACKLOG_QUANTITY,
 } from '../../config'
 
@@ -39,7 +39,7 @@ export const reorderTasks = (
 }
 
 export const getTaskType = (index) => {
-  if (index > MAXIMUN_IN_PRIORITY_TASKS - 1) {
+  if (index > MAXIMUM_IN_PRIORITY_TASKS - 1) {
     return null
   }
 
@@ -68,7 +68,7 @@ export const getCurrent = ({ column, isActive, tasks }) => {
 
 export const getTotal = ({ column, isActive }) => {
   if (column.id === IN_PROGRESS_COLUMN_ID && !isActive) {
-    return MAXIMUN_IN_PRIORITY_TASKS
+    return MAXIMUM_IN_PRIORITY_TASKS
   }
 
   if (column.id === PENDING_COLUMN_ID && isActive) {
@@ -121,27 +121,29 @@ export const normalizeData = (tasks) => {
 export const filterColumns =
   ({ tasksLength, isActive }) =>
   (column) => {
-    const AreWeInFocusSession = isActive
-    const AreWeInPlanning = !isActive
-    const DoWeHaveBacklogTasks = tasksLength >= MAXIMUN_IN_PRIORITY_TASKS
+    const areWeInFocusSession = isActive
+    const areWeInPlanning = !isActive
+    const doWeHaveBacklogTasks = tasksLength >= MAXIMUM_IN_PRIORITY_TASKS
 
-    if (AreWeInFocusSession) {
+    if (areWeInFocusSession) {
       return true
     }
 
-    if (AreWeInPlanning && column === IN_PROGRESS_COLUMN_ID) {
+    if (areWeInPlanning && column === IN_PROGRESS_COLUMN_ID) {
       return true
     }
 
     if (
-      AreWeInPlanning &&
-      DoWeHaveBacklogTasks &&
+      areWeInPlanning &&
+      doWeHaveBacklogTasks &&
       column === PENDING_COLUMN_ID
     ) {
       return true
     }
 
-    if (AreWeInPlanning && column === COMPLETED_COLUMN_ID) {
+    if (areWeInPlanning && column === COMPLETED_COLUMN_ID) {
       return false
     }
+
+    return false
   }
