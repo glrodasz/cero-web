@@ -3,15 +3,18 @@ import { resetServerContext } from 'react-beautiful-dnd'
 import { withPageAuthRequired } from '../features/common/auth'
 
 import PlanningContainer from '../features/planning/containers/Planning'
-import { tasksApi, focusSessionsApi } from '../features/common/api'
 import isEmpty from '../utils/isEmpty'
+import { getOrCreateSessionId } from '../datasources/session'
+import { readActiveFocusSession } from '../features/focusSession/queries'
+import { readTasks } from '../features/tasks/queries'
 import httpCodes from '../utils/httpCodes'
 
 export const getServerSideProps = withPageAuthRequired({
-  getServerSideProps: async ({ res }) => {
+  getServerSideProps: async ({ req, res }) => {
     resetServerContext()
 
-    const activeFocusSession = await focusSessionsApi.getActive()
+    const sessionId = getOrCreateSessionId(req, res)
+    const activeFocusSession = await readActiveFocusSession({ sessionId })
 
     if (!isEmpty(activeFocusSession)) {
       res.statusCode = httpCodes.FOUND
@@ -19,7 +22,7 @@ export const getServerSideProps = withPageAuthRequired({
       return { props: {} }
     }
 
-    const tasks = await tasksApi.getAll()
+    const tasks = await readTasks({ sessionId })
     return { props: { tasks } }
   },
 })

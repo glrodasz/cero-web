@@ -3,16 +3,18 @@ import { withPageAuthRequired } from '../features/common/auth'
 import FocusSessionContainer from '../features/focusSession/containers/FocusSession'
 import { resetServerContext } from 'react-beautiful-dnd'
 import isEmpty from '../utils/isEmpty'
+import { getOrCreateSessionId } from '../datasources/session'
+import { readActiveFocusSession } from '../features/focusSession/queries'
+import { readTasks } from '../features/tasks/queries'
 import httpCodes from '../utils/httpCodes'
 
-import { tasksApi, focusSessionsApi } from '../features/common/api'
-
 export const getServerSideProps = withPageAuthRequired({
-  getServerSideProps: async ({ res }) => {
+  getServerSideProps: async ({ req, res }) => {
     resetServerContext()
 
-    const tasks = await tasksApi.getAll()
-    const activeFocusSession = await focusSessionsApi.getActive()
+    const sessionId = getOrCreateSessionId(req, res)
+    const tasks = await readTasks({ sessionId })
+    const activeFocusSession = await readActiveFocusSession({ sessionId })
 
     if (isEmpty(activeFocusSession)) {
       res.statusCode = httpCodes.FOUND
