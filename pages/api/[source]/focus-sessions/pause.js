@@ -1,9 +1,10 @@
 import crypto from 'crypto'
 
-import buildLocalApiUrl from '../../../../utils/buildLocalApiUrl'
-import fetchJsonServer from '../../../../utils/fetchJsonServer'
+import buildApiUrl from '../../../../datasources/buildApiUrl'
+import fetchResource from '../../../../datasources'
 import { resumeActiveFocusSession } from './resume'
-import { getActiveFocusSession } from '../../../../utils/jsonServerQueries'
+import { getActiveFocusSession } from '../../../../features/focusSession/queries'
+import withApiRoute from '../../../../datasources/withApiRoute'
 
 async function pauseActiveFocusSession({ activeFocusSession, options, res }) {
   const { time } = options.body
@@ -32,7 +33,7 @@ async function pauseActiveFocusSession({ activeFocusSession, options, res }) {
     body: { pauses: [...currentPauses, newPause] },
   }
 
-  return fetchJsonServer({
+  return fetchResource({
     resource: 'focus-sessions',
     url: `focus-sessions/${activeFocusSession.id}`,
     options: fetchOptions,
@@ -40,11 +41,13 @@ async function pauseActiveFocusSession({ activeFocusSession, options, res }) {
   })
 }
 
-export default async function handler(req, res) {
-  const { options } = buildLocalApiUrl(req)
+async function handler(req, res) {
+  const { options } = buildApiUrl(req, res)
 
   if (req.method === 'PATCH') {
     const activeFocusSession = await getActiveFocusSession({ options })
     await pauseActiveFocusSession({ activeFocusSession, options, res })
   }
 }
+
+export default withApiRoute(handler)

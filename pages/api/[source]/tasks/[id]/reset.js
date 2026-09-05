@@ -1,6 +1,7 @@
-import buildLocalApiUrl from '../../../../../utils/buildLocalApiUrl'
-import fetchJsonServer from '../../../../../utils/fetchJsonServer'
+import buildApiUrl from '../../../../../datasources/buildApiUrl'
+import fetchResource from '../../../../../datasources'
 import { PENDING_COLUMN_ID } from '../../../../../features/tasks/constants'
+import withApiRoute from '../../../../../datasources/withApiRoute'
 
 async function getPendingTasks({ options }) {
   const fetchOptions = {
@@ -9,7 +10,7 @@ async function getPendingTasks({ options }) {
     body: undefined,
   }
 
-  return fetchJsonServer({
+  return fetchResource({
     resource: 'task',
     url: `tasks?status=${PENDING_COLUMN_ID}`,
     options: fetchOptions,
@@ -25,7 +26,7 @@ async function updatePendingTasksPriority({ tasks, options }) {
         body: { ...body, priority: index + 1 },
       }
 
-      return fetchJsonServer({
+      return fetchResource({
         resource: 'task',
         url: `tasks/${id}`,
         options: fetchOptions,
@@ -39,7 +40,7 @@ async function resetTask({ taskId, options, res }) {
     ...options,
     body: { status: PENDING_COLUMN_ID, priority: 0 },
   }
-  return fetchJsonServer({
+  return fetchResource({
     resource: 'task',
     url: `tasks/${taskId}`,
     options: fetchOptions,
@@ -47,8 +48,8 @@ async function resetTask({ taskId, options, res }) {
   })
 }
 
-export default async function handler(req, res) {
-  const { options } = buildLocalApiUrl(req)
+async function handler(req, res) {
+  const { options } = buildApiUrl(req, res)
 
   if (req.method === 'PATCH') {
     const pendingTasks = await getPendingTasks({ options })
@@ -56,3 +57,5 @@ export default async function handler(req, res) {
     await resetTask({ taskId: req.query.id, options, res })
   }
 }
+
+export default withApiRoute(handler)

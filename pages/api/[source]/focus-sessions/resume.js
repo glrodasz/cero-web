@@ -1,6 +1,7 @@
-import buildLocalApiUrl from '../../../../utils/buildLocalApiUrl'
-import fetchJsonServer from '../../../../utils/fetchJsonServer'
-import { getActiveFocusSession } from '../../../../utils/jsonServerQueries'
+import buildApiUrl from '../../../../datasources/buildApiUrl'
+import fetchResource from '../../../../datasources'
+import { getActiveFocusSession } from '../../../../features/focusSession/queries'
+import withApiRoute from '../../../../datasources/withApiRoute'
 
 export async function resumeActiveFocusSession({
   activeFocusSession,
@@ -26,7 +27,7 @@ export async function resumeActiveFocusSession({
     body: { pauses: [...resumedPauses, pauseToResume] },
   }
 
-  return fetchJsonServer({
+  return fetchResource({
     resource: 'focus-sessions',
     url: `focus-sessions/${activeFocusSession.id}`,
     options: fetchOptions,
@@ -34,11 +35,13 @@ export async function resumeActiveFocusSession({
   })
 }
 
-export default async function handler(req, res) {
-  const { options } = buildLocalApiUrl(req)
+async function handler(req, res) {
+  const { options } = buildApiUrl(req, res)
 
   if (req.method === 'PATCH') {
     const activeFocusSession = await getActiveFocusSession({ options })
     await resumeActiveFocusSession({ activeFocusSession, options, res })
   }
 }
+
+export default withApiRoute(handler)

@@ -1,7 +1,8 @@
-import buildLocalApiUrl from '../../../../utils/buildLocalApiUrl'
-import fetchJsonServer from '../../../../utils/fetchJsonServer'
-import { getInProgressAndPendingTasks } from '../../../../utils/jsonServerQueries'
+import buildApiUrl from '../../../../datasources/buildApiUrl'
+import fetchResource from '../../../../datasources'
+import { getInProgressAndPendingTasks } from '../../../../features/tasks/queries'
 import { ACTIVE_FOCUS_SESSION_STATUS } from '../../../../features/focusSession/constants'
+import withApiRoute from '../../../../datasources/withApiRoute'
 
 async function updateTasksFocusSessionId({ tasks, focusSessionId, options }) {
   return await Promise.all(
@@ -12,7 +13,7 @@ async function updateTasksFocusSessionId({ tasks, focusSessionId, options }) {
         body: { ...body, focusSessionId },
       }
 
-      return fetchJsonServer({
+      return fetchResource({
         resource: 'task',
         url: `tasks/${id}`,
         options: fetchOptions,
@@ -21,12 +22,13 @@ async function updateTasksFocusSessionId({ tasks, focusSessionId, options }) {
   )
 }
 
-export default async function handler(req, res) {
-  const { options } = buildLocalApiUrl(req)
+async function handler(req, res) {
+  const { options } = buildApiUrl(req, res)
 
   if (req.method === 'GET') {
     const url = `focus-sessions`
-    fetchJsonServer({
+
+    return fetchResource({
       resource: 'focus-sessions',
       url,
       options,
@@ -46,7 +48,7 @@ export default async function handler(req, res) {
       },
     }
 
-    const focusSession = await fetchJsonServer({
+    const focusSession = await fetchResource({
       resource: 'focus-sessions',
       url: `focus-sessions`,
       options: fetchOptions,
@@ -58,3 +60,5 @@ export default async function handler(req, res) {
     return res.status(201).json(focusSession)
   }
 }
+
+export default withApiRoute(handler)

@@ -1,8 +1,9 @@
 import { MAXIMUM_IN_PRIORITY_TASKS } from '../../../../config'
-import buildLocalApiUrl from '../../../../utils/buildLocalApiUrl'
-import fetchJsonServer from '../../../../utils/fetchJsonServer'
-import isEmpty from '../../../../utils/isEmpty'
-import { getActiveFocusSession } from '../../../../utils/jsonServerQueries'
+import buildApiUrl from '../../../../datasources/buildApiUrl'
+import fetchResource from '../../../../datasources'
+import { getActiveFocusSession } from '../../../../features/focusSession/queries'
+import { readTasks } from '../../../../features/tasks/queries'
+import withApiRoute from '../../../../datasources/withApiRoute'
 import {
   IN_PROGRESS_COLUMN_ID,
   PENDING_COLUMN_ID,
@@ -15,26 +16,20 @@ async function getInProgressTasks({ options }) {
     body: undefined,
   }
 
-  return fetchJsonServer({
+  return fetchResource({
     resource: 'task',
     url: `tasks?status=${IN_PROGRESS_COLUMN_ID}`,
     options: fetchOptions,
   })
 }
 
-export default async function handler(req, res) {
-  const { options } = buildLocalApiUrl(req)
+async function handler(req, res) {
+  const { options } = buildApiUrl(req, res)
 
   if (req.method === 'GET') {
-    const activeFocusSession = await getActiveFocusSession({ options })
+    const tasks = await readTasks({ sessionId: options.sessionId })
 
-    let url = `tasks?_sort=priority&_order=asc&focusSessionId=${activeFocusSession?.id}`
-
-    if (isEmpty(activeFocusSession)) {
-      url = `tasks?_sort=priority&_order=asc&status_like=${IN_PROGRESS_COLUMN_ID}|${PENDING_COLUMN_ID}`
-    }
-
-    fetchJsonServer({ resource: 'task', url, options, res })
+    return res.status(200).json(tasks)
   }
 
   if (req.method === 'POST') {
@@ -59,7 +54,7 @@ export default async function handler(req, res) {
       },
     }
 
-    return fetchJsonServer({
+    return fetchResource({
       resource: 'task',
       url: `tasks`,
       options: fetchOptions,
@@ -67,3 +62,5 @@ export default async function handler(req, res) {
     })
   }
 }
+
+export default withApiRoute(handler)
