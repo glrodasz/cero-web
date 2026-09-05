@@ -249,6 +249,37 @@ describe('[ features / focusSession / handlers ]', () => {
         // Assert
         expect(Router.push).toHaveBeenCalledWith('/planning')
       })
+
+      it('should still navigate when finishing fails', async () => {
+        // Arrange
+        // Finishing answers 404 when no session is active -- a second tab, or a
+        // double click. Rejecting here used to strand the user on a dead
+        // session because the navigation never ran.
+        jest.spyOn(console, 'error').mockImplementation(() => {})
+        // No `clearMocks` in this project, so `Router.push` still carries the
+        // calls from the tests above; without this the assertion would pass
+        // whether or not the handler navigated.
+        Router.push.mockClear()
+        const params = {
+          focusSessions: {
+            api: {
+              finish: jest
+                .fn()
+                .mockRejectedValue(
+                  new Error('There is no active focus session')
+                ),
+            },
+          },
+        }
+
+        // Act
+        await createEndSessionHandler(params)()
+
+        // Assert
+        expect(Router.push).toHaveBeenCalledWith('/planning')
+
+        console.error.mockRestore()
+      })
     })
   })
 })

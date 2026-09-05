@@ -42,7 +42,17 @@ export const createChooseBreaktimeHandler =
 export const createEndSessionHandler =
   ({ focusSessions }) =>
   async () => {
-    await focusSessions.api.finish()
+    try {
+      await focusSessions.api.finish()
+    } catch (error) {
+      // Finishing answers 404 when there is no active session -- a second tab,
+      // or a double click on the same button. The user asked to leave the
+      // session and that is already true, so the navigation below is still the
+      // right outcome. Letting this reject would strand them on a dead session
+      // with no way out.
+      console.error('[focusSession] could not finish the session', error)
+    }
+
     Router.push('/planning')
   }
 
