@@ -39,6 +39,7 @@
     "@auth0/nextjs-auth0": "1.9.1",
     "@glrodasz/components": "2.12.1",
     "@tanstack/react-query": "4.0.10",
+    "@upstash/redis": "^1.38.2",
     "minireset.css": "0.0.7",
     "next": "12.2.3",
     "react": "18.2.0",
