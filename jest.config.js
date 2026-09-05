@@ -1,7 +1,12 @@
 module.exports = {
   collectCoverageFrom: [
-    '{features,api}/**/!(index|constants).js',
-    '{helpers,scripts}/*.js',
+    '{features,api,utils,datasources,config}/**/*.js',
+    '!**/*.test.js',
+    '!**/constants.js',
+    // One-line barrels (`export { default } from './Thing'`), unlike the
+    // `index.js` files under `datasources/` and `config/`, which hold real
+    // logic and are tested.
+    '!**/components/**/index.js',
   ],
   // TODO: Ratchet back up as coverage improves; lowered from 60 to unblock
   // CI, which had never run on pull requests and was failing against the
