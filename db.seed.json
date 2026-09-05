@@ -1,0 +1,45 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "description": "Revisar el diseño de la nueva pantalla de planning",
+      "priority": 0,
+      "status": "in-progress",
+      "focusSessionId": null,
+      "createdAt": 1692000000000
+    },
+    {
+      "id": 2,
+      "description": "Escribir las pruebas del store en memoria",
+      "priority": 1,
+      "status": "in-progress",
+      "focusSessionId": null,
+      "createdAt": 1692000100000
+    },
+    {
+      "id": 3,
+      "description": "Preparar la demo para el equipo",
+      "priority": 0,
+      "status": "pending",
+      "focusSessionId": null,
+      "createdAt": 1692000200000
+    },
+    {
+      "id": 4,
+      "description": "Actualizar la documentación del README",
+      "priority": 1,
+      "status": "pending",
+      "focusSessionId": null,
+      "createdAt": 1692000300000
+    },
+    {
+      "id": 5,
+      "description": "Configurar el proyecto en Vercel",
+      "priority": 0,
+      "status": "completed",
+      "focusSessionId": null,
+      "createdAt": 1692000400000
+    }
+  ],
+  "focus-sessions": []
+}
