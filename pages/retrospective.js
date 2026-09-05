@@ -1,4 +1,4 @@
-import { withPageAuthRequired } from '@auth0/nextjs-auth0'
+import { withPageAuthRequired } from '../features/common/auth'
 import RetrospectiveContainer from '../features/retrospective/containers/Retrospective'
 
 export const getServerSideProps = withPageAuthRequired()

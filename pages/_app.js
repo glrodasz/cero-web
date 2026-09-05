@@ -5,6 +5,8 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { UserProvider } from '@auth0/nextjs-auth0'
 
+import { IS_DEMO_MODE } from '../features/common/auth'
+
 import ToggleColorScheme from '../features/common/components/ToggleColorScheme'
 import NavigationMenu from '../features/common/components/NavigationMenu'
 import MainLayout from '../features/common/components/MainLayout'
@@ -56,9 +58,13 @@ function MyApp({ Component, pageProps }) {
         menu={<NavigationMenu />}
         content={
           <Container>
-            <UserProvider>
+            {IS_DEMO_MODE ? (
               <Component {...pageProps} />
-            </UserProvider>
+            ) : (
+              <UserProvider>
+                <Component {...pageProps} />
+              </UserProvider>
+            )}
           </Container>
         }
       />

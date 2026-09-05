@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { withPageAuthRequired } from '@auth0/nextjs-auth0'
+import { withPageAuthRequired } from '../features/common/auth'
 import FocusSessionContainer from '../features/focusSession/containers/FocusSession'
 import { resetServerContext } from 'react-beautiful-dnd'
 import isEmpty from '../utils/isEmpty'

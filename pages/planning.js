@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { resetServerContext } from 'react-beautiful-dnd'
-import { withPageAuthRequired } from '@auth0/nextjs-auth0'
+import { withPageAuthRequired } from '../features/common/auth'
 
 import PlanningContainer from '../features/planning/containers/Planning'
 import { tasksApi, focusSessionsApi } from '../features/common/api'
