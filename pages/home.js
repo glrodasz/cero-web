@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { useUser } from '@auth0/nextjs-auth0'
 import {
   Spacer,
   Card,
@@ -9,7 +8,7 @@ import {
   Paragraph,
   LoadingError,
 } from '@glrodasz/components'
-import { withPageAuthRequired } from '@auth0/nextjs-auth0'
+import { useUser, withPageAuthRequired } from '../features/common/auth'
 
 import UserHeader from '../features/common/components/UserHeader'
 
