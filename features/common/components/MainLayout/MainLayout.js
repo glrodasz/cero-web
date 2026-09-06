@@ -20,23 +20,36 @@ const MainLayout = ({ menu, content, isPlayground }) => {
           border: var(--border-width-thick) dashed var(--color-primary);
         }
 
+        /* App shell: the viewport is the frame, only the content scrolls. The
+           menu is a flex item that never shrinks, so the bottom bar stays put
+           on mobile instead of scrolling away with a tall page. */
         .main-layout {
+          position: relative;
           display: flex;
           flex-direction: column-reverse;
           width: 100%;
-          min-height: 100vh;
-          justify-content: space-between;
-        }
-
-        .menu {
-          display: flex;
-          margin-top: auto;
-          background: var(--background-color-primary-highlight);
+          height: 100vh;
+          height: 100dvh;
+          overflow: hidden;
         }
 
         .content {
           display: flex;
+          flex: 1 1 auto;
+          /* Without this a flex item refuses to shrink below its content and
+             the scrolling moves back to the page, unpinning the menu. */
+          min-height: 0;
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
           background: var(--background-color-primary);
+        }
+
+        .menu {
+          display: flex;
+          flex: 0 0 auto;
+          min-height: var(--bottom-menu-height);
+          padding-bottom: env(safe-area-inset-bottom);
+          background: var(--background-color-primary-highlight);
         }
 
         @media (min-width: 992px) {
@@ -46,7 +59,8 @@ const MainLayout = ({ menu, content, isPlayground }) => {
 
           .menu {
             max-width: 260px;
-            margin-top: 0;
+            min-height: 0;
+            padding-bottom: 0;
           }
         }
       `}</style>

@@ -43,6 +43,12 @@
   @include dark-color-scheme;
 }
 
+:root {
+  /* Height of the bottom navigation on mobile. Shared so the floating dev
+     tools button can clear it without guessing. */
+  --bottom-menu-height: 64px;
+}
+
 html,
 body {
   height: 100%;
