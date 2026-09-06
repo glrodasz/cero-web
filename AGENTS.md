@@ -115,6 +115,44 @@ Rules that keep it a single source of truth — don't reintroduce a second one:
 (`features/common/auth.js`). Demo deployments happen to set both; they are not
 the same switch.
 
+### How a read actually reaches a store
+
+```
+  BROWSER (React Query)                    SERVER RENDER (getServerSideProps)
+  ─────────────────────                    ─────────────────────────────────
+  useTasks / useFocusSession               pages/planning.js
+          │                                pages/focus-session.js
+  features/common/api                              │
+          │                                        │
+  api/request.js ──── base = API_URL               │   no HTTP at all:
+          │                                        │   already on the server,
+   HTTP  /api/<namespace>/tasks?status=…           │   next to the data
+          │                                        │
+  pages/api/[source]/**                            │
+     ├ withApiRoute   → 400 if the namespace in    │
+     │                  the path ≠ configured one  │
+     └ withApiHandler → 405 if no method matched   │
+          │                                        │
+  datasources/buildApiUrl                  features/*/queries.js
+          │                                        │
+          └──────────► datasources/index.js ◄──────┘
+                              │
+        ┌───────────┬─────────┴─────────┬──────────────┐
+        ▼           ▼                   ▼              ▼
+  jsonServer.js  memory/            fixtures/      api → throw
+  HTTP :3001     Redis              in-process     (external backend)
+        └───────────┴─── collections/ ───┘
+                    (shared CRUD + query engine)
+```
+
+Two things to preserve when changing any of this. **Server rendering skips the
+HTTP column on purpose** — routing it back through the app's own API routes is
+what produced the `401: Protected deployment` failure, so `getServerSideProps`
+calls `features/*/queries.js` directly. And **`collections/` is the only place
+CRUD semantics are defined**, which is what stops the demo store and the test
+fixtures from drifting apart; a new store supplies `getCollections` /
+`saveCollections` and nothing else.
+
 ### `datasources/` — the data layer, explicit
 
 `pages/api/[source]/**` and `getServerSideProps` never talk to storage

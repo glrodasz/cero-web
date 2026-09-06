@@ -49,12 +49,45 @@ deployment talks to, and both halves derive from it — the URL the browser call
 (`config/index.js`) and the storage behind it (`datasources/index.js`), so the
 two can never disagree:
 
+```mermaid
+flowchart TD
+  ENV["NEXT_PUBLIC_DATA_SOURCE<br/><i>baked in at build time</i>"]
+  ENV --> URL["config/index.js<br/>→ API_URL<br/><i>what the browser calls</i>"]
+  ENV --> STORE["datasources/index.js<br/>→ the store<br/><i>what answers the read</i>"]
+
+  URL --> LOCAL["/api/local"]
+  URL --> DEMO["/api/demo"]
+  URL --> TEST["/api/test"]
+  URL --> EXT["NEXT_PUBLIC_API_URL"]
+
+  LOCAL --> JS["json-server :3001<br/>db.json"]
+  DEMO --> REDIS["Upstash Redis<br/>one doc per session cookie"]
+  TEST --> FIX["fixtures<br/>in-process, fixed data"]
+  EXT --> BACKEND["external backend<br/>not wired through this app yet"]
+
+  STORE -.-> JS
+  STORE -.-> REDIS
+  STORE -.-> FIX
+  STORE -.-> BACKEND
+```
+
 | `NEXT_PUBLIC_DATA_SOURCE` | browser calls | storage |
 | --- | --- | --- |
 | `api` | `NEXT_PUBLIC_API_URL` (required) | the real backend — **not wired through this app yet** |
 | `json-server` | `/api/local` | `json-server` at `JSON_SERVER_URL` |
 | `memory` | `/api/demo` | Upstash Redis, per browser session |
 | `fixtures` | `/api/test` | committed arrays, per process (integration tests) |
+
+**Switching between them:**
+
+- Already wired per environment — `yarn dev` uses `json-server`,
+  `yarn test:integration` uses `fixtures`, and a deployment uses `memory`.
+- One-off, locally: `NEXT_PUBLIC_DATA_SOURCE=memory yarn build && yarn start`.
+- On Vercel: set it in the dashboard, **then redeploy**.
+
+That last step is not optional. `NEXT_PUBLIC_*` values are compiled into the
+bundle, so changing one without rebuilding does nothing — and a bundle built
+for one namespace calling another is exactly what the 400 above catches.
 
 The `api` row is the one gap: that backend lives in its own repository and
 nothing here talks to it yet, so selecting it fails with a clear error rather
