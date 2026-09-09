@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / common / components / DevTools ] when \`DevTools\` is mounted should render the floating button without the modal 1`] = `
+<DocumentFragment>
+  <button
+    aria-expanded="false"
+    aria-haspopup="dialog"
+    aria-label="Dev tools"
+    class="jsx-3935559433 dev-tools-button"
+    type="button"
+  >
+    
+[Icon {"name":"settings"} /]
+  </button>
+</DocumentFragment>
+`;
