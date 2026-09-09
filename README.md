@@ -1,5 +1,5 @@
 # Cero a Producción — Web
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/glrodasz/cero-web/Release)](https://github.com/glrodasz/cero-web/actions/workflows/release.yml) [![Codecov](https://img.shields.io/codecov/c/github/glrodasz/cero-web)](https://app.codecov.io/gh/glrodasz/cero-web)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/glrodasz/cero-web/release.yml?branch=main)](https://github.com/glrodasz/cero-web/actions/workflows/release.yml) [![Codecov](https://img.shields.io/codecov/c/github/glrodasz/cero-web)](https://app.codecov.io/gh/glrodasz/cero-web)
 
 
 0️⃣ 🚀 **Cero a Producción** is a project of live coding sessions where we develop a a productivity management app called **RETO** from the scratch to production.
