@@ -1,184 +1,76 @@
 # Cero a Producción — Web
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/glrodasz/cero-web/release.yml?branch=main)](https://github.com/glrodasz/cero-web/actions/workflows/release.yml) [![Codecov](https://img.shields.io/codecov/c/github/glrodasz/cero-web)](https://app.codecov.io/gh/glrodasz/cero-web)
 
+0️⃣ 🚀 **Cero a Producción** is a series of live coding sessions where we build
+**RETO**, a productivity app, from scratch to production — real decisions,
+failing tests, refactors and all.
 
-0️⃣ 🚀 **Cero a Producción** is a project of live coding sessions where we develop a a productivity management app called **RETO** from the scratch to production.
+📺 [YouTube](https://glrz.me/youtube-cero) · 🟣 [Twitch](https://glrz.me/stream)
+(live in 🇪🇸 Spanish, Tuesdays to Fridays)
 
-## The idea behind
-The idea behind this sessions is to show a real developer experience where we explore every decision that a common programmer do in daily basis with JavaScript and other tools. You will see failing tests, refactors, Google and StackOverflow searchs, but also a lot of fun and the struggle of naming things.
+Part of the [Cero a Producción project](https://github.com/glrodasz/cero).
 
-Watch the project in live streaming in 🇪🇸 Spanish, from **Tuesdays** to **Fridays**. [![Twitch Status](https://img.shields.io/twitch/status/guillermorodas?style=social)](https://glrz.me/stream)
+## What this is
 
+The **web frontend** of RETO: a planning board where you keep a backlog, promote
+a limited number of tasks to in-progress, run a focus session and close it with a
+retrospective.
 
-## Table of Contents
+**Stack:** Next.js 12 (pages router) · React 18 · `@tanstack/react-query` v4 ·
+`@auth0/nextjs-auth0` · `react-beautiful-dnd` · Yarn 4 · Node ≥ 24 (see `.nvmrc`).
 
-- [Running the project locally](#Running-the-project-locally)
-- [Running the tests](#Running-the-tests)
-- [Deploying a preview without a database](#Deploying-a-preview-without-a-database)
-- [Throubleshooting](#Throubleshooting)
+## Related projects
+
+- **[`cero-components`](https://github.com/glrodasz/cero-components)** — the UI
+  kit this app is built with, consumed as the `@glrodasz/components` npm
+  dependency. [npm](https://www.npmjs.com/package/@glrodasz/components) ·
+  [Storybook](https://cero-components.vercel.app)
+- **[`cero-api`](https://github.com/glrodasz/cero-api)** — the backend, being
+  explored across several stacks. **Not wired to this app yet**: locally the app
+  persists through `json-server` and a `db.json` file.
 
 ## Running the project locally
 
-Follow these steps to `start the project` in development
+1. Clone the repository: `git clone https://github.com/glrodasz/cero-web.git`
+2. Install dependencies in the project folder: `yarn`
+3. Copy `.env.local.example` to `.env.local` and fill the env variables.
+4. Seed the local database: `cp db.seed.json db.json` (this file is gitignored,
+   so `json-server` can freely read and write it).
+5. Start everything with `yarn dev`:
 
-1. Clone repository. `git clone https://github.com/glrodasz/cero-web.git`
-2. Install dependencies in the project folder running `yarn` or `npm install`
-3. Copy the `.env.local.example` to `.env.local` and fill the env variables.
-4. Seed the local database: `cp db.seed.json db.json` (this file is
-   gitignored, so `json-server` can freely read and write it).
-5. Run the server with `yarn dev` or `npm run dev`, this command will run:
-
- - The web project at `http://localhost:3000`
- - The local api at `http://localhost:3000/local/api`
- - The JSON server at `http://localhost:3001`
-
+- The web project at `http://localhost:3000`
+- The local API at `http://localhost:3000/api/local`
+- The JSON server at `http://localhost:3001`
 
 ## Running the tests
 
-1. Run `yarn run test`or `npm run test`
-2. To keep the tests running, run `yarn run test:watch`
-## Deploying a preview without a database
+- `yarn test` — unit and component tests (Jest).
+- `yarn test:watch` — same, in watch mode.
+- `yarn test:integration` — TestCafe end-to-end run against the committed
+  fixtures in `datasources/fixtures/`, so it needs no `json-server` and leaves
+  your `db.json` alone.
 
-The app has no database service: it persists through `json-server` and a local
-`db.json`. To run a preview deployment (Vercel or any other host) where no
-`json-server` process exists, two fallbacks kick in automatically.
+## Deployment
 
-**One switch picks the backend.** `NEXT_PUBLIC_DATA_SOURCE` (see
-`config/dataSource.js`) is the only thing that decides which backend a
-deployment talks to, and both halves derive from it — the URL the browser calls
-(`config/index.js`) and the storage behind it (`datasources/index.js`), so the
-two can never disagree:
+The app has no database service. Demo and preview deployments swap
+`json-server` for a Redis-backed store selected by `NEXT_PUBLIC_DATA_SOURCE` —
+see [`docs/deployment.md`](docs/deployment.md) for the full setup.
 
-```mermaid
-flowchart TD
-  ENV["NEXT_PUBLIC_DATA_SOURCE<br/><i>baked in at build time</i>"]
-  ENV --> URL["config/index.js<br/>→ API_URL<br/><i>what the browser calls</i>"]
-  ENV --> STORE["datasources/index.js<br/>→ the store<br/><i>what answers the read</i>"]
+## Contributing
 
-  URL --> LOCAL["/api/local"]
-  URL --> DEMO["/api/demo"]
-  URL --> TEST["/api/test"]
-  URL --> EXT["NEXT_PUBLIC_API_URL"]
+Conventions, project structure and the rules behind the data layer live in
+[`AGENTS.md`](AGENTS.md). Commits follow
+[Conventional Commits](https://www.conventionalcommits.org) — use `yarn commit`
+for a guided prompt.
 
-  LOCAL --> JS["json-server :3001<br/>db.json"]
-  DEMO --> REDIS["Upstash Redis<br/>one doc per session cookie"]
-  TEST --> FIX["fixtures<br/>in-process, fixed data"]
-  EXT --> BACKEND["external backend<br/>not wired through this app yet"]
+## Troubleshooting
 
-  STORE -.-> JS
-  STORE -.-> REDIS
-  STORE -.-> FIX
-  STORE -.-> BACKEND
-```
+### M1 (Apple Silicon) Macs: `npm ERR! sharp Prebuilt libvips 8.10.5 binaries are not yet available for darwin-arm64v8`
 
-| `NEXT_PUBLIC_DATA_SOURCE` | browser calls | storage |
-| --- | --- | --- |
-| `api` | `NEXT_PUBLIC_API_URL` (required) | the real backend — **not wired through this app yet** |
-| `json-server` | `/api/local` | `json-server` at `JSON_SERVER_URL` |
-| `memory` | `/api/demo` | Upstash Redis, per browser session |
-| `fixtures` | `/api/test` | committed arrays, per process (integration tests) |
+Update libvips by running:
 
-**Switching between them:**
-
-- Already wired per environment — `yarn dev` uses `json-server`,
-  `yarn test:integration` uses `fixtures`, and a deployment uses `memory`.
-- One-off, locally: `NEXT_PUBLIC_DATA_SOURCE=memory yarn build && yarn start`.
-- On Vercel: set it in the dashboard, **then redeploy**.
-
-That last step is not optional. `NEXT_PUBLIC_*` values are compiled into the
-bundle, so changing one without rebuilding does nothing — and a bundle built
-for one namespace calling another is exactly what the 400 above catches.
-
-The `api` row is the one gap: that backend lives in its own repository and
-nothing here talks to it yet, so selecting it fails with a clear error rather
-than quietly serving demo data.
-
-The API routes live under a dynamic `pages/api/[source]/` segment, so one set
-of files serves every namespace and the path itself names the backend. A
-request to the wrong namespace gets a 400 rather than silently reading the
-wrong store.
-
-**Redis-backed database.** With `NEXT_PUBLIC_DATA_SOURCE=memory`,
-`datasources/index.js` routes every read and write to `datasources/memory/`, a
-store that emulates the `json-server` REST and query subset the app uses on top of
-[Upstash Redis](https://upstash.com) (free tier). It is seeded from
-`db.seed.json` on first use and scoped per browser session through the
-`cero_demo_session` cookie, so people opening the same preview URL do not
-share or overwrite each other's data. Each session key expires after 24h of
-inactivity (`SESSION_TTL_SECONDS` in `datasources/memory/store.js`), so
-storage doesn't grow unbounded on the free tier.
-
-This is not a plain in-memory store: Vercel deploys every file under
-`pages/api/**` (and every page with `getServerSideProps`) as its own separate
-serverless function, so a module-level `Map` would not be shared across
-routes — writes made through one endpoint would be invisible to another. A
-real external store (reachable by every function over HTTPS) is required for
-consistent state, which is what Upstash's REST-based Redis client provides
-with no connection pooling concerns in a serverless environment.
-
-To set it up on Vercel: Project → Storage → Marketplace Database Providers →
-Upstash, and create (or connect) a Redis store — this injects the connection
-env vars automatically. `datasources/memory/client.js` reads
-`UPSTASH_REDIS_REST_URL`/`UPSTASH_REDIS_REST_TOKEN`, falling back to
-`KV_REST_API_URL`/`KV_REST_API_TOKEN` (the older Vercel KV naming) in case the
-integration exposes those instead. **Never put real credentials in
-`.env.production`** — that file is committed to the repo. Configure them only
-through Vercel's dashboard (scoped to whichever environment you're testing:
-Preview and/or Production), or in a local `.env.local` (gitignored) for local
-reproduction. The free tier caps out at 10k commands/day and 256MB, which is
-plenty for demo/testing traffic but worth knowing about.
-
-**Demo authentication.** When `NEXT_PUBLIC_DEMO_MODE` is `true`,
-`features/common/auth.js` replaces the Auth0 `withPageAuthRequired` and `useUser`
-with stubs, so no Auth0 secret or per deployment callback URL is needed. Anyone
-with the URL gets in, so keep the deployment private if that matters.
-
-Environment variables to configure on the project:
-
-| Variable | Value |
-| --- | --- |
-| `NEXT_PUBLIC_DEMO_MODE` | `true` |
-| `NEXT_PUBLIC_DATA_SOURCE` | `memory` (already the value in `.env.production`) |
-| `NEXT_PUBLIC_MAXIMUM_IN_PRIORITY_TASKS` | `2` |
-| `NEXT_PUBLIC_MAXIMUM_BACKLOG_QUANTITY` | `4` |
-| `NEXT_PUBLIC_API_URL` | leave unset, it is only read when the source is `api` |
-| `JSON_SERVER_URL` | leave unset, it is only read when the source is `json-server` |
-| `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` | from the Upstash store connected above |
-
-Vercel deployment protection can stay enabled. `getServerSideProps` reads
-storage directly through `features/*/queries.js` rather than making an HTTP
-request to this same deployment's API routes, so there is no internal request
-for protection to reject. (It used to make that round trip, and because the
-request carried no auth it came back as `401: Protected deployment`, failing
-every server rendered page.) The API routes reuse the same functions, so the
-two paths cannot drift apart.
-
-To reproduce a preview locally, create a free Upstash Redis database, put its
-REST URL/token in a gitignored `.env.local`, then:
-
-```
-NEXT_PUBLIC_DEMO_MODE=true yarn build
-NEXT_PUBLIC_DEMO_MODE=true yarn start
-```
-
-Since `next start` runs as a single warm process, this only verifies the
-Redis-backed logic itself, not the cross-function consistency it exists for —
-that only shows up on an actual Vercel deployment, which is where this should
-ultimately be exercised. `datasources/memory/*.test.js` covers the query/CRUD
-logic against a mocked Redis client without needing real credentials.
-
-Local development is unaffected: `.env.development` selects `json-server`, so
-`yarn dev` keeps using `json-server` and `db.json`, and never touches Redis.
-
-The integration suite (`yarn test:integration`) selects `fixtures`, so it runs
-against the same routes with the committed arrays in `datasources/fixtures/`
-behind them — no `json-server`, no Redis, and your local `db.json` is left
-alone. It waits for the server to be listening and exits when TestCafe does.
-
-## Throubleshooting
-### M1 (Apple Silicon) Macs: npm ERR! sharp Prebuilt libvips 8.10.5 binaries are not yet available for darwin-arm64v8
-Update libvips to v0.29.0, running the following:
 ```
 brew install vips
 ```
+
 More info: https://sharp.pixelplumbing.com/install#apple-m1
