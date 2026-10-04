@@ -1,9 +1,9 @@
 jest.mock('./jsonServer', () => jest.fn())
-jest.mock('./memory', () => jest.fn())
+jest.mock('./localStorage', () => jest.fn())
 jest.mock('./fixtures', () => jest.fn())
 
 import fetchFromJsonServer from './jsonServer'
-import handleMemoryRequest from './memory'
+import handleLocalStorageRequest from './localStorage'
 import handleFixturesRequest from './fixtures'
 import fetchResource from './index'
 
@@ -13,7 +13,7 @@ describe('[ datasources ]', () => {
   beforeEach(() => {
     process.env = { ...ORIGINAL_ENV }
     fetchFromJsonServer.mockReset()
-    handleMemoryRequest.mockReset()
+    handleLocalStorageRequest.mockReset()
     handleFixturesRequest.mockReset()
   })
 
@@ -32,15 +32,15 @@ describe('[ datasources ]', () => {
 
       // Assert
       expect(result).toEqual([{ id: 1 }])
-      expect(handleMemoryRequest).not.toHaveBeenCalled()
+      expect(handleLocalStorageRequest).not.toHaveBeenCalled()
     })
   })
 
-  describe('when the data source is `memory`', () => {
-    it('should read through the memory data source', async () => {
+  describe('when the data source is `local-storage`', () => {
+    it('should read through the browser store', async () => {
       // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'memory'
-      handleMemoryRequest.mockResolvedValue([{ id: 1 }])
+      process.env.NEXT_PUBLIC_DATA_SOURCE = 'local-storage'
+      handleLocalStorageRequest.mockResolvedValue([{ id: 1 }])
 
       // Act
       const result = await fetchResource({
@@ -52,7 +52,7 @@ describe('[ datasources ]', () => {
       // Assert
       expect(result).toEqual([{ id: 1 }])
       expect(fetchFromJsonServer).not.toHaveBeenCalled()
-      expect(handleMemoryRequest).toHaveBeenCalledWith(
+      expect(handleLocalStorageRequest).toHaveBeenCalledWith(
         expect.objectContaining({ sessionId: 'session-a' })
       )
     })
@@ -69,7 +69,7 @@ describe('[ datasources ]', () => {
 
       // Assert
       expect(result).toEqual([{ id: 1 }])
-      expect(handleMemoryRequest).not.toHaveBeenCalled()
+      expect(handleLocalStorageRequest).not.toHaveBeenCalled()
       expect(fetchFromJsonServer).not.toHaveBeenCalled()
     })
   })
@@ -86,7 +86,7 @@ describe('[ datasources ]', () => {
       await expect(
         fetchResource({ resource: 'task', url: 'tasks' })
       ).rejects.toThrow('not wired through this app')
-      expect(handleMemoryRequest).not.toHaveBeenCalled()
+      expect(handleLocalStorageRequest).not.toHaveBeenCalled()
       expect(handleFixturesRequest).not.toHaveBeenCalled()
       expect(fetchFromJsonServer).not.toHaveBeenCalled()
 
@@ -97,8 +97,8 @@ describe('[ datasources ]', () => {
   describe('when `singular` is set and the result is an array', () => {
     it('should unwrap the first item', async () => {
       // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'memory'
-      handleMemoryRequest.mockResolvedValue([{ id: 1 }, { id: 2 }])
+      process.env.NEXT_PUBLIC_DATA_SOURCE = 'local-storage'
+      handleLocalStorageRequest.mockResolvedValue([{ id: 1 }, { id: 2 }])
 
       // Act
       const result = await fetchResource({
@@ -113,8 +113,8 @@ describe('[ datasources ]', () => {
 
     it('should fall back to an empty object when the array is empty', async () => {
       // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'memory'
-      handleMemoryRequest.mockResolvedValue([])
+      process.env.NEXT_PUBLIC_DATA_SOURCE = 'local-storage'
+      handleLocalStorageRequest.mockResolvedValue([])
 
       // Act
       const result = await fetchResource({
@@ -138,8 +138,8 @@ describe('[ datasources ]', () => {
 
     it('should send a 200 with the result on success', async () => {
       // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'memory'
-      handleMemoryRequest.mockResolvedValue({ id: 1 })
+      process.env.NEXT_PUBLIC_DATA_SOURCE = 'local-storage'
+      handleLocalStorageRequest.mockResolvedValue({ id: 1 })
       const res = buildRes()
 
       // Act
@@ -152,8 +152,8 @@ describe('[ datasources ]', () => {
 
     it('should send a 500 with the error message on failure', async () => {
       // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'memory'
-      handleMemoryRequest.mockRejectedValue(new Error('boom'))
+      process.env.NEXT_PUBLIC_DATA_SOURCE = 'local-storage'
+      handleLocalStorageRequest.mockRejectedValue(new Error('boom'))
       const res = buildRes()
 
       // Act
@@ -168,8 +168,8 @@ describe('[ datasources ]', () => {
   describe('when no `res` object is provided and the source rejects', () => {
     it('should reject instead of throwing synchronously', async () => {
       // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'memory'
-      handleMemoryRequest.mockRejectedValue(new Error('boom'))
+      process.env.NEXT_PUBLIC_DATA_SOURCE = 'local-storage'
+      handleLocalStorageRequest.mockRejectedValue(new Error('boom'))
 
       // Act & Assert
       await expect(

@@ -22,3 +22,26 @@ exports[`[ features / common / components / DevTools / DevToolsModal ] when \`De
 [Paragraph {"size":"sm"}]false[/Paragraph]&lt;/dd&gt;&lt;/div&gt;&lt;/dl&gt;&lt;/div&gt;[/Modal]
 </DocumentFragment>
 `;
+
+exports[`[ features / common / components / DevTools / DevToolsModal ] when it is given a way to reset the data should render a reset button 1`] = `
+<DocumentFragment>
+  
+[Modal {"type":"secondary"}]&lt;div class="jsx-2606328044 dev-tools-modal"&gt;
+[Heading {"size":"xl"}]Dev tools[/Heading]
+[Spacer.Vertical {"size":"md"} /]&lt;div class="jsx-2606328044 dev-tools-links"&gt;
+[Button {"type":"tertiary"}]/index[/Button]
+[Button {"type":"tertiary"}]api/auth/login[/Button]
+[Button {"type":"tertiary"}]api/auth/logout[/Button]
+[Button {"type":"tertiary"}]home[/Button]
+[Button {"type":"tertiary"}]planning[/Button]
+[Button {"type":"tertiary"}]retrospective[/Button]&lt;/div&gt;
+[Spacer.Vertical {"size":"md"} /]
+[Button {"type":"tertiary"}]Reset demo data[/Button]
+[Spacer.Vertical {"size":"md"} /]ToggleColorScheme
+[Spacer.Vertical {"size":"md"} /]
+[Heading {"size":"md"}]Environment[/Heading]
+[Spacer.Vertical {"size":"xs"} /]&lt;dl class="jsx-2606328044 dev-tools-environment"&gt;&lt;div class="jsx-2606328044 dev-tools-environment-row"&gt;&lt;dt class="jsx-2606328044"&gt;
+[Paragraph {"size":"sm","color":"muted"}]Data source[/Paragraph]&lt;/dt&gt;&lt;dd class="jsx-2606328044"&gt;
+[Paragraph {"size":"sm"}]local-storage[/Paragraph]&lt;/dd&gt;&lt;/div&gt;&lt;/dl&gt;&lt;/div&gt;[/Modal]
+</DocumentFragment>
+`;

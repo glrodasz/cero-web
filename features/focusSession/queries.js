@@ -2,9 +2,11 @@ import fetchResource from '../../datasources'
 import isEmpty from '../../utils/isEmpty'
 import { ACTIVE_FOCUS_SESSION_STATUS } from './constants'
 
-// Server-side reads of this feature's domain data. Shared by `getServerSideProps`
-// (`pages/focus-session.js`, `pages/planning.js`) and the matching
-// `/api/local/focus-sessions/*` routes, so both paths stay in sync.
+// Reads of this feature's domain data. Shared by `getServerSideProps`
+// (`pages/focus-session.js`, `pages/planning.js`), the matching
+// `pages/api/[source]/focus-sessions/*` routes and the commands, so every path
+// stays in sync — including `api/browserTransport.js`, which runs them in the
+// browser when the data lives there.
 
 export async function getActiveFocusSession({ options }) {
   const fetchOptions = {

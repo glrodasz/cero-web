@@ -1,7 +1,7 @@
 import { DATA_SOURCES, getDataSource } from '../config/dataSource'
 import handleFixturesRequest from './fixtures'
 import fetchFromJsonServer from './jsonServer'
-import handleMemoryRequest from './memory'
+import handleLocalStorageRequest from './localStorage'
 
 // Which storage answers a request — selected by the same `NEXT_PUBLIC_DATA_SOURCE`
 // that `config/index.js` derives the browser's `API_URL` from, so the URL the
@@ -12,6 +12,10 @@ import handleMemoryRequest from './memory'
 // directly rather than over HTTP, so it would land in whichever store this
 // picked. Throwing keeps that a loud, obvious failure instead of a preview
 // deployment quietly rendering demo seed data as if it were production.
+//
+// `local-storage` is only ever reached from the browser, through
+// `api/browserTransport.js`. Asked from the server, its store throws for the
+// same reason: there is nothing there to read.
 const fetchStorage = ({ resource, url, options }) => {
   const dataSource = getDataSource()
 
@@ -28,7 +32,7 @@ const fetchStorage = ({ resource, url, options }) => {
   const handleRequest =
     dataSource === DATA_SOURCES.FIXTURES
       ? handleFixturesRequest
-      : handleMemoryRequest
+      : handleLocalStorageRequest
 
   return handleRequest({ sessionId: options?.sessionId, url, options })
 }

@@ -38,14 +38,6 @@ describe('[ config / API_URL ]', () => {
       expect(loadApiUrl()).toBe('/api/local')
     })
 
-    it('should point the demo store at its own namespace', () => {
-      // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'memory'
-
-      // Act & Assert
-      expect(loadApiUrl()).toBe('/api/demo')
-    })
-
     it('should point the fixtures store at its own namespace', () => {
       // Arrange
       process.env.NEXT_PUBLIC_DATA_SOURCE = 'fixtures'
@@ -66,14 +58,14 @@ describe('[ config / API_URL ]', () => {
     describe('server side', () => {
       it('should resolve against the deployment host when there is one', () => {
         // Arrange
-        process.env.NEXT_PUBLIC_DATA_SOURCE = 'memory'
+        process.env.NEXT_PUBLIC_DATA_SOURCE = 'fixtures'
         process.env.VERCEL_URL = 'preview-abc.vercel.app'
 
         // Act
         const result = onTheServer(loadApiUrl)
 
         // Assert
-        expect(result).toBe('https://preview-abc.vercel.app/api/demo')
+        expect(result).toBe('https://preview-abc.vercel.app/api/test')
       })
 
       it('should fall back to localhost without one', () => {
@@ -86,6 +78,21 @@ describe('[ config / API_URL ]', () => {
         // Assert
         expect(result).toBe('http://localhost:3000/api/local')
       })
+    })
+  })
+
+  describe('when the data source lives in the browser', () => {
+    it('should have no URL — there is nothing to call', () => {
+      // Arrange
+      process.env.NEXT_PUBLIC_DATA_SOURCE = 'local-storage'
+
+      // Act & Assert
+      expect(loadApiUrl()).toBeNull()
+    })
+
+    it('should be the default when nothing is configured', () => {
+      // Act & Assert
+      expect(loadApiUrl()).toBeNull()
     })
   })
 

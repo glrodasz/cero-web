@@ -28,6 +28,8 @@ describe('[ datasources / jsonServer ]', () => {
     })
 
     // Assert
-    expect(Request).toHaveBeenCalledWith('tasks', 'http://localhost:3001')
+    expect(Request).toHaveBeenCalledWith('tasks', {
+      baseUrl: 'http://localhost:3001',
+    })
   })
 })

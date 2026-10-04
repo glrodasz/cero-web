@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types'
 import { withPageAuthRequired } from '../features/common/auth'
 import FocusSessionContainer from '../features/focusSession/containers/FocusSession'
+import useFocusSessionRedirect from '../features/focusSession/hooks/useFocusSessionRedirect'
 import { resetServerContext } from 'react-beautiful-dnd'
 import isEmpty from '../utils/isEmpty'
+import { isBrowserDataSource } from '../config/dataSource'
 import { getOrCreateSessionId } from '../datasources/session'
 import { readActiveFocusSession } from '../features/focusSession/queries'
 import { readTasks } from '../features/tasks/queries'
@@ -11,6 +13,10 @@ import httpCodes from '../utils/httpCodes'
 export const getServerSideProps = withPageAuthRequired({
   getServerSideProps: async ({ req, res }) => {
     resetServerContext()
+
+    // Nothing here to read: the browser loads the data and redirects on its
+    // own (`useFocusSessionRedirect`).
+    if (isBrowserDataSource()) return { props: {} }
 
     const sessionId = getOrCreateSessionId(req, res)
     const tasks = await readTasks({ sessionId })
@@ -28,6 +34,15 @@ export const getServerSideProps = withPageAuthRequired({
 })
 
 const FocusSession = ({ tasks, activeFocusSession }) => {
+  const { isReady } = useFocusSessionRedirect({
+    redirectWhenActive: false,
+    to: '/planning',
+  })
+
+  // Held back until there is a session to show, so the chronometer never
+  // starts from a missing one.
+  if (!isReady) return null
+
   return <FocusSessionContainer initialData={{ tasks, activeFocusSession }} />
 }
 

@@ -1,4 +1,9 @@
-import { API_NAMESPACE, DATA_SOURCES, getDataSource } from './dataSource'
+import {
+  API_NAMESPACE,
+  DATA_SOURCES,
+  getDataSource,
+  isBrowserDataSource,
+} from './dataSource'
 
 // Where the browser sends its requests. This is derived from the data source
 // rather than configured separately, so the URL and the storage behind it can
@@ -10,8 +15,13 @@ import { API_NAMESPACE, DATA_SOURCES, getDataSource } from './dataSource'
 // fallback for any other server-side caller. `getServerSideProps` needs
 // neither: it reads storage directly through `features/*/queries.js` instead
 // of fetching these API routes over HTTP.
+//
+// `null` means there is nothing to call: a source kept in the browser answers
+// its requests right there (`api/browserTransport.js`).
 const getApiUrl = () => {
   const dataSource = getDataSource()
+
+  if (isBrowserDataSource(dataSource)) return null
 
   if (dataSource === DATA_SOURCES.API) {
     const externalApiUrl = process.env.NEXT_PUBLIC_API_URL

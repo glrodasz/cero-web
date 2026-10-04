@@ -37,11 +37,11 @@ describe('[ datasources / withApiRoute ]', () => {
       expect(handler).toHaveBeenCalled()
     })
 
-    it('should map the demo store to its own namespace', async () => {
+    it('should map the fixtures store to its own namespace', async () => {
       // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'memory'
+      process.env.NEXT_PUBLIC_DATA_SOURCE = 'fixtures'
       const handler = jest.fn()
-      const req = { query: { source: 'demo' }, method: 'GET', url: '/x' }
+      const req = { query: { source: 'test' }, method: 'GET', url: '/x' }
 
       // Act
       await withApiRoute(handler)(req, buildRes())
@@ -49,6 +49,29 @@ describe('[ datasources / withApiRoute ]', () => {
       // Assert
       expect(handler).toHaveBeenCalled()
     })
+  })
+
+  describe('when the data source is not served by these routes', () => {
+    it.each(['local-storage', 'api'])(
+      'should answer 404 for "%s" without running the handler',
+      async (source) => {
+        // Arrange
+        process.env.NEXT_PUBLIC_DATA_SOURCE = source
+        const handler = jest.fn()
+        const req = { query: { source: 'demo' }, method: 'GET', url: '/x' }
+        const res = buildRes()
+
+        // Act
+        await withApiRoute(handler)(req, res)
+
+        // Assert
+        expect(handler).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledWith(404)
+        expect(res.json).toHaveBeenCalledWith({
+          error: expect.stringContaining(`"${source}"`),
+        })
+      }
+    )
   })
 
   describe('when the namespace does not match', () => {

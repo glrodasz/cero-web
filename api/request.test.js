@@ -24,8 +24,53 @@ describe('[ api / request ]', () => {
       )
 
       // Act & Assert
-      await expect(new Request('tasks', 'http://api').fetch()).resolves.toEqual(
-        [{ id: 1 }]
+      await expect(
+        new Request('tasks', { baseUrl: 'http://api' }).fetch()
+      ).resolves.toEqual([{ id: 1 }])
+    })
+  })
+
+  describe('when a transport is given', () => {
+    it('should send through it instead of the network', async () => {
+      // Arrange
+      global.fetch = jest.fn()
+      const transport = jest.fn(() =>
+        Promise.resolve(
+          mockResponse({ ok: true, status: 200, body: { id: 1 } })
+        )
+      )
+
+      // Act
+      const result = await new Request('tasks', { transport }).fetch(
+        'tasks/1',
+        {
+          method: 'patch',
+          body: { priority: 2 },
+        }
+      )
+
+      // Assert
+      expect(result).toEqual({ id: 1 })
+      expect(global.fetch).not.toHaveBeenCalled()
+      expect(transport).toHaveBeenCalledWith(
+        'tasks/1',
+        expect.objectContaining({
+          method: 'PATCH',
+          body: JSON.stringify({ priority: 2 }),
+        })
+      )
+    })
+
+    it('should check its reply like any other response', async () => {
+      // Arrange
+      const transport = () =>
+        Promise.resolve(
+          mockResponse({ ok: false, status: 404, body: { error: 'Missing' } })
+        )
+
+      // Act & Assert
+      await expect(new Request('tasks', { transport }).fetch()).rejects.toThrow(
+        'Missing'
       )
     })
   })
@@ -40,9 +85,9 @@ describe('[ api / request ]', () => {
       )
 
       // Act & Assert
-      await expect(new Request('tasks', 'http://api').fetch()).rejects.toThrow(
-        'Boom'
-      )
+      await expect(
+        new Request('tasks', { baseUrl: 'http://api' }).fetch()
+      ).rejects.toThrow('Boom')
     })
 
     // The hosting platform reports a crashed or timed out function this way,
@@ -65,9 +110,9 @@ describe('[ api / request ]', () => {
       )
 
       // Act & Assert
-      await expect(new Request('tasks', 'http://api').fetch()).rejects.toThrow(
-        'FUNCTION_INVOCATION_TIMEOUT: Task timed out'
-      )
+      await expect(
+        new Request('tasks', { baseUrl: 'http://api' }).fetch()
+      ).rejects.toThrow('FUNCTION_INVOCATION_TIMEOUT: Task timed out')
     })
 
     it('should fall back to the status when the body is not json', async () => {
@@ -77,9 +122,9 @@ describe('[ api / request ]', () => {
       )
 
       // Act & Assert
-      await expect(new Request('tasks', 'http://api').fetch()).rejects.toThrow(
-        'Request to "tasks" failed with status 502'
-      )
+      await expect(
+        new Request('tasks', { baseUrl: 'http://api' }).fetch()
+      ).rejects.toThrow('Request to "tasks" failed with status 502')
     })
   })
 })

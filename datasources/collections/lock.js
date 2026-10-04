@@ -6,9 +6,9 @@
 // (`Promise.all`) to clear `focusSessionId`. Queuing mutations per session
 // serializes them so each one reads the result of the previous one instead.
 //
-// Known limit: this queue lives in one process. On a serverless host each
-// function instance has its own, so two writes for the same session that land
-// on different instances can still lose one. Accepted for a per-visitor demo
+// Known limit: this queue lives in one JavaScript context — one server process
+// for the fixtures, one browser tab for `localStorage/`. Two tabs of the same
+// demo writing at once can still lose one. Accepted for a per-visitor demo
 // store, where the next write corrects it; a store that had to be correct
 // under real concurrency would need a lock in the backing store itself, or a
 // key per record rather than one document per session.

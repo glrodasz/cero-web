@@ -10,9 +10,20 @@ import withApiHandler from '../utils/withApiHandler'
 // longer serves — and failing loudly here beats silently reading the wrong
 // store. (`withApiHandler` stays in `utils/` precisely because it knows none of
 // this: it is generic Next.js plumbing.)
+//
+// A source with no namespace is not served by these routes at all — the
+// external backend lives elsewhere, and `local-storage` answers in the browser
+// — so every path is a 404 rather than a 400 naming "/api/undefined".
 const withApiRoute = (handler) =>
   withApiHandler((req, res) => {
-    const expected = API_NAMESPACE[getDataSource()]
+    const dataSource = getDataSource()
+    const expected = API_NAMESPACE[dataSource]
+
+    if (!expected) {
+      return res.status(404).json({
+        error: `This deployment serves no API routes for the "${dataSource}" data source.`,
+      })
+    }
 
     if (req.query.source !== expected) {
       return res.status(400).json({

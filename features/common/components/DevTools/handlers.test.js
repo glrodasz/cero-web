@@ -1,5 +1,11 @@
+jest.mock('../../../../datasources/localStorage/store', () => ({
+  resetCollections: jest.fn(),
+}))
+
+import { resetCollections } from '../../../../datasources/localStorage/store'
 import {
   createCloseDevToolsHandler,
+  createResetDataHandler,
   createToggleDevToolsHandler,
 } from './handlers'
 
@@ -60,6 +66,30 @@ describe('[ features / common / components / DevTools / handlers ]', () => {
 
         // Assert
         expect(setShowDialog).toHaveBeenCalledWith(expected)
+      })
+    })
+  })
+
+  describe('#createResetDataHandler', () => {
+    const { location } = window
+
+    beforeEach(() => {
+      delete window.location
+      window.location = { assign: jest.fn() }
+    })
+
+    afterEach(() => {
+      window.location = location
+    })
+
+    describe('when the returned function is called', () => {
+      it('should reseed the data and load planning from scratch', () => {
+        // Act
+        createResetDataHandler()()
+
+        // Assert
+        expect(resetCollections).toHaveBeenCalled()
+        expect(window.location.assign).toHaveBeenCalledWith('/planning')
       })
     })
   })

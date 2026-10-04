@@ -1,5 +1,5 @@
 // The `json-server`-compatible query/CRUD-shape logic, kept free of any I/O so
-// it can be tested with plain arrays and no Redis mock.
+// it can be tested with plain arrays and no store at all.
 
 const LIKE_SUFFIX = '_like'
 

@@ -34,4 +34,21 @@ describe('[ features / common / components / DevTools / DevToolsModal ]', () => 
       expect(asFragment()).toMatchSnapshot()
     })
   })
+
+  describe('when it is given a way to reset the data', () => {
+    it('should render a reset button', () => {
+      // Arrange
+      const props = {
+        onClose: jest.fn(),
+        onResetData: jest.fn(),
+        environment: [{ label: 'Data source', value: 'local-storage' }],
+      }
+
+      // Act
+      const { asFragment } = render(<DevToolsModal {...props} />)
+
+      // Assert
+      expect(asFragment()).toMatchSnapshot()
+    })
+  })
 })

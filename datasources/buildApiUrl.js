@@ -1,6 +1,6 @@
 import { getOrCreateSessionId } from './session'
 
-// The routes live under a `[source]` segment (`/api/local`, `/api/demo`), so the
+// The routes live under a `[source]` segment (`/api/local`, `/api/test`), so the
 // namespace is matched rather than hardcoded — only the resource and its query
 // string are meaningful to a data source.
 const API_BASENAME = /^\/api\/[^/]+\//

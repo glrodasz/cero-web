@@ -28,8 +28,10 @@ const appendSetCookie = (res, cookie) => {
   res.setHeader('Set-Cookie', [...cookies, cookie])
 }
 
-// Scopes the memory data source per browser session so two people opening the
-// same preview deployment do not share (or overwrite) each other's data.
+// Scopes the fixtures data source per browser session, so every integration
+// test (a fresh browser, so a fresh cookie) starts from the committed data
+// instead of whatever the previous test left behind. `json-server` ignores it,
+// and `local-storage` never reaches the server at all.
 export const getOrCreateSessionId = (req, res) => {
   const existingSessionId = readSessionId(req)
 
