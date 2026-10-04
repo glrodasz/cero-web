@@ -9,6 +9,7 @@ import {
   LoadingError,
 } from '@glrodasz/components'
 import { useUser, withPageAuthRequired } from '../features/common/auth'
+import { getGreeting } from '../features/common/helpers'
 
 import UserHeader from '../features/common/components/UserHeader'
 
@@ -28,7 +29,7 @@ export default function Home() {
           >
             <UserHeader
               avatar={user?.picture}
-              title={`Buenos días, ${user?.name}`}
+              title={getGreeting('Buenos días', user)}
               text="¿Cómo quieres empezar?"
               isPrimary
             />

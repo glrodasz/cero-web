@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import { useEffect, useMemo, useState } from 'react'
 import { useUser } from '../../common/auth'
+import { getGreeting } from '../../common/helpers'
 
 import {
   FullHeightContent,
@@ -126,7 +127,7 @@ const FocusSession = ({ initialData }) => {
             >
               <UserHeader
                 avatar={user?.picture}
-                title={`Hola, ${user?.name}`}
+                title={getGreeting('Hola', user)}
                 text={
                   <>
                     <span>Conoce la metodologia</span> <Link>RETO</Link>

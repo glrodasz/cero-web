@@ -21,6 +21,10 @@ export const DEMO_USER = {
   picture: DEMO_AVATAR,
 }
 
+// By identity rather than `IS_DEMO_MODE`: `pages/api/auth/[...auth0].js` also
+// serves this user when Auth0 is simply not configured.
+export const isDemoUser = (user) => user?.sub === DEMO_USER.sub
+
 const useDemoUser = () => ({
   user: DEMO_USER,
   isLoading: false,
