@@ -1,4 +1,5 @@
 import { useUser } from '../../common/auth'
+import { getGreeting } from '../../common/helpers'
 import PropTypes from 'prop-types'
 
 import { FullHeightContent, LoadingError, Link } from '@glrodasz/components'
@@ -65,7 +66,7 @@ const Planning = ({ initialData }) => {
             >
               <UserHeader
                 avatar={user?.picture}
-                title={`Hola, ${user?.name}`}
+                title={getGreeting('Hola', user)}
                 text={
                   <>
                     <span>Conoce la metodologia</span> <Link>RETO</Link>

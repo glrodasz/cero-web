@@ -84,32 +84,49 @@ feature needs goes to `features/common/`. Non-React generic code goes to
 `utils/`. **`utils/` must never import from `features/`** — that dependency
 only ever points the other way.
 
-### One selector: `NEXT_PUBLIC_DATA_SOURCE`
+### One selector: `NEXT_PUBLIC_API_URL`
 
-**There is exactly one switch for "which backend is this deployment talking
-to", and everything derives from it.** `config/dataSource.js` owns it:
+**The frontend calls an API; with no API URL it falls back to the visitor's
+browser.** That URL is the one switch for "which backend is this deployment
+talking to", and everything derives from it. `config/dataSource.js` reads it and
+derives a data source from it:
 
-| `NEXT_PUBLIC_DATA_SOURCE` | serves the data | `API_URL` (browser) | storage |
-| --- | --- | --- | --- |
-| `api` | external backend (separate repo) | `NEXT_PUBLIC_API_URL` (**required**) | — **not wired through this app yet**, see below |
-| `json-server` | this app, `/api/local` | `/api/local` | `json-server` at `JSON_SERVER_URL` |
-| `memory` | this app, `/api/demo` | `/api/demo` | Upstash Redis, per session cookie |
-| `fixtures` | this app, `/api/test` | `/api/test` | committed arrays, per process |
+| `NEXT_PUBLIC_API_URL` | data source | browser calls | storage | server rendering |
+| --- | --- | --- | --- | --- |
+| unset | `local-storage` | nothing — `api/browserTransport.js` answers | `localStorage`, per browser | skipped |
+| `/api/local` | `json-server` | this app's routes | `json-server` at `JSON_SERVER_URL` | reads the store directly |
+| `/api/test` | `fixtures` | this app's routes | committed arrays, per process | reads the store directly |
+| any other URL | `api` | that backend | whatever it uses | skipped |
+
+Wired per environment: `.env.development` sets `/api/local`, `.env.test` sets
+`/api/test`, and `.env.production` leaves it unset — a deployment with a real
+backend sets it on the hosting dashboard.
 
 Rules that keep it a single source of truth — don't reintroduce a second one:
 
-- `config/index.js` derives `API_URL` from it, and `datasources/index.js`
-  derives the storage from it. Never add a separate variable that decides
-  either half independently.
-- `NEXT_PUBLIC_API_URL` is read **only** when the source is `api`. It is not a
-  general override — for the self-hosted sources it is ignored entirely.
+- **The path names the store.** `/api/<namespace>` is this app's own API, and
+  `API_NAMESPACE` maps the namespace to the store behind it. Never add a
+  separate variable that picks the store; `config/index.js` (the browser's
+  `API_URL`) and `datasources/index.js` (the server's store) both derive from
+  the URL.
 - `JSON_SERVER_URL` means *"where json-server listens"* and nothing more. It
   selects nothing. (It used to: the mere presence of it picked the backend,
   which is how `/api/local` came to mean json-server locally and Redis in a
   preview, with nothing connecting the two.)
-- An unrecognized value throws. `NEXT_PUBLIC_*` bakes at build time, so a typo
-  fails the build instead of becoming a confusing 500 later.
-- Unset defaults to `memory` — a plain preview deploy with no dashboard config.
+- Failures happen at build time, since `NEXT_PUBLIC_*` bakes in then: an
+  unknown namespace (`/api/demo`) throws, and so does the retired
+  `NEXT_PUBLIC_DATA_SOURCE` if it is still set — left alone, a `json-server`
+  there would quietly become the browser store.
+- Ask the derived source, never the raw URL or a source by name:
+  `isServerDataSource()` is "can this app's server read the data" (it makes
+  `getServerSideProps` skip its read and `useFocusSessionRedirect` take over),
+  and `isBrowserDataSource()` is "does the browser answer its own requests"
+  (`api/index.js` swaps `fetch` for `api/browserTransport.js`, and DevTools
+  offers the reset).
+- A backend elsewhere must implement the same REST contract as this app's
+  routes (`tasks/:id/complete`, `focus-sessions/finish`, …) and allow CORS from
+  the app's origin. Pointing the URL straight at `json-server` won't work: it
+  has plain CRUD only, and the rules live in this app's routes and commands.
 
 `NEXT_PUBLIC_DEMO_MODE` is a **separate** axis: it stubs Auth0
 (`features/common/auth.js`). Demo deployments happen to set both; they are not
@@ -118,32 +135,37 @@ the same switch.
 ### How a read actually reaches a store
 
 ```
-  BROWSER (React Query)                    SERVER RENDER (getServerSideProps)
-  ─────────────────────                    ─────────────────────────────────
-  useTasks / useFocusSession               pages/planning.js
-          │                                pages/focus-session.js
-  features/common/api                              │
-          │                                        │
-  api/request.js ──── base = API_URL               │   no HTTP at all:
-          │                                        │   already on the server,
-   HTTP  /api/<namespace>/tasks?status=…           │   next to the data
-          │                                        │
-  pages/api/[source]/**                            │
-     ├ withApiRoute   → 400 if the namespace in    │
-     │                  the path ≠ configured one  │
-     └ withApiHandler → 405 if no method matched   │
-          │                                        │
-  datasources/buildApiUrl                  features/*/queries.js
-          │                                        │
-          └──────────► datasources/index.js ◄──────┘
-                              │
-        ┌───────────┬─────────┴─────────┬──────────────┐
-        ▼           ▼                   ▼              ▼
-  jsonServer.js  memory/            fixtures/      api → throw
-  HTTP :3001     Redis              in-process     (external backend)
-        └───────────┴─── collections/ ───┘
-                    (shared CRUD + query engine)
+  BROWSER (React Query)                           SERVER RENDER (getServerSideProps)
+  ─────────────────────                           ─────────────────────────────────
+  useTasks / useFocusSession                      pages/planning.js
+          │                                       pages/focus-session.js
+  features/common/api → api/request.js            │
+          │                                       │  not our server: returns {}, and
+    ┌─────┴──────────────────┐                    │  the browser loads the data and
+    │ HTTP, base = API_URL   │ no API URL         │  redirects by itself
+    ▼                        ▼ (no HTTP)          │  (useFocusSessionRedirect)
+  pages/api/[source]/**    api/browser-           │
+    withApiRoute: 400/404  Transport.js,          │  otherwise no HTTP at all:
+    withApiHandler: 405    mirroring the          │  already on the server, next
+    │                      route files            │  to the data
+    │                        │                    │
+    └──────────┬─────────────┘                    │
+               ▼                                  ▼
+    features/*/commands.js ───────────► features/*/queries.js
+               │                                  │
+               └──────────► datasources/index.js ◄┘
+                                     │
+        ┌──────────────┬─────────────┴────┬────────────────┐
+        ▼              ▼                  ▼                ▼
+  jsonServer.js   localStorage/       fixtures/        api → throw
+  HTTP :3001      this browser        in-process       (external backend)
+                       └── collections/ ──┘
+                   (shared CRUD + query engine)
 ```
+
+A backend elsewhere (`NEXT_PUBLIC_API_URL=https://…`) takes the HTTP branch
+straight out of this app: the browser calls it directly, and server rendering
+reads nothing.
 
 Two things to preserve when changing any of this. **Server rendering skips the
 HTTP column on purpose** — routing it back through the app's own API routes is
@@ -152,6 +174,12 @@ calls `features/*/queries.js` directly. And **`collections/` is the only place
 CRUD semantics are defined**, which is what stops the demo store and the test
 fixtures from drifting apart; a new store supplies `getCollections` /
 `saveCollections` and nothing else.
+
+A third, for the browser store: **the route logic lives in
+`features/*/commands.js`, not in the route files.** The API routes and
+`api/browserTransport.js` are both thin adapters over the same commands, so
+`local-storage` behaves exactly like the stores behind the routes — see the
+section on commands below.
 
 ### `datasources/` — the data layer, explicit
 
@@ -163,52 +191,61 @@ datasources/
   index.js            Routes to a backend per the table above; default export
                        `fetchResource({ resource, url, options, res, singular })`
   jsonServer.js        HTTP to json-server
-  memory/              Upstash Redis
-    index.js            collections handler over the Redis store
-    client.js            Redis client + credential handling
-    store.js             get/save the per-session collections blob
+  localStorage/        the demo store, in the visitor's browser
+    index.js            collections handler over the localStorage store
+    store.js             get/save/reset the one collections blob (seeded from db.seed.json)
   collections/         the json-server-shaped CRUD, over any store
     index.js            createCollectionsHandler({ getCollections, saveCollections })
     query.js             pure filter/sort/parse engine, no I/O
     lock.js              per-session mutation queue
   fixtures/            deterministic per-process store + its committed arrays
-  session.js           the `cero_demo_session` cookie (scopes preview data per visitor)
+  session.js           the `cero_demo_session` cookie (scopes the fixtures per visitor,
+                       so each integration test starts from the committed data)
   buildApiUrl.js       builds the resource/url/options tuple the routes pass in
   withApiRoute.js      withApiHandler + the `[source]` namespace guard
 ```
 
-Splitting the CRUD (`collections/`) from the stores (`memory/`, `fixtures/`)
-is deliberate twice over: each piece — credential handling, locking, the query
+Splitting the CRUD (`collections/`) from the stores (`localStorage/`,
+`fixtures/`) is deliberate twice over: each piece — storage, locking, the query
 engine — is independently unit-testable, which is the whole point of keeping
 files small here; and the demo store and the test fixtures get *identical*
 semantics instead of two implementations that drift.
 
-**`api` is not served by `datasources/`.** That backend lives in its own
-repository and nothing here talks to it yet, so `datasources/index.js` throws
-rather than falling through to a local store — otherwise a deployment
-configured for production would quietly render demo seed data. Wiring it up
-means giving `features/*/queries.js` an HTTP path, since `getServerSideProps`
-reads storage directly.
+**`local-storage` is only reachable from the browser.** Its store throws when
+asked from the server, and `withApiRoute` answers 404 for it, so a read that
+somehow lands server-side fails loudly instead of rendering nothing. Its data
+never expires; DevTools offers "Reset demo data", which clears the key and
+reloads `/planning`.
 
-**The mutation lock is per process.** `collections/lock.js` serializes writes
-for a session so a parallel fan-out (reordering tasks) doesn't lose one. On a
-serverless host each instance has its own queue, so two writes landing on
-different instances can still drop one. Accepted for a per-visitor demo store,
-where the next write corrects it; anything that had to be correct under real
-concurrency needs a lock in the backing store, or a key per record instead of
-one document per session.
+**`api` is not served by `datasources/`.** The browser calls that backend
+directly, and server rendering skips its read, so nothing server-side should
+reach for it; `datasources/index.js` throws if something does, rather than
+falling through to a local store and serving seed data as if it were the real
+backend's. Server-rendering it would mean giving `features/*/queries.js` an
+HTTP path.
+
+**The mutation lock is per JavaScript context.** `collections/lock.js`
+serializes writes for a session so a parallel fan-out (reordering tasks)
+doesn't lose one. It lives in one server process for the fixtures and in one
+browser tab for `local-storage`, so two tabs of the demo writing at once can
+still drop one. Accepted for a per-visitor demo store, where the next write
+corrects it; anything that had to be correct under real concurrency needs a
+lock in the backing store, or a key per record instead of one document per
+session.
 
 ### `pages/api/[source]/**` — the namespace names the backend
 
 The routes live under a dynamic `[source]` segment, so one set of files serves
-`/api/local` and `/api/demo` and the **path itself says which store is behind
+`/api/local` and `/api/test` and the **path itself says which store is behind
 it**. `API_URL` is derived from the same config, so the two agree by
 construction.
 
 `datasources/withApiRoute.js` wraps every handler and returns **400** if
 `req.query.source` doesn't match the configured source's namespace — a stale
 bundle calling a namespace this build no longer serves fails loudly instead of
-silently reading the wrong store. It wraps `utils/withApiHandler`, which stays
+silently reading the wrong store. A source with no namespace (`local-storage`,
+`api`) isn't served by these routes at all, so every path answers **404**. It
+wraps `utils/withApiHandler`, which stays
 in `utils/` precisely because it knows none of this: it is generic Next.js
 plumbing, and `utils/` must not learn about this project's data layer.
 
@@ -226,6 +263,40 @@ domain reads (`readTasks`, `readActiveFocusSession`, …) so both call sites
 share one implementation and can't drift apart. See the "no self-fetch" rule
 below for why this exists.
 
+### `commands.js` + `api/browserTransport.js` — route logic, run in two places
+
+The writes behind the API routes (`createTask`, `completeTask`,
+`startFocusSession`, `finishFocusSession`, `pauseFocusSession`, …) live in each
+feature's `commands.js`. A command takes the `options` `buildApiUrl` builds —
+never `req` or `res` — and answers `{ status, body }`, throwing on any failed
+step so it stops where it failed.
+
+They exist because `local-storage` has no server to run on. Two adapters
+call the same commands:
+
+- `pages/api/[source]/**`: `buildApiUrl`, then the command, then
+  `res.status(status).json(body)`.
+- `api/browserTransport.js`: a route table that mirrors the route files (`[id]`
+  and `[...entity]` notation, the same methods), handed to `api/request.js` in
+  place of `fetch`. It answers a `Response`-shaped object, so the
+  `response.ok` check stays the single error path, and mirrors `withApiHandler`
+  with 404, 405 and 500.
+
+Rules that keep them in step:
+
+- **Route logic goes in a command, never in a route file.** Logic left in a
+  route file is logic the browser store silently doesn't have.
+- **Every route file has a table entry with the same methods.**
+  `api/browserTransport.test.js` walks `pages/api/[source]/**` and fails
+  otherwise.
+- Commands run in the browser too: use globals that exist in both
+  (`crypto.randomUUID()`, not `import crypto from 'crypto'`).
+- Unless `isServerDataSource()`, `getServerSideProps` returns `{ props: {} }`,
+  so pages get no initial data and React Query fetches on mount. The planning ↔
+  focus-session redirect then happens client-side in
+  `useFocusSessionRedirect`, decided once on the first answer after mount,
+  like the server's. The same goes for a backend elsewhere.
+
 ### Feature module layout
 
 ```
@@ -236,6 +307,7 @@ features/<feature>/
   handlers.js      Event-handler factories (see below)
   helpers.js       Pure helpers
   queries.js       Server-side domain reads (getServerSideProps + API routes), via datasources/
+  commands.js      Domain writes behind the API routes, as { status, body } (API routes + api/browserTransport.js)
   constants.js     Feature constants
 ```
 
@@ -313,11 +385,11 @@ re-implementing them in route handlers or in `getServerSideProps`.
 
 ### API routes
 
-`pages/api/[source]/**` are Next API routes that read/write through
-`datasources/` (via `buildApiUrl` + `fetchResource`, or a feature's
-`queries.js` for shared reads) — see the data layer sections above. Wrap every
-handler in `withApiRoute`, and use the status constants above in URLs and
-bodies.
+`pages/api/[source]/**` are Next API routes that adapt HTTP to a feature's
+`commands.js` (writes) or `queries.js` (shared reads), or pass a plain CRUD
+request straight through `buildApiUrl` + `fetchResource` — see the data layer
+sections above. Wrap every handler in `withApiRoute`, use the status constants
+above in URLs and bodies, and give `api/browserTransport.js` a matching entry.
 
 The integration suite runs against these same routes: `.env.test` selects
 `fixtures`, so `/api/test` is served by `pages/api/[source]/**` too, backed by
@@ -361,7 +433,8 @@ no `db.json`.
 
 - Public config is read in `config/index.js` from `NEXT_PUBLIC_*` env vars
   (`MAXIMUM_IN_PRIORITY_TASKS`, `MAXIMUM_BACKLOG_QUANTITY`, `API_URL`).
-  `API_URL` is **derived**, not configured — see the selector section above.
+  `API_URL` is `NEXT_PUBLIC_API_URL` normalized, or `null` with none set —
+  see the selector section above.
 - Dev defaults live in `.env.development`; secrets (Auth0) go in `.env.local`
   (see `.env.local.example`).
 - Every committed env file must set `NEXT_PUBLIC_MAXIMUM_*`. Leaving them out
@@ -381,7 +454,9 @@ that keep them fixed — don't reintroduce the underlying mistake elsewhere:
   (and each page with `getServerSideProps`) deploys as its own isolated
   serverless function on Vercel — a top-level `Map`/`Set`/plain object is
   *not* shared between them. Anything that must be shared across requests
-  goes through `datasources/memory/` (Redis), never a module-level variable.
+  needs an external store reachable from every function — none is wired up
+  today, since the demo keeps its data in the browser — never a module-level
+  variable.
 - **Never let `getServerSideProps` fetch this deployment's own API routes
   over HTTP.** Vercel Deployment Protection rejects that self-fetch with a
   401, and it's slower even when protection is off. Call the `datasources/`
@@ -399,8 +474,9 @@ that keep them fixed — don't reintroduce the underlying mistake elsewhere:
   question is how `/api/local` ended up meaning json-server in one environment
   and Redis in another, and how the `test` environment came to point the
   browser at fixtures while server rendering reached for Redis credentials
-  that weren't there. If a new environment needs a backend, add a row to
-  `config/dataSource.js` — never a second variable.
+  that weren't there. If a new environment needs one of this app's stores, give
+  it a namespace in `config/dataSource.js` and point `NEXT_PUBLIC_API_URL` at it
+  — never a second variable.
 - **Answer on every path.** Handlers reply inside a `if (req.method === …)`
   guard, and Next leaves the connection open if none matches — the caller waits
   out a gateway timeout instead of getting an error. `utils/withApiHandler`

@@ -5,7 +5,7 @@ import { Modal, Button, Heading, Paragraph, Spacer } from '@glrodasz/components'
 import ToggleColorScheme from '../ToggleColorScheme'
 import { DEV_TOOLS_LINKS } from './constants'
 
-const DevToolsModal = ({ onClose, environment }) => {
+const DevToolsModal = ({ onClose, onResetData, environment }) => {
   return (
     <Modal type="secondary" onClose={onClose}>
       <div className="dev-tools-modal">
@@ -21,6 +21,15 @@ const DevToolsModal = ({ onClose, environment }) => {
             </Link>
           ))}
         </div>
+
+        {onResetData && (
+          <>
+            <Spacer.Vertical size="md" />
+            <Button type="tertiary" onClick={onResetData}>
+              Reset demo data
+            </Button>
+          </>
+        )}
 
         <Spacer.Vertical size="md" />
         <ToggleColorScheme />
@@ -75,6 +84,7 @@ const DevToolsModal = ({ onClose, environment }) => {
 
 DevToolsModal.propTypes = {
   onClose: PropTypes.func.isRequired,
+  onResetData: PropTypes.func,
   environment: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,

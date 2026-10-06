@@ -19,10 +19,23 @@ const getErrorMessage = ({ data, resource, response }) => {
   return `Request to "${resource}" failed with status ${response.status}`
 }
 
+// `transport` replaces the network hop: it takes the same path and options
+// `fetch` would and answers something shaped like a `Response` (`ok`,
+// `status`, `json()`), so a reply from it goes through exactly the same checks
+// below. `api/browserTransport.js` is the one that exists.
 class Request {
-  constructor(resource, baseUrl) {
+  constructor(resource, { baseUrl, transport } = {}) {
     this.resource = resource
     this.baseUrl = baseUrl
+    this.transport = transport
+  }
+
+  send(resource, requestOptions) {
+    if (this.transport) return this.transport(resource, requestOptions)
+
+    const baseUrl = this.baseUrl ?? API_URL
+
+    return fetch(`${baseUrl}/${resource}`, requestOptions)
   }
 
   fetch(resource = this.resource, options = {}) {
@@ -38,24 +51,20 @@ class Request {
       requestOptions.body = JSON.stringify(options.body)
     }
 
-    const baseUrl = this.baseUrl ?? API_URL
+    return this.send(resource, requestOptions).then(async (response) => {
+      const data = await response.json().catch(() => null)
 
-    return fetch(`${baseUrl}/${resource}`, requestOptions).then(
-      async (response) => {
-        const data = await response.json().catch(() => null)
-
-        // A failed request still returns a well formed JSON body
-        // (`{ error }`, see `datasources/index.js`), so it has to be
-        // checked explicitly — otherwise it gets treated as real data and
-        // breaks whatever consumes it several layers downstream, hiding the
-        // actual error.
-        if (!response.ok) {
-          throw new Error(getErrorMessage({ data, resource, response }))
-        }
-
-        return data
+      // A failed request still returns a well formed JSON body
+      // (`{ error }`, see `datasources/index.js`), so it has to be
+      // checked explicitly — otherwise it gets treated as real data and
+      // breaks whatever consumes it several layers downstream, hiding the
+      // actual error.
+      if (!response.ok) {
+        throw new Error(getErrorMessage({ data, resource, response }))
       }
-    )
+
+      return data
+    })
   }
 }
 

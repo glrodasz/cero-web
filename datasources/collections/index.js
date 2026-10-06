@@ -12,9 +12,10 @@ import {
 export const clone = (value) => JSON.parse(JSON.stringify(value))
 
 // The `json-server`-shaped CRUD every collection-backed data source performs,
-// with the storage left to the caller. Redis backs the demo (`memory/`) and a
-// plain per-process object backs the deterministic test data (`fixtures/`);
-// both get identical semantics from here rather than each reimplementing them.
+// with the storage left to the caller. The visitor's browser backs the demo
+// (`localStorage/`) and a plain per-process object backs the deterministic
+// test data (`fixtures/`); both get identical semantics from here rather than
+// each reimplementing them.
 const createCollectionsHandler = ({ getCollections, saveCollections }) => {
   const readResource = async ({ sessionId, resource, id, searchParams }) => {
     const collections = await getCollections(sessionId)

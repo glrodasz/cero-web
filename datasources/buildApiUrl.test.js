@@ -87,7 +87,7 @@ describe('[ datasources / buildApiUrl ]', () => {
     it('should strip whichever namespace served it', () => {
       // Arrange
       const req = {
-        url: '/api/demo/tasks?status=pending',
+        url: '/api/test/tasks?status=pending',
         method: 'get',
         cookies: { [SESSION_COOKIE_NAME]: 'my-session' },
       }

@@ -16,3 +16,9 @@ global.console = CONSOLE_LEVELS.reduce((levels, level) => {
 // TODO: dummyRender.js needs to be updated to use the Suspense SSR Architectue instead of renderToStaticMarkup
 const { TextEncoder } = require('util')
 global.TextEncoder = TextEncoder
+
+// Browsers and Node both have Web Crypto globally (`crypto.randomUUID()`, used
+// by `features/focusSession/commands.js`); jsdom does not.
+if (!global.crypto) {
+  global.crypto = require('crypto').webcrypto
+}

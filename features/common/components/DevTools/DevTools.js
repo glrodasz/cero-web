@@ -1,7 +1,10 @@
 import { Icon } from '@glrodasz/components'
 
 import { API_URL } from '../../../../config'
-import { getDataSource } from '../../../../config/dataSource'
+import {
+  getDataSource,
+  isBrowserDataSource,
+} from '../../../../config/dataSource'
 import { IS_DEMO_MODE } from '../../auth'
 import useDialog from '../../hooks/useDialog'
 
@@ -9,6 +12,7 @@ import DevToolsModal from './DevToolsModal'
 import { IS_DEV_TOOLS_ENABLED } from './constants'
 import {
   createCloseDevToolsHandler,
+  createResetDataHandler,
   createToggleDevToolsHandler,
 } from './handlers'
 
@@ -19,7 +23,7 @@ const DevTools = () => {
 
   const environment = [
     { label: 'Data source', value: getDataSource() },
-    { label: 'API URL', value: API_URL },
+    { label: 'API URL', value: API_URL ?? 'none (answered in this browser)' },
     { label: 'Demo mode', value: IS_DEMO_MODE },
     { label: 'NODE_ENV', value: process.env.NODE_ENV },
   ]
@@ -41,6 +45,9 @@ const DevTools = () => {
         <DevToolsModal
           environment={environment}
           onClose={createCloseDevToolsHandler({ setShowDialog })}
+          onResetData={
+            isBrowserDataSource() ? createResetDataHandler() : undefined
+          }
         />
       )}
 

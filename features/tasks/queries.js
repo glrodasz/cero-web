@@ -3,10 +3,11 @@ import isEmpty from '../../utils/isEmpty'
 import { getActiveFocusSession } from '../focusSession/queries'
 import { IN_PROGRESS_COLUMN_ID, PENDING_COLUMN_ID } from './constants'
 
-// Server-side reads of this feature's domain data. Shared by `getServerSideProps`
-// (`pages/focus-session.js`, `pages/planning.js`) and the matching
-// `/api/local/tasks/*` / `/api/local/focus-sessions/*` routes, so both paths
-// stay in sync.
+// Reads of this feature's domain data. Shared by `getServerSideProps`
+// (`pages/focus-session.js`, `pages/planning.js`), the matching
+// `pages/api/[source]/tasks/*` routes and the commands, so every path stays in
+// sync — including `api/browserTransport.js`, which runs them in the browser
+// when the data lives there.
 
 export async function getInProgressAndPendingTasks({ options }) {
   const fetchOptions = {

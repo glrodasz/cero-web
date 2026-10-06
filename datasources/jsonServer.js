@@ -4,6 +4,9 @@ import Request from '../api/request'
 // `/api/local` handler proxies straight through to `json-server` (`db.json`,
 // port 3001) with no other code path involved.
 const fetchFromJsonServer = ({ resource, url, options }) =>
-  new Request(resource, process.env.JSON_SERVER_URL).fetch(url, options)
+  new Request(resource, { baseUrl: process.env.JSON_SERVER_URL }).fetch(
+    url,
+    options
+  )
 
 export default fetchFromJsonServer
