@@ -49,7 +49,7 @@ describe('[ api / browserTransport ]', () => {
   const ORIGINAL_ENV = process.env
 
   beforeEach(() => {
-    process.env = { ...ORIGINAL_ENV, NEXT_PUBLIC_DATA_SOURCE: 'local-storage' }
+    process.env = { ...ORIGINAL_ENV, NEXT_PUBLIC_API_URL: '' }
     window.localStorage.clear()
   })
 

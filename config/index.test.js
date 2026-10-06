@@ -29,36 +29,27 @@ describe('[ config / API_URL ]', () => {
     process.env = ORIGINAL_ENV
   })
 
-  describe('when the data source is self hosted', () => {
-    it('should derive the namespace from the source, not from configuration', () => {
+  describe("when it names one of this app's own APIs", () => {
+    it('should call it on this deployment, relative in the browser', () => {
       // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'json-server'
+      process.env.NEXT_PUBLIC_API_URL = '/api/local'
 
       // Act & Assert
       expect(loadApiUrl()).toBe('/api/local')
     })
 
-    it('should point the fixtures store at its own namespace', () => {
+    it('should normalize a trailing slash away', () => {
       // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'fixtures'
+      process.env.NEXT_PUBLIC_API_URL = '/api/test/'
 
       // Act & Assert
       expect(loadApiUrl()).toBe('/api/test')
     })
 
-    it('should ignore `NEXT_PUBLIC_API_URL` — it is not a general override', () => {
-      // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'json-server'
-      process.env.NEXT_PUBLIC_API_URL = 'https://somewhere.else/api'
-
-      // Act & Assert
-      expect(loadApiUrl()).toBe('/api/local')
-    })
-
     describe('server side', () => {
       it('should resolve against the deployment host when there is one', () => {
         // Arrange
-        process.env.NEXT_PUBLIC_DATA_SOURCE = 'fixtures'
+        process.env.NEXT_PUBLIC_API_URL = '/api/test'
         process.env.VERCEL_URL = 'preview-abc.vercel.app'
 
         // Act
@@ -70,7 +61,7 @@ describe('[ config / API_URL ]', () => {
 
       it('should fall back to localhost without one', () => {
         // Arrange
-        process.env.NEXT_PUBLIC_DATA_SOURCE = 'json-server'
+        process.env.NEXT_PUBLIC_API_URL = '/api/local'
 
         // Act
         const result = onTheServer(loadApiUrl)
@@ -81,37 +72,20 @@ describe('[ config / API_URL ]', () => {
     })
   })
 
-  describe('when the data source lives in the browser', () => {
-    it('should have no URL — there is nothing to call', () => {
-      // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'local-storage'
-
-      // Act & Assert
-      expect(loadApiUrl()).toBeNull()
-    })
-
-    it('should be the default when nothing is configured', () => {
+  describe('when no API URL is configured', () => {
+    it('should have no URL — the browser answers its own requests', () => {
       // Act & Assert
       expect(loadApiUrl()).toBeNull()
     })
   })
 
-  describe('when the data source is the external backend', () => {
-    it('should use the configured URL', () => {
+  describe('when it points at a backend elsewhere', () => {
+    it('should use the configured URL as is', () => {
       // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'api'
-      process.env.NEXT_PUBLIC_API_URL = 'https://api.example.com'
+      process.env.NEXT_PUBLIC_API_URL = '  https://api.example.com  '
 
       // Act & Assert
       expect(loadApiUrl()).toBe('https://api.example.com')
-    })
-
-    it('should throw when no URL was configured for it', () => {
-      // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'api'
-
-      // Act & Assert
-      expect(loadApiUrl).toThrow('NEXT_PUBLIC_API_URL')
     })
   })
 })

@@ -53,8 +53,9 @@ retrospective.
 ## Deployment
 
 The app has no database service. Demo and preview deployments swap
-`json-server` for each visitor's own browser storage (`localStorage`), selected
-by `NEXT_PUBLIC_DATA_SOURCE` — no external service to provision. See
+`json-server` for each visitor's own browser storage (`localStorage`): the app
+calls the API at `NEXT_PUBLIC_API_URL`, and with none set it falls back to the
+browser — no external service to provision. See
 [`docs/deployment.md`](docs/deployment.md) for the details.
 
 ## Contributing

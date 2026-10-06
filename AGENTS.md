@@ -84,37 +84,49 @@ feature needs goes to `features/common/`. Non-React generic code goes to
 `utils/`. **`utils/` must never import from `features/`** — that dependency
 only ever points the other way.
 
-### One selector: `NEXT_PUBLIC_DATA_SOURCE`
+### One selector: `NEXT_PUBLIC_API_URL`
 
-**There is exactly one switch for "which backend is this deployment talking
-to", and everything derives from it.** `config/dataSource.js` owns it:
+**The frontend calls an API; with no API URL it falls back to the visitor's
+browser.** That URL is the one switch for "which backend is this deployment
+talking to", and everything derives from it. `config/dataSource.js` reads it and
+derives a data source from it:
 
-| `NEXT_PUBLIC_DATA_SOURCE` | serves the data | `API_URL` (browser) | storage |
-| --- | --- | --- | --- |
-| `api` | external backend (separate repo) | `NEXT_PUBLIC_API_URL` (**required**) | — **not wired through this app yet**, see below |
-| `json-server` | this app, `/api/local` | `/api/local` | `json-server` at `JSON_SERVER_URL` |
-| `local-storage` | the visitor's browser — no request leaves it | `null` (answered by `api/browserTransport.js`) | `localStorage`, per browser |
-| `fixtures` | this app, `/api/test` | `/api/test` | committed arrays, per process |
+| `NEXT_PUBLIC_API_URL` | data source | browser calls | storage | server rendering |
+| --- | --- | --- | --- | --- |
+| unset | `local-storage` | nothing — `api/browserTransport.js` answers | `localStorage`, per browser | skipped |
+| `/api/local` | `json-server` | this app's routes | `json-server` at `JSON_SERVER_URL` | reads the store directly |
+| `/api/test` | `fixtures` | this app's routes | committed arrays, per process | reads the store directly |
+| any other URL | `api` | that backend | whatever it uses | skipped |
+
+Wired per environment: `.env.development` sets `/api/local`, `.env.test` sets
+`/api/test`, and `.env.production` leaves it unset — a deployment with a real
+backend sets it on the hosting dashboard.
 
 Rules that keep it a single source of truth — don't reintroduce a second one:
 
-- `config/index.js` derives `API_URL` from it, and `datasources/index.js`
-  derives the storage from it. Never add a separate variable that decides
-  either half independently.
-- `NEXT_PUBLIC_API_URL` is read **only** when the source is `api`. It is not a
-  general override — for the self-hosted sources it is ignored entirely.
+- **The path names the store.** `/api/<namespace>` is this app's own API, and
+  `API_NAMESPACE` maps the namespace to the store behind it. Never add a
+  separate variable that picks the store; `config/index.js` (the browser's
+  `API_URL`) and `datasources/index.js` (the server's store) both derive from
+  the URL.
 - `JSON_SERVER_URL` means *"where json-server listens"* and nothing more. It
   selects nothing. (It used to: the mere presence of it picked the backend,
   which is how `/api/local` came to mean json-server locally and Redis in a
   preview, with nothing connecting the two.)
-- An unrecognized value throws. `NEXT_PUBLIC_*` bakes at build time, so a typo
-  fails the build instead of becoming a confusing 500 later.
-- Unset defaults to `local-storage` — a plain preview deploy with no dashboard
-  config, and nothing to provision.
-- `isBrowserDataSource()` is the one question for "is the data out of the
-  server's reach". It is what makes `getServerSideProps` skip its read and
-  `api/index.js` swap `fetch` for `api/browserTransport.js` — don't test for
-  `'local-storage'` by name anywhere else.
+- Failures happen at build time, since `NEXT_PUBLIC_*` bakes in then: an
+  unknown namespace (`/api/demo`) throws, and so does the retired
+  `NEXT_PUBLIC_DATA_SOURCE` if it is still set — left alone, a `json-server`
+  there would quietly become the browser store.
+- Ask the derived source, never the raw URL or a source by name:
+  `isServerDataSource()` is "can this app's server read the data" (it makes
+  `getServerSideProps` skip its read and `useFocusSessionRedirect` take over),
+  and `isBrowserDataSource()` is "does the browser answer its own requests"
+  (`api/index.js` swaps `fetch` for `api/browserTransport.js`, and DevTools
+  offers the reset).
+- A backend elsewhere must implement the same REST contract as this app's
+  routes (`tasks/:id/complete`, `focus-sessions/finish`, …) and allow CORS from
+  the app's origin. Pointing the URL straight at `json-server` won't work: it
+  has plain CRUD only, and the rules live in this app's routes and commands.
 
 `NEXT_PUBLIC_DEMO_MODE` is a **separate** axis: it stubs Auth0
 (`features/common/auth.js`). Demo deployments happen to set both; they are not
@@ -128,9 +140,9 @@ the same switch.
   useTasks / useFocusSession                      pages/planning.js
           │                                       pages/focus-session.js
   features/common/api → api/request.js            │
-          │                                       │  local-storage: returns {} and
+          │                                       │  not our server: returns {}, and
     ┌─────┴──────────────────┐                    │  the browser loads the data and
-    │ HTTP, base = API_URL   │ local-storage      │  redirects by itself
+    │ HTTP, base = API_URL   │ no API URL         │  redirects by itself
     ▼                        ▼ (no HTTP)          │  (useFocusSessionRedirect)
   pages/api/[source]/**    api/browser-           │
     withApiRoute: 400/404  Transport.js,          │  otherwise no HTTP at all:
@@ -150,6 +162,10 @@ the same switch.
                        └── collections/ ──┘
                    (shared CRUD + query engine)
 ```
+
+A backend elsewhere (`NEXT_PUBLIC_API_URL=https://…`) takes the HTTP branch
+straight out of this app: the browser calls it directly, and server rendering
+reads nothing.
 
 Two things to preserve when changing any of this. **Server rendering skips the
 HTTP column on purpose** — routing it back through the app's own API routes is
@@ -201,12 +217,12 @@ somehow lands server-side fails loudly instead of rendering nothing. Its data
 never expires; DevTools offers "Reset demo data", which clears the key and
 reloads `/planning`.
 
-**`api` is not served by `datasources/`.** That backend lives in its own
-repository and nothing here talks to it yet, so `datasources/index.js` throws
-rather than falling through to a local store — otherwise a deployment
-configured for production would quietly render demo seed data. Wiring it up
-means giving `features/*/queries.js` an HTTP path, since `getServerSideProps`
-reads storage directly.
+**`api` is not served by `datasources/`.** The browser calls that backend
+directly, and server rendering skips its read, so nothing server-side should
+reach for it; `datasources/index.js` throws if something does, rather than
+falling through to a local store and serving seed data as if it were the real
+backend's. Server-rendering it would mean giving `features/*/queries.js` an
+HTTP path.
 
 **The mutation lock is per JavaScript context.** `collections/lock.js`
 serializes writes for a session so a parallel fan-out (reordering tasks)
@@ -275,11 +291,11 @@ Rules that keep them in step:
   otherwise.
 - Commands run in the browser too: use globals that exist in both
   (`crypto.randomUUID()`, not `import crypto from 'crypto'`).
-- With `local-storage`, `getServerSideProps` returns `{ props: {} }`, so pages
-  get no initial data and React Query fetches on mount. The planning ↔
+- Unless `isServerDataSource()`, `getServerSideProps` returns `{ props: {} }`,
+  so pages get no initial data and React Query fetches on mount. The planning ↔
   focus-session redirect then happens client-side in
   `useFocusSessionRedirect`, decided once on the first answer after mount,
-  like the server's.
+  like the server's. The same goes for a backend elsewhere.
 
 ### Feature module layout
 
@@ -417,7 +433,8 @@ no `db.json`.
 
 - Public config is read in `config/index.js` from `NEXT_PUBLIC_*` env vars
   (`MAXIMUM_IN_PRIORITY_TASKS`, `MAXIMUM_BACKLOG_QUANTITY`, `API_URL`).
-  `API_URL` is **derived**, not configured — see the selector section above.
+  `API_URL` is `NEXT_PUBLIC_API_URL` normalized, or `null` with none set —
+  see the selector section above.
 - Dev defaults live in `.env.development`; secrets (Auth0) go in `.env.local`
   (see `.env.local.example`).
 - Every committed env file must set `NEXT_PUBLIC_MAXIMUM_*`. Leaving them out
@@ -457,8 +474,9 @@ that keep them fixed — don't reintroduce the underlying mistake elsewhere:
   question is how `/api/local` ended up meaning json-server in one environment
   and Redis in another, and how the `test` environment came to point the
   browser at fixtures while server rendering reached for Redis credentials
-  that weren't there. If a new environment needs a backend, add a row to
-  `config/dataSource.js` — never a second variable.
+  that weren't there. If a new environment needs one of this app's stores, give
+  it a namespace in `config/dataSource.js` and point `NEXT_PUBLIC_API_URL` at it
+  — never a second variable.
 - **Answer on every path.** Handlers reply inside a `if (req.method === …)`
   guard, and Next leaves the connection open if none matches — the caller waits
   out a gateway timeout instead of getting an error. `utils/withApiHandler`

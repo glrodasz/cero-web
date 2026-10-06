@@ -60,7 +60,7 @@ describe('[ features / common / components / DevTools ]', () => {
   describe('when the data lives in the browser', () => {
     it('should offer to reset it', async () => {
       // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'local-storage'
+      process.env.NEXT_PUBLIC_API_URL = ''
       render(<DevTools />)
 
       // Act
@@ -75,7 +75,7 @@ describe('[ features / common / components / DevTools ]', () => {
   describe('when the data lives anywhere else', () => {
     it('should not offer a reset it could not perform', async () => {
       // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'json-server'
+      process.env.NEXT_PUBLIC_API_URL = '/api/local'
       render(<DevTools />)
 
       // Act

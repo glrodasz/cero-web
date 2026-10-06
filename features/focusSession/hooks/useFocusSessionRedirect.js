@@ -2,16 +2,16 @@ import { useEffect, useState } from 'react'
 import Router from 'next/router'
 import { useQuery } from '@tanstack/react-query'
 
-import { isBrowserDataSource } from '../../../config/dataSource'
+import { isServerDataSource } from '../../../config/dataSource'
 import isEmpty from '../../../utils/isEmpty'
 import { focusSessionsApi } from '../../common/api'
 import { QUERY_KEY } from './useFocusSession'
 
 // Server rendering redirects between planning and the focus session for the
-// sources it can read (`pages/planning.js`, `pages/focus-session.js`). A source
-// kept in the browser can only be read once the page is there, so the same
-// redirect happens here instead — and only here: for every other source this
-// stays disabled and costs nothing.
+// sources it can read (`pages/planning.js`, `pages/focus-session.js`). Data kept
+// in the browser, or behind a backend elsewhere, can only be read once the page
+// is there, so the same redirect happens here instead — and only here: when the
+// server can read the data this stays disabled and costs nothing.
 //
 // Like the server's, it is decided once, as the page opens. Only an answer
 // fetched after mount counts — the cache can still hold the previous page's,
@@ -19,7 +19,7 @@ import { QUERY_KEY } from './useFocusSession'
 // starting or finishing a session navigates on its own, and redirecting again
 // on the refetch that follows would race it.
 const useFocusSessionRedirect = ({ redirectWhenActive, to }) => {
-  const enabled = isBrowserDataSource()
+  const enabled = !isServerDataSource()
   const [shouldRedirect, setShouldRedirect] = useState()
 
   const { data, isSuccess, isError, isFetchedAfterMount } = useQuery(

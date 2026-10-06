@@ -26,7 +26,7 @@ describe('[ datasources / withApiRoute ]', () => {
   describe('when the namespace matches the configured data source', () => {
     it('should run the handler', async () => {
       // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'json-server'
+      process.env.NEXT_PUBLIC_API_URL = '/api/local'
       const handler = jest.fn()
       const req = { query: { source: 'local' }, method: 'GET', url: '/x' }
 
@@ -39,7 +39,7 @@ describe('[ datasources / withApiRoute ]', () => {
 
     it('should map the fixtures store to its own namespace', async () => {
       // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'fixtures'
+      process.env.NEXT_PUBLIC_API_URL = '/api/test'
       const handler = jest.fn()
       const req = { query: { source: 'test' }, method: 'GET', url: '/x' }
 
@@ -52,11 +52,14 @@ describe('[ datasources / withApiRoute ]', () => {
   })
 
   describe('when the data source is not served by these routes', () => {
-    it.each(['local-storage', 'api'])(
+    it.each([
+      ['local-storage', ''],
+      ['api', 'https://api.example.com'],
+    ])(
       'should answer 404 for "%s" without running the handler',
-      async (source) => {
+      async (source, apiUrl) => {
         // Arrange
-        process.env.NEXT_PUBLIC_DATA_SOURCE = source
+        process.env.NEXT_PUBLIC_API_URL = apiUrl
         const handler = jest.fn()
         const req = { query: { source: 'demo' }, method: 'GET', url: '/x' }
         const res = buildRes()
@@ -77,7 +80,7 @@ describe('[ datasources / withApiRoute ]', () => {
   describe('when the namespace does not match', () => {
     it('should answer 400 without running the handler', async () => {
       // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'json-server'
+      process.env.NEXT_PUBLIC_API_URL = '/api/local'
       const handler = jest.fn()
       const req = { query: { source: 'demo' }, method: 'GET', url: '/x' }
       const res = buildRes()
@@ -97,7 +100,7 @@ describe('[ datasources / withApiRoute ]', () => {
   describe('when the handler throws', () => {
     it('should still report it through the shared error boundary', async () => {
       // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'json-server'
+      process.env.NEXT_PUBLIC_API_URL = '/api/local'
       const handler = jest.fn().mockRejectedValue(new Error('boom'))
       const req = { query: { source: 'local' }, method: 'GET', url: '/x' }
       const res = buildRes()

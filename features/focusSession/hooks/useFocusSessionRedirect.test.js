@@ -33,7 +33,7 @@ describe('[ features / focusSession / hooks / useFocusSessionRedirect ]', () => 
   const ORIGINAL_ENV = process.env
 
   beforeEach(() => {
-    process.env = { ...ORIGINAL_ENV, NEXT_PUBLIC_DATA_SOURCE: 'local-storage' }
+    process.env = { ...ORIGINAL_ENV, NEXT_PUBLIC_API_URL: '' }
     Router.replace.mockReset()
     focusSessionsApi.getActive.mockReset()
   })
@@ -45,7 +45,7 @@ describe('[ features / focusSession / hooks / useFocusSessionRedirect ]', () => 
   describe('when server rendering already redirected', () => {
     it('should stay out of the way', () => {
       // Arrange
-      process.env.NEXT_PUBLIC_DATA_SOURCE = 'json-server'
+      process.env.NEXT_PUBLIC_API_URL = '/api/local'
 
       // Act
       const { result } = renderRedirect({
@@ -57,6 +57,26 @@ describe('[ features / focusSession / hooks / useFocusSessionRedirect ]', () => 
       expect(result.current.isReady).toBe(true)
       expect(focusSessionsApi.getActive).not.toHaveBeenCalled()
       expect(Router.replace).not.toHaveBeenCalled()
+    })
+  })
+
+  // Server rendering skips the read for a backend elsewhere too, so the
+  // redirect has to happen here just the same.
+  describe('when the data lives behind a backend elsewhere', () => {
+    it('should redirect once the answer is in', async () => {
+      // Arrange
+      process.env.NEXT_PUBLIC_API_URL = 'https://api.example.com'
+      focusSessionsApi.getActive.mockResolvedValue(ACTIVE_FOCUS_SESSION)
+
+      // Act
+      const { waitForNextUpdate } = renderRedirect({
+        redirectWhenActive: true,
+        to: '/focus-session',
+      })
+      await waitForNextUpdate()
+
+      // Assert
+      expect(Router.replace).toHaveBeenCalledWith('/focus-session')
     })
   })
 

@@ -12,65 +12,60 @@ The app has no database service: it persists through `json-server` and a local
 `json-server` process exists, two fallbacks kick in automatically: the data
 moves into each visitor's browser, and Auth0 is stubbed.
 
-**One switch picks the backend.** `NEXT_PUBLIC_DATA_SOURCE` (see
-`config/dataSource.js`) is the only thing that decides which backend a
-deployment talks to, and both halves derive from it — where the browser's
+**One switch picks the backend: `NEXT_PUBLIC_API_URL`.** The frontend calls
+that API, and with none configured it falls back to the visitor's browser.
+`config/dataSource.js` derives everything else from it — where the browser's
 requests go (`config/index.js`, `api/index.js`) and the storage behind them
-(`datasources/index.js`), so the two can never disagree:
+(`datasources/index.js`) — so the two can never disagree:
 
 ```mermaid
 flowchart TD
-  ENV["NEXT_PUBLIC_DATA_SOURCE<br/><i>baked in at build time</i>"]
-  ENV --> URL["config/index.js + api/index.js<br/>→ API_URL or the browser transport<br/><i>where the browser's requests go</i>"]
-  ENV --> STORE["datasources/index.js<br/>→ the store<br/><i>what answers the read</i>"]
+  ENV["NEXT_PUBLIC_API_URL<br/><i>baked in at build time</i>"]
 
-  URL --> LOCAL["/api/local"]
-  URL --> INBROWSER["no request at all<br/>api/browserTransport.js"]
-  URL --> TEST["/api/test"]
-  URL --> EXT["NEXT_PUBLIC_API_URL"]
+  ENV -->|unset| INBROWSER["no request at all<br/>api/browserTransport.js"]
+  ENV -->|/api/local| LOCAL["this app's routes"]
+  ENV -->|/api/test| TEST["this app's routes"]
+  ENV -->|any other URL| EXT["a backend elsewhere"]
 
-  LOCAL --> JS["json-server :3001<br/>db.json"]
   INBROWSER --> LS["localStorage<br/>this browser only"]
+  LOCAL --> JS["json-server :3001<br/>db.json"]
   TEST --> FIX["fixtures<br/>in-process, fixed data"]
-  EXT --> BACKEND["external backend<br/>not wired through this app yet"]
-
-  STORE -.-> JS
-  STORE -.-> LS
-  STORE -.-> FIX
-  STORE -.-> BACKEND
+  EXT --> BACKEND["its own storage"]
 ```
 
-| `NEXT_PUBLIC_DATA_SOURCE` | browser calls | storage |
-| --- | --- | --- |
-| `api` | `NEXT_PUBLIC_API_URL` (required) | the real backend — **not wired through this app yet** |
-| `json-server` | `/api/local` | `json-server` at `JSON_SERVER_URL` |
-| `local-storage` | nothing — answered in the browser | `localStorage`, per browser |
-| `fixtures` | `/api/test` | committed arrays, per process (integration tests) |
+| `NEXT_PUBLIC_API_URL` | browser calls | storage | server rendering |
+| --- | --- | --- | --- |
+| unset | nothing — answered in the browser | `localStorage`, per browser | skipped, the page loads its data |
+| `/api/local` | this app's routes | `json-server` at `JSON_SERVER_URL` | reads the store directly |
+| `/api/test` | this app's routes | committed arrays, per process (integration tests) | reads the store directly |
+| any other URL | that backend | its own | skipped, the page loads its data |
 
 **Switching between them:**
 
-- Already wired per environment — `yarn dev` uses `json-server`,
-  `yarn test:integration` uses `fixtures`, and a deployment uses
-  `local-storage`.
-- One-off, locally: `NEXT_PUBLIC_DATA_SOURCE=local-storage yarn build && yarn start`.
-- On Vercel: set it in the dashboard, **then redeploy**.
+- Already wired per environment — `yarn dev` uses `/api/local`,
+  `yarn test:integration` uses `/api/test`, and a deployment leaves it unset.
+- One-off, locally: `NEXT_PUBLIC_API_URL=/api/local yarn build && yarn start`.
+- On Vercel: set it in the dashboard (or delete it for localStorage), **then
+  redeploy**.
 
 That last step is not optional. `NEXT_PUBLIC_*` values are compiled into the
 bundle, so changing one without rebuilding does nothing — and a bundle built
-for one namespace calling another is exactly what the 400 above catches.
+for one namespace calling another is exactly what the 400 below catches.
 
-The `api` row is the one gap: that backend lives in its own repository and
-nothing here talks to it yet, so selecting it fails with a clear error rather
-than quietly serving demo data.
+**A backend elsewhere** has to implement the same REST contract as this app's
+routes (`tasks/:id/complete`, `focus-sessions/finish`, `focus-sessions/active`,
+…) and allow CORS from the app's origin. That is also why the URL can't point
+straight at `json-server`: it only has plain CRUD, and the rules live in this
+app's routes and `features/*/commands.js`.
 
 The API routes live under a dynamic `pages/api/[source]/` segment, so one set
 of files serves every namespace and the path itself names the backend. A
 request to the wrong namespace gets a 400 rather than silently reading the
-wrong store, and a deployment whose source the routes don't serve
-(`local-storage`, `api`) answers 404 on all of them.
+wrong store, and a deployment whose API URL isn't one of them (unset, or a
+backend elsewhere) answers 404 on all of them.
 
-**Browser-backed demo.** With `NEXT_PUBLIC_DATA_SOURCE=local-storage`, no
-request leaves the browser. `api/index.js` hands the HTTP client
+**Browser-backed demo.** With no `NEXT_PUBLIC_API_URL`, no request leaves the
+browser. `api/index.js` hands the HTTP client
 `api/browserTransport.js` instead of `fetch`, which routes each request to the
 same `features/*/commands.js` the API routes run, and those reach
 `datasources/localStorage/` through `datasources/index.js`. The data is one JSON
@@ -92,13 +87,13 @@ What that means in practice:
 - **Two tabs, last write wins.** Writes are queued per tab, so two tabs writing
   at the same moment can lose one. The next write corrects it.
 
-**Migrating from the Redis store.** This source replaced `memory`, which kept
-the demo in Upstash Redis. `memory` is no longer a valid value: a deployment
-that still sets it on the dashboard fails its build with
-`Unknown NEXT_PUBLIC_DATA_SOURCE "memory"`. Change it to `local-storage` (or
-delete it — `.env.production` already says `local-storage`), redeploy, and the
-Upstash integration and its `UPSTASH_REDIS_REST_*` / `KV_REST_API_*` variables
-can be removed.
+**Migrating from `NEXT_PUBLIC_DATA_SOURCE`.** That variable used to pick the
+backend (with `memory` keeping the demo in Upstash Redis). It is retired: a
+deployment that still sets it fails its build with a message pointing at
+`NEXT_PUBLIC_API_URL`. Delete it from the dashboard — and set
+`NEXT_PUBLIC_API_URL` only if the deployment has a real backend — then
+redeploy. The Upstash integration and its `UPSTASH_REDIS_REST_*` /
+`KV_REST_API_*` variables can be removed too.
 
 **Demo authentication.** When `NEXT_PUBLIC_DEMO_MODE` is `true`,
 `features/common/auth.js` replaces the Auth0 `withPageAuthRequired` and `useUser`
@@ -110,14 +105,13 @@ Environment variables to configure on the project:
 | Variable | Value |
 | --- | --- |
 | `NEXT_PUBLIC_DEMO_MODE` | `true` |
-| `NEXT_PUBLIC_DATA_SOURCE` | `local-storage` (already the value in `.env.production`) |
 | `NEXT_PUBLIC_MAXIMUM_IN_PRIORITY_TASKS` | `2` |
 | `NEXT_PUBLIC_MAXIMUM_BACKLOG_QUANTITY` | `4` |
-| `NEXT_PUBLIC_API_URL` | leave unset, it is only read when the source is `api` |
-| `JSON_SERVER_URL` | leave unset, it is only read when the source is `json-server` |
+| `NEXT_PUBLIC_API_URL` | leave unset for the localStorage demo, or a backend's URL |
+| `JSON_SERVER_URL` | leave unset, it is only read behind `/api/local` |
 
-Vercel deployment protection can stay enabled. With `local-storage` the server
-reads nothing at all; for the sources it does read, `getServerSideProps` goes
+Vercel deployment protection can stay enabled. With the browser store or a
+backend elsewhere the server reads nothing at all; for the sources it does read, `getServerSideProps` goes
 directly through `features/*/queries.js` rather than making an HTTP request to
 this same deployment's API routes, so there is no internal request for
 protection to reject. (It used to make that round trip, and because the

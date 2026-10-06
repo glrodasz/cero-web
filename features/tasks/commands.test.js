@@ -28,7 +28,7 @@ describe('[ features / tasks / commands ]', () => {
   const ORIGINAL_ENV = process.env
 
   beforeEach(() => {
-    process.env = { ...ORIGINAL_ENV, NEXT_PUBLIC_DATA_SOURCE: 'fixtures' }
+    process.env = { ...ORIGINAL_ENV, NEXT_PUBLIC_API_URL: '/api/test' }
     resetCollections()
   })
 

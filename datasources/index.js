@@ -3,15 +3,14 @@ import handleFixturesRequest from './fixtures'
 import fetchFromJsonServer from './jsonServer'
 import handleLocalStorageRequest from './localStorage'
 
-// Which storage answers a request — selected by the same `NEXT_PUBLIC_DATA_SOURCE`
-// that `config/index.js` derives the browser's `API_URL` from, so the URL the
-// browser calls and the store behind it can never drift apart.
+// Which storage answers a request — derived from the same `NEXT_PUBLIC_API_URL`
+// the browser calls (`config/dataSource.js`), so the URL and the store behind
+// it can never drift apart.
 //
-// `api` is not served from here. That backend lives in its own repository, and
-// nothing in this app talks to it yet: `getServerSideProps` reads storage
-// directly rather than over HTTP, so it would land in whichever store this
-// picked. Throwing keeps that a loud, obvious failure instead of a preview
-// deployment quietly rendering demo seed data as if it were production.
+// `api` is not served from here: that backend lives elsewhere and the browser
+// calls it directly, while server rendering skips its read. Anything that
+// still lands here for it throws, a loud failure instead of a deployment
+// configured for a real backend quietly reading a local store.
 //
 // `local-storage` is only ever reached from the browser, through
 // `api/browserTransport.js`. Asked from the server, its store throws for the
@@ -21,7 +20,7 @@ const fetchStorage = ({ resource, url, options }) => {
 
   if (dataSource === DATA_SOURCES.API) {
     throw new Error(
-      'The "api" data source is served by the external backend, which is not wired through this app yet.'
+      'The "api" data source is served by the backend at NEXT_PUBLIC_API_URL, not by this app.'
     )
   }
 
