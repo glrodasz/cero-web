@@ -55,11 +55,7 @@ const DevTools = () => {
         .dev-tools-button {
           position: fixed;
           right: 16px;
-          /* Lifted clear of the bottom navigation, which is a normal flex item
-             in MainLayout rather than a fixed bar. */
-          bottom: calc(
-            var(--bottom-menu-height) + 16px + env(safe-area-inset-bottom)
-          );
+          bottom: 16px;
           z-index: 10;
           display: flex;
           align-items: center;

@@ -8,7 +8,6 @@ import { UserProvider } from '@auth0/nextjs-auth0'
 import { IS_DEMO_MODE } from '../features/common/auth'
 
 import DevTools from '../features/common/components/DevTools'
-import NavigationMenu from '../features/common/components/NavigationMenu'
 import MainLayout from '../features/common/components/MainLayout'
 import useColorScheme from '../features/common/hooks/useColorScheme'
 
@@ -23,18 +22,12 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* `viewport-fit=cover` is what makes `env(safe-area-inset-bottom)`
-          non-zero, so the bottom menu clears the home indicator. The viewport
-          meta belongs here rather than in `_document`. */}
+      {/* The viewport meta belongs here rather than in `_document`. */}
       <Head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, viewport-fit=cover"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
       <MainLayout
-        menu={<NavigationMenu />}
         content={
           <Container>
             {IS_DEMO_MODE ? (
@@ -48,15 +41,8 @@ function MyApp({ Component, pageProps }) {
         }
       />
       <DevTools />
-      {/* Closed by default, and its toggle lifted clear of the now pinned
-          bottom navigation: open, the panel covers half a phone screen, and at
-          bottom: 0 the toggle sits on top of the first navigation item. */}
-      <ReactQueryDevtools
-        initialIsOpen={false}
-        toggleButtonProps={{
-          style: { bottom: 'calc(var(--bottom-menu-height) + 8px)' },
-        }}
-      />
+      {/* Closed by default: open, the panel covers half a phone screen. */}
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   )
 }

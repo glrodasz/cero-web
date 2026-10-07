@@ -6,7 +6,6 @@ describe('[ features / common / components / MainLayout ]', () => {
     it('should render', () => {
       // Arrange
       const props = {
-        menu: 'menu-component',
         content: 'content-component',
         isPlayground: true,
       }

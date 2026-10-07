@@ -9,7 +9,6 @@ exports[`[ features / common / components / DevTools / DevToolsModal ] when \`De
 [Button {"type":"tertiary"}]/index[/Button]
 [Button {"type":"tertiary"}]api/auth/login[/Button]
 [Button {"type":"tertiary"}]api/auth/logout[/Button]
-[Button {"type":"tertiary"}]home[/Button]
 [Button {"type":"tertiary"}]planning[/Button]
 [Button {"type":"tertiary"}]retrospective[/Button]&lt;/div&gt;
 [Spacer.Vertical {"size":"md"} /]ToggleColorScheme
@@ -32,7 +31,6 @@ exports[`[ features / common / components / DevTools / DevToolsModal ] when it i
 [Button {"type":"tertiary"}]/index[/Button]
 [Button {"type":"tertiary"}]api/auth/login[/Button]
 [Button {"type":"tertiary"}]api/auth/logout[/Button]
-[Button {"type":"tertiary"}]home[/Button]
 [Button {"type":"tertiary"}]planning[/Button]
 [Button {"type":"tertiary"}]retrospective[/Button]&lt;/div&gt;
 [Spacer.Vertical {"size":"md"} /]
