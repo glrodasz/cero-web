@@ -1889,15 +1889,44 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@glrodasz/components@npm:2.12.1":
-  version: 2.12.1
-  resolution: "@glrodasz/components@npm:2.12.1"
+"@glrodasz/components@npm:2.13.1":
+  version: 2.13.1
+  resolution: "@glrodasz/components@npm:2.13.1"
   dependencies:
-    classnames: "npm:2.3.1"
+    "@glrodasz/storybook-tools-helpers": "npm:0.0.3"
+    "@glrodasz/storybook-tools-styles": "npm:0.0.5"
   peerDependencies:
-    react: 16.13.1
-    react-dom: 16.13.1
-  checksum: 10c0/de5f84b900aab22f516383045bab0bfa354a5ab0258cf881438ee76cf1a691841f13d79579afce78813001c56edb2ccd4e885c45d0e7d84bbefe98db70380724
+    react: 18.2.0
+    react-dom: 18.2.0
+  checksum: 10c0/40a8cca253ecccb1e0ccd0629aa8b55b1c85183c369a256859fad68e3b5f86d55fc8f68310fe91c6230747b9793d2a970173cdab118a867385fe72bddd8ee00a
+  languageName: node
+  linkType: hard
+
+"@glrodasz/storybook-tools-helpers@npm:0.0.3":
+  version: 0.0.3
+  resolution: "@glrodasz/storybook-tools-helpers@npm:0.0.3"
+  dependencies:
+    "@glrodasz/storybook-tools-styles": "npm:^0.0.4"
+    react: "npm:^18.2.0"
+  checksum: 10c0/aab97550e56e4d1dda765344705383d1ec4da3e2972980b3827b5202e62be051cb4314ec004b837791b015336fb9443091d052f43e8c9915d75807bd651b0542
+  languageName: node
+  linkType: hard
+
+"@glrodasz/storybook-tools-styles@npm:0.0.5":
+  version: 0.0.5
+  resolution: "@glrodasz/storybook-tools-styles@npm:0.0.5"
+  dependencies:
+    classnames: "npm:^2.3.2"
+  checksum: 10c0/5ba975ad63cfc6250f393b4766ff9b85955a54caff155499bfb572d1647659c9812a515c9ec937c3323f4f736a5eb86545b42db1c926f6014e82f834af3bd838
+  languageName: node
+  linkType: hard
+
+"@glrodasz/storybook-tools-styles@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "@glrodasz/storybook-tools-styles@npm:0.0.4"
+  dependencies:
+    classnames: "npm:^2.3.2"
+  checksum: 10c0/84063b2831b945097b075399bc609846ab7ab289ca7835db51ed2212d667aa94ee75d34c4948a8960dfaaf3e235542922ef506573122e2ac2a61eba4906e8c8f
   languageName: node
   linkType: hard
 
@@ -4482,10 +4511,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:2.3.1":
-  version: 2.3.1
-  resolution: "classnames@npm:2.3.1"
-  checksum: 10c0/e3b832219042802464e648c41c2e8be96c2c64d2522cfa22fbb5ec088418406c61ab351a682c077c07f691c8b00c9f0ee7939b20fabc6c23da69063252a4ab89
+"classnames@npm:^2.3.2":
+  version: 2.5.1
+  resolution: "classnames@npm:2.5.1"
+  checksum: 10c0/afff4f77e62cea2d79c39962980bf316bacb0d7c49e13a21adaadb9221e1c6b9d3cdb829d8bb1b23c406f4e740507f37e1dcf506f7e3b7113d17c5bab787aa69
   languageName: node
   linkType: hard
 
@@ -11847,6 +11876,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react@npm:^18.2.0":
+  version: 18.3.1
+  resolution: "react@npm:18.3.1"
+  dependencies:
+    loose-envify: "npm:^1.1.0"
+  checksum: 10c0/283e8c5efcf37802c9d1ce767f302dd569dd97a70d9bb8c7be79a789b9902451e0d16334b05d73299b20f048cbc3c7d288bbbde10b701fa194e2089c237dbea3
+  languageName: node
+  linkType: hard
+
 "read-file-relative@npm:^1.2.0":
   version: 1.2.0
   resolution: "read-file-relative@npm:1.2.0"
@@ -14496,7 +14534,7 @@ __metadata:
     "@auth0/nextjs-auth0": "npm:1.9.1"
     "@commitlint/cli": "npm:17.0.3"
     "@commitlint/config-conventional": "npm:17.0.3"
-    "@glrodasz/components": "npm:2.12.1"
+    "@glrodasz/components": "npm:2.13.1"
     "@svgr/webpack": "npm:6.3.1"
     "@tanstack/react-query": "npm:4.0.10"
     "@tanstack/react-query-devtools": "npm:4.0.10"
