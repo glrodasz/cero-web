@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / retrospective / components / RetrospectiveTasks ] when \`RetrospectiveTasks\` is mounted should render a section per status, empty ones included 1`] = `
+<DocumentFragment>
+  <div>
+    
+[Accordion {"title":"En progreso"}]
+[Spacer.Vertical {"size":"xs"} /]
+[Paragraph]Escribir las pruebas[/Paragraph][/Accordion]
+[Spacer.Vertical {"size":"sm"} /]
+[Accordion {"title":"Pendientes"}]
+[Spacer.Vertical {"size":"xs"} /]
+[Paragraph {"color":"muted"}]Sin tareas[/Paragraph][/Accordion]
+  </div>
+</DocumentFragment>
+`;

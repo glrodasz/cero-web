@@ -32,5 +32,7 @@ module.exports = {
   transform: {
     '^.+\\.jsx?$': ['babel-jest', { presets: ['next/babel'] }],
   },
-  transformIgnorePatterns: ['node_modules/(?!@glrodasz/components)'],
+  // `@glrodasz/components` ships untranspiled source, and since 2.13 it depends
+  // on `@glrodasz/storybook-tools-*`, which are ESM-only.
+  transformIgnorePatterns: ['node_modules/(?!@glrodasz/)'],
 }

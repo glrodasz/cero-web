@@ -5,6 +5,7 @@ import {
   ACTIVE_FOCUS_SESSION_STATUS,
   FINISHED_FOCUS_SESSION_STATUS,
 } from './constants'
+import { parseFeedback } from './helpers'
 import { getActiveFocusSession } from './queries'
 
 // The writes behind this feature's API routes, with no `req` or `res` in
@@ -85,7 +86,13 @@ export async function startFocusSession({ options }) {
   return { status: 201, body: focusSession }
 }
 
+// Finishing optionally records the retrospective's `feedback` on the session
+// (`{ score, blockers }`); skipping the retrospective finishes it without one.
 export async function finishFocusSession({ options }) {
+  const { feedback, error } = parseFeedback(options.body?.feedback)
+
+  if (error) return { status: 400, body: { error } }
+
   const activeFocusSession = await getActiveFocusSession({ options })
 
   if (isEmpty(activeFocusSession)) {
@@ -94,7 +101,11 @@ export async function finishFocusSession({ options }) {
 
   const finishedFocusSession = await updateFocusSession({
     id: activeFocusSession.id,
-    body: { status: FINISHED_FOCUS_SESSION_STATUS },
+    body: {
+      status: FINISHED_FOCUS_SESSION_STATUS,
+      endTime: Date.now(),
+      ...(feedback && { feedback }),
+    },
     options,
   })
 
