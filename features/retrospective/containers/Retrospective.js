@@ -1,27 +1,42 @@
+import PropTypes from 'prop-types'
 import {
   Spacer,
   Heading,
-  Accordion,
   FullHeightContent,
+  LoadingError,
   Paragraph,
-  Score,
   Textarea,
 } from '@glrodasz/components'
 
+import MoodScore from '../components/MoodScore'
 import RetrospectiveFooter from '../components/RetrospectiveFooter'
+import RetrospectiveTasks from '../components/RetrospectiveTasks'
 
-const Retrospective = () => {
+import {
+  createBlockersChangeHandler,
+  createRegisterSessionHandler,
+  createScoreHandler,
+  createSkipRegisterSessionHandler,
+} from '../handlers'
+import { getTaskSections } from '../helpers'
+
+import useRetrospectiveFeedback from '../hooks/useRetrospectiveFeedback'
+import useFocusSessions from '../../focusSession/hooks/useFocusSessions'
+import useTasks from '../../tasks/hooks/useTasks'
+
+const Retrospective = ({ initialData }) => {
+  const tasks = useTasks({ initialData: initialData.tasks })
+  const focusSessions = useFocusSessions()
+  const feedback = useRetrospectiveFeedback()
+
   return (
     <FullHeightContent
       content={
-        <>
-          <div>
-            <Accordion title="En Progresso"></Accordion>
-            <Spacer.Vertical size="sm" />
-            <Accordion title="Pendientes"></Accordion>
-            <Spacer.Vertical size="sm" />
-            <Accordion title="Completadas"></Accordion>
-          </div>
+        <LoadingError
+          isLoading={tasks.isLoading}
+          errorMessage={tasks.error?.message}
+        >
+          <RetrospectiveTasks sections={getTaskSections(tasks.data)} />
           <div
             style={{
               display: 'flex',
@@ -34,7 +49,10 @@ const Retrospective = () => {
               <div>
                 <Heading size="xl">¿Cómo te sentiste el día de hoy?</Heading>
                 <Spacer.Vertical size="sm" />
-                <Score />
+                <MoodScore
+                  score={feedback.score}
+                  onClickScore={createScoreHandler({ feedback })}
+                />
               </div>
               <Spacer.Vertical size="md" />
               <Heading size="xl">¿Qué bloqueos tuviste?</Heading>
@@ -44,14 +62,44 @@ const Retrospective = () => {
                 identificarlos para mantenerte enfocado y saludable.
               </Paragraph>
               <Spacer.Vertical size="md" />
-              <Textarea placeholder="Escribe acá..." />
+              <Textarea
+                placeholder="Escribe acá..."
+                onChange={createBlockersChangeHandler({ feedback })}
+              />
             </>
           </div>
-        </>
+        </LoadingError>
       }
-      footer={<RetrospectiveFooter />}
-    ></FullHeightContent>
+      footer={
+        <RetrospectiveFooter
+          isRegisterMuted={feedback.score === null}
+          onClickRegisterSession={createRegisterSessionHandler({
+            focusSessions,
+            feedback,
+          })}
+          onClickSkipRegisterSession={createSkipRegisterSessionHandler({
+            focusSessions,
+          })}
+        />
+      }
+    />
   )
+}
+
+Retrospective.propTypes = {
+  initialData: PropTypes.shape({
+    tasks: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        status: PropTypes.string,
+        description: PropTypes.string,
+      })
+    ),
+  }),
+}
+
+Retrospective.defaultProps = {
+  initialData: {},
 }
 
 export default Retrospective

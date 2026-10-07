@@ -104,6 +104,53 @@ describe('[ features / focusSession / commands ]', () => {
             .every((task) => task.focusSessionId === null)
         ).toBe(true)
       })
+
+      it('should record when it ended and no feedback', async () => {
+        // Arrange
+        await start()
+
+        // Act
+        const { body } = await finishFocusSession({ options: buildOptions() })
+
+        // Assert
+        expect(body.endTime).toEqual(expect.any(Number))
+        expect(body).not.toHaveProperty('feedback')
+      })
+
+      it('should record the feedback it was given', async () => {
+        // Arrange
+        await start()
+        const feedback = { score: 2.5, blockers: '  Reuniones  ' }
+
+        // Act
+        const result = await finishFocusSession({
+          options: buildOptions({ body: { feedback } }),
+        })
+        const expected = { score: 2.5, blockers: 'Reuniones' }
+
+        // Assert
+        expect(result.status).toBe(200)
+        expect(result.body.feedback).toEqual(expected)
+      })
+
+      it('should answer 400 and leave it active when the score is unknown', async () => {
+        // Arrange
+        const { body: focusSession } = await start()
+
+        // Act
+        const result = await finishFocusSession({
+          options: buildOptions({ body: { feedback: { score: 3 } } }),
+        })
+        const { 'focus-sessions': focusSessions } = await getCollections(
+          SESSION_ID
+        )
+
+        // Assert
+        expect(result.status).toBe(400)
+        expect(
+          focusSessions.find(({ id }) => id === focusSession.id).status
+        ).toBe('active')
+      })
     })
   })
 

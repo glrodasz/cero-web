@@ -7,9 +7,10 @@ class FocusSession extends Request {
     })
   }
 
-  finish() {
+  finish({ feedback } = {}) {
     return this.fetch(`focus-sessions/finish`, {
       method: 'patch',
+      body: { feedback },
     })
   }
 

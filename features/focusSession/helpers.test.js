@@ -1,6 +1,6 @@
 import dateNowMock from '../../utils/testUtils/dateNowMock'
 import time from '../../utils/time'
-import { getBarWidth, getChronometerStartTime } from './helpers'
+import { getBarWidth, getChronometerStartTime, parseFeedback } from './helpers'
 
 describe('[ features / focusSession / helpers ]', () => {
   describe('#getBarWidth', () => {
@@ -96,6 +96,60 @@ describe('[ features / focusSession / helpers ]', () => {
 
         // Assert
         expect(result).toBe(expected)
+      })
+    })
+  })
+
+  describe('#parseFeedback', () => {
+    describe('when no feedback is sent', () => {
+      it('should return `null` feedback', () => {
+        // Act
+        const result = parseFeedback(undefined)
+        const expected = { feedback: null }
+
+        // Assert
+        expect(result).toEqual(expected)
+      })
+    })
+
+    describe('when the score is a known one', () => {
+      it('should keep only the score and the trimmed blockers', () => {
+        // Arrange
+        const params = { score: 5, blockers: ' Ruido \n', extra: 'ignored' }
+
+        // Act
+        const result = parseFeedback(params)
+        const expected = { feedback: { score: 5, blockers: 'Ruido' } }
+
+        // Assert
+        expect(result).toEqual(expected)
+      })
+    })
+
+    describe('when the blockers are not a string', () => {
+      it('should store them as empty', () => {
+        // Arrange
+        const params = { score: 0, blockers: { not: 'text' } }
+
+        // Act
+        const result = parseFeedback(params)
+        const expected = { feedback: { score: 0, blockers: '' } }
+
+        // Assert
+        expect(result).toEqual(expected)
+      })
+    })
+
+    describe('when the score is unknown', () => {
+      it('should return an error', () => {
+        // Arrange
+        const params = { score: '5', blockers: '' }
+
+        // Act
+        const result = parseFeedback(params)
+
+        // Assert
+        expect(result).toEqual({ error: expect.any(String) })
       })
     })
   })

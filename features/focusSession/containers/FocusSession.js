@@ -45,7 +45,6 @@ import useEditTaskModal from '../../tasks/hooks/useEditTaskModal'
 import useTasks from '../../tasks/hooks/useTasks'
 import useDeleteConfirmation from '../../tasks/hooks/useDeleteConfirmation'
 import useBreaktimeTimer from '../hooks/useBreaktimeTimer'
-import useFocusSessions from '../hooks/useFocusSessions'
 import useFocusSession from '../hooks/useFocusSession'
 import useChronometer from '../hooks/useChronometer'
 
@@ -104,8 +103,6 @@ const FocusSession = ({ initialData }) => {
   })
 
   useEffect(() => setRenderChronometer(true), [])
-
-  const focusSessions = useFocusSessions()
 
   const tasksLength = tasks.data?.filter(
     (task) => task.status !== COMPLETED_COLUMN_ID
@@ -178,11 +175,7 @@ const FocusSession = ({ initialData }) => {
           </LoadingError>
         }
         footer={
-          <FocusSessionFooter
-            onClickEndSession={createEndSessionHandler({
-              focusSessions,
-            })}
-          />
+          <FocusSessionFooter onClickEndSession={createEndSessionHandler()} />
         }
       />
       {breaktimeConfirmation.showDialog && (

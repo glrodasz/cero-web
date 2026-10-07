@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / retrospective / components / RetrospectiveFooter ] when \`RetrospectiveFooter\` is mounted should render 1`] = `
+<DocumentFragment>
+  
+[Spacer.Vertical {"size":"lg"} /]
+  <button
+    class="button type-primary is-muted"
+  >
+    <h1
+      class="heading color-inverted size-md weight-bold is-centered"
+    >
+      Registrar sesión
+    </h1>
+  </button>
+  
+[Spacer.Vertical {"size":"md"} /]
+  <button
+    class="button type-tertiary is-inline"
+  >
+    <h1
+      class="heading color-primary size-md weight-bold is-centered"
+    >
+      No registrar esta sesión
+    </h1>
+  </button>
+</DocumentFragment>
+`;

@@ -210,75 +210,15 @@ describe('[ features / focusSession / handlers ]', () => {
     })
 
     describe('when `createEndSessionHandler` returned function is called', () => {
-      it('should call `focusSessions.api.finish` with an `id`', () => {
+      it('should call `Router.push` with `/retrospective`', () => {
         // Arrange
-        const finishMock = jest.fn()
-        const params = {
-          focusSessions: {
-            api: {
-              finish: finishMock,
-            },
-          },
-        }
-
-        // Act
-        createEndSessionHandler(params)()
-
-        // Assert
-        expect(finishMock).toHaveBeenCalledWith()
-      })
-
-      it('should call `Router.push` with an `/planning`', () => {
-        // Arrange
-        const params = {
-          focusSessions: {
-            api: {
-              finish: () => {},
-            },
-          },
-          initialData: {
-            activeFocusSession: {
-              id: 'foo',
-            },
-          },
-        }
-
-        // Act
-        createEndSessionHandler(params)()
-
-        // Assert
-        expect(Router.push).toHaveBeenCalledWith('/planning')
-      })
-
-      it('should still navigate when finishing fails', async () => {
-        // Arrange
-        // Finishing answers 404 when no session is active -- a second tab, or a
-        // double click. Rejecting here used to strand the user on a dead
-        // session because the navigation never ran.
-        jest.spyOn(console, 'error').mockImplementation(() => {})
-        // No `clearMocks` in this project, so `Router.push` still carries the
-        // calls from the tests above; without this the assertion would pass
-        // whether or not the handler navigated.
         Router.push.mockClear()
-        const params = {
-          focusSessions: {
-            api: {
-              finish: jest
-                .fn()
-                .mockRejectedValue(
-                  new Error('There is no active focus session')
-                ),
-            },
-          },
-        }
 
         // Act
-        await createEndSessionHandler(params)()
+        createEndSessionHandler()()
 
         // Assert
-        expect(Router.push).toHaveBeenCalledWith('/planning')
-
-        console.error.mockRestore()
+        expect(Router.push).toHaveBeenCalledWith('/retrospective')
       })
     })
   })

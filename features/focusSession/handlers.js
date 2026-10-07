@@ -39,22 +39,11 @@ export const createChooseBreaktimeHandler =
     focusSession.api.pause({ time })
   }
 
-export const createEndSessionHandler =
-  ({ focusSessions }) =>
-  async () => {
-    try {
-      await focusSessions.api.finish()
-    } catch (error) {
-      // Finishing answers 404 when there is no active session -- a second tab,
-      // or a double click on the same button. The user asked to leave the
-      // session and that is already true, so the navigation below is still the
-      // right outcome. Letting this reject would strand them on a dead session
-      // with no way out.
-      console.error('[focusSession] could not finish the session', error)
-    }
-
-    Router.push('/planning')
-  }
+// The session is finished from the retrospective, once its feedback is in (or
+// skipped), so ending it here only leads there.
+export const createEndSessionHandler = () => () => {
+  Router.push('/retrospective')
+}
 
 export const createClickChronometerHandler =
   ({ isPaused, onPause }) =>

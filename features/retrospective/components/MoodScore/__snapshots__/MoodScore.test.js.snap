@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / retrospective / components / MoodScore ] when no score has been chosen should render only the faces 1`] = `
+<DocumentFragment>
+  
+[Score {} /]
+</DocumentFragment>
+`;
