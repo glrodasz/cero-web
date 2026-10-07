@@ -6,7 +6,7 @@ exports[`[ features / common / components / DevTools ] when \`DevTools\` is moun
     aria-expanded="false"
     aria-haspopup="dialog"
     aria-label="Dev tools"
-    class="jsx-3935559433 dev-tools-button"
+    class="jsx-1785304585 dev-tools-button"
     type="button"
   >
     

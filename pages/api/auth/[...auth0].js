@@ -9,7 +9,7 @@ const demoHandler = (req, res) => {
     return res.status(200).json(DEMO_USER)
   }
 
-  return res.redirect('/home')
+  return res.redirect('/planning')
 }
 
 // `handleAuth()` validates the Auth0 configuration as soon as it runs, so it

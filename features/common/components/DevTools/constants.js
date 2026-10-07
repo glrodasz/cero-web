@@ -14,7 +14,6 @@ export const DEV_TOOLS_LINKS = [
   { href: '/', label: '/index' },
   { href: '/api/auth/login', label: 'api/auth/login' },
   { href: '/api/auth/logout', label: 'api/auth/logout' },
-  { href: '/home', label: 'home' },
   { href: '/planning', label: 'planning' },
   { href: '/retrospective', label: 'retrospective' },
 ]
