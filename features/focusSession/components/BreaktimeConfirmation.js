@@ -12,6 +12,8 @@ import {
 
 import time from '../../../utils/time'
 
+import styles from './BreaktimeConfirmation.module.css'
+
 const createCloseHandler =
   ({ onClose }) =>
   () => {
@@ -42,7 +44,7 @@ const BreaktimeConfirmation = ({ onClose, onChoose }) => {
           tomar un descanso para despejar tu mente.
         </Paragraph>
         <Spacer.Vertical size="lg" />
-        <div style={{ display: 'flex', gap: '0 20px', width: '100%' }}>
+        <div className={styles['breaktime-options']}>
           <Button
             onClick={createChooseBreaktimeHandler(time.FIVE_MINUTES_IN_MS)}
             isMuted

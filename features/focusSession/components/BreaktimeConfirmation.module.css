@@ -1,0 +1,26 @@
+.breaktime-options {
+  display: flex;
+  width: 100%;
+  gap: 8px;
+}
+
+/* The library's Button keeps `min-width: max-content` and wide side padding,
+   so three of them don't fit on a phone: they refuse to shrink and push the
+   whole modal wider than the screen. */
+.breaktime-options > button {
+  min-width: 0;
+  flex: 1 1 0;
+  padding: 20px 4px;
+  white-space: nowrap;
+}
+
+/* Too narrow for three in a row at this font size: stack them instead. */
+@media (max-width: 359px) {
+  .breaktime-options {
+    flex-direction: column;
+  }
+
+  .breaktime-options > button {
+    flex: none;
+  }
+}
