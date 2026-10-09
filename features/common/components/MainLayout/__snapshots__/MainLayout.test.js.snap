@@ -3,10 +3,10 @@
 exports[`[ features / common / components / MainLayout ] when \`MainLayout\` is mounted should render 1`] = `
 <DocumentFragment>
   <main
-    class="jsx-3285621891 main-layout is-playground"
+    class="jsx-3268009924 main-layout is-playground"
   >
     <section
-      class="jsx-3285621891 content"
+      class="jsx-3268009924 content"
     >
       content-component
     </section>

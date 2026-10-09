@@ -8,7 +8,6 @@ const RetrospectiveFooter = ({
 }) => {
   return (
     <>
-      <Spacer.Vertical size="lg" />
       <Button
         onClick={onClickRegisterSession}
         type="primary"

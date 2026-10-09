@@ -54,3 +54,14 @@ body {
 #__next {
   height: 100%;
 }
+
+// Native feel on touch screens: no grey flash on every tap, and no
+// rubber-banding of the whole page — only `MainLayout`'s content scrolls.
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  overscroll-behavior: none;
+}

@@ -22,9 +22,14 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* The viewport meta belongs here rather than in `_document`. */}
+      {/* The viewport meta belongs here rather than in `_document`.
+          `viewport-fit=cover` lets the layout reach under the notch and the
+          home indicator; `MainLayout` pads those back with the safe areas. */}
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
       </Head>
 
       <MainLayout

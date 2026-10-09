@@ -2,12 +2,12 @@ import PropTypes from 'prop-types'
 import {
   Spacer,
   Heading,
-  FullHeightContent,
   LoadingError,
   Paragraph,
   Textarea,
 } from '@glrodasz/components'
 
+import PageLayout from '../../common/components/PageLayout'
 import MoodScore from '../components/MoodScore'
 import RetrospectiveFooter from '../components/RetrospectiveFooter'
 import RetrospectiveTasks from '../components/RetrospectiveTasks'
@@ -30,7 +30,7 @@ const Retrospective = ({ initialData }) => {
   const feedback = useRetrospectiveFeedback()
 
   return (
-    <FullHeightContent
+    <PageLayout
       content={
         <LoadingError
           isLoading={tasks.isLoading}

@@ -2,8 +2,6 @@
 
 exports[`[ features / retrospective / components / RetrospectiveFooter ] when \`RetrospectiveFooter\` is mounted should render 1`] = `
 <DocumentFragment>
-  
-[Spacer.Vertical {"size":"lg"} /]
   <button
     class="button type-primary is-muted"
   >

@@ -368,6 +368,21 @@ Containers instantiate these and pass them to components as `on*` props.
   `PropTypes.shape({...})` over bare `PropTypes.object` / `PropTypes.array`
   for new code.
 - React import is not required for JSX (`react/react-in-jsx-scope` is off).
+- Pages lay out with `features/common/components/PageLayout` (`content` +
+  `footer`), not the library's `FullHeightContent`: its footer is sticky, so
+  the page's primary action floats at the bottom of the screen once the
+  content scrolls. Keep that footer to the actions themselves — explanatory
+  copy belongs in `content`, or the floating bar eats a phone screen.
+
+### Mobile / PWA
+
+The app is installable (`public/manifest.webmanifest`, icons in
+`public/icons/`, meta tags in `pages/_document.js`). `viewport-fit=cover` is
+set, so anything pinned to a screen edge must pad itself with
+`env(safe-area-inset-*)` — see `MainLayout`, `PageLayout` and `DevTools`.
+`theme-color` follows the app's own light/dark toggle via
+`utils/syncThemeColor`. The icon's source is `public/icons/icon.svg`;
+regenerate the PNGs from it rather than editing them.
 
 ### Constants over magic strings
 
