@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / tasks / components / TaskDuration ] when \`TaskDuration\` is mounted should render 1`] = `
+<DocumentFragment>
+  <div
+    class="task-duration"
+  >
+    <div
+      class="picker"
+    >
+      
+[Icon {"name":"clock","color":"muted"} /]
+      <span
+        aria-hidden="true"
+        class="value"
+      >
+        1h
+      </span>
+      
+[Icon {"name":"angleDown","background":"highlight"} /]
+      <select
+        aria-label="Duración de la tarea"
+        class="select"
+      >
+        <option
+          value=""
+        >
+          Sin definir
+        </option>
+        <option
+          value="15"
+        >
+          15m
+        </option>
+        <option
+          value="30"
+        >
+          30m
+        </option>
+        <option
+          value="45"
+        >
+          45m
+        </option>
+        <option
+          value="60"
+        >
+          1h
+        </option>
+        <option
+          value="90"
+        >
+          1h 30m
+        </option>
+        <option
+          value="120"
+        >
+          2h
+        </option>
+        <option
+          value="180"
+        >
+          3h
+        </option>
+        <option
+          value="240"
+        >
+          4h
+        </option>
+      </select>
+    </div>
+    
+[Paragraph {"size":"sm"}]Define la duración de esta tarea[/Paragraph]
+  </div>
+</DocumentFragment>
+`;

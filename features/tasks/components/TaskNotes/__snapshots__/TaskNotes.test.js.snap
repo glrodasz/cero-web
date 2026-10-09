@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / tasks / components / TaskNotes ] when there are no notes should invite to add them 1`] = `
+<DocumentFragment>
+  <section
+    class="section"
+  >
+    <span
+      aria-hidden="true"
+      class="icon"
+    >
+      
+[Icon {"name":"tag","color":"muted"} /]
+    </span>
+    <div
+      class="body"
+    >
+      <button
+        class="action"
+        type="button"
+      >
+        Agregar notas
+      </button>
+    </div>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`[ features / tasks / components / TaskNotes ] when there are notes should show them 1`] = `
+<DocumentFragment>
+  <section
+    class="section is-filled"
+  >
+    <span
+      aria-hidden="true"
+      class="icon"
+    >
+      
+[Icon {"name":"tag","color":"muted"} /]
+    </span>
+    <div
+      class="body"
+    >
+      <button
+        aria-label="Editar notas"
+        class="notes"
+        type="button"
+      >
+        Primero marketing
+      </button>
+    </div>
+  </section>
+</DocumentFragment>
+`;

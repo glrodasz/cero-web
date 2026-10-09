@@ -1,0 +1,24 @@
+/* The library Modal lays its children out in a row and never scrolls: stack
+   the sections and let this column scroll once the subtasks outgrow the
+   screen. The negative margin takes back the Container's own side padding,
+   which on a phone adds to the Modal's and leaves the sections too narrow;
+   the small padding keeps focus rings from being clipped by the scroll. */
+.edit-task {
+  display: flex;
+  width: calc(100% + 30px);
+  min-height: 0;
+  flex-direction: column;
+  padding: 4px 4px 16px;
+  margin: 0 -15px;
+  gap: 24px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* On desktop the Modal's taller header pushes this column past its bottom
+   edge; keep the last section clear of it. */
+@media (min-width: 992px) {
+  .edit-task {
+    padding-bottom: 40px;
+  }
+}

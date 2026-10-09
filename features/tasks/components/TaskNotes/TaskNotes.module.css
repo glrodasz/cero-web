@@ -1,0 +1,31 @@
+.textarea,
+.notes {
+  width: 100%;
+  min-height: 35px;
+  padding: 6px 0;
+  border: none;
+  background: transparent;
+  color: var(--color-font-base);
+  font: inherit;
+  font-size: var(--paragraph-font-size-md);
+  line-height: var(--line-height-snug);
+}
+
+.textarea {
+  overflow: hidden;
+  resize: none;
+}
+
+.textarea::placeholder {
+  color: var(--color-font-muted);
+}
+
+.textarea:focus {
+  outline: none;
+}
+
+.notes {
+  cursor: pointer;
+  text-align: left;
+  white-space: pre-wrap;
+}

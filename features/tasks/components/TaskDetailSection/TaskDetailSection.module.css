@@ -1,0 +1,38 @@
+.section {
+  display: flex;
+  align-items: flex-start;
+  padding: 8px 10px 8px 12px;
+  border: var(--border-width-thin) dashed var(--color-primary);
+  border-radius: var(--button-border-radius-lg);
+  gap: 12px;
+}
+
+.is-filled {
+  border-style: solid;
+}
+
+.icon {
+  display: flex;
+  flex: none;
+}
+
+.body {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.action {
+  display: flex;
+  min-height: 35px;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-font-base);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--paragraph-font-size-md);
+  text-align: left;
+}

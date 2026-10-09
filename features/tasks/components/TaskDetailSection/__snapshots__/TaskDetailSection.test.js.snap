@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / tasks / components / TaskDetailSection ] when it is empty should render the action in a dashed box 1`] = `
+<DocumentFragment>
+  <section
+    class="section"
+  >
+    <span
+      aria-hidden="true"
+      class="icon"
+    >
+      
+[Icon {"name":"tag","color":"muted"} /]
+    </span>
+    <div
+      class="body"
+    >
+      <button
+        class="action"
+        type="button"
+      >
+        Agregar notas
+      </button>
+    </div>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`[ features / tasks / components / TaskDetailSection ] when it is filled should render its content in a solid box 1`] = `
+<DocumentFragment>
+  <section
+    class="section is-filled"
+  >
+    <span
+      aria-hidden="true"
+      class="icon"
+    >
+      
+[Icon {"name":"tag","color":"muted"} /]
+    </span>
+    <div
+      class="body"
+    >
+      content
+    </div>
+  </section>
+</DocumentFragment>
+`;

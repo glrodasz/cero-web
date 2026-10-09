@@ -1,0 +1,168 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / tasks / components / EditTaskModal ] when \`EditTaskModal\` is mounted with a task should render every section of the detail 1`] = `
+<DocumentFragment>
+  <div>
+    <button
+      type="button"
+    >
+      back
+    </button>
+    <div
+      class="edit-task"
+    >
+      <header>
+        <div>
+          <h1
+            contenteditable="true"
+          >
+            Responder los correos
+          </h1>
+        </div>
+        
+[Paragraph {"size":"md","color":"muted"}]Creada hace 5 minutos[/Paragraph]
+      </header>
+      <div
+        class="task-duration"
+      >
+        <div
+          class="picker"
+        >
+          
+[Icon {"name":"clock","color":"muted"} /]
+          <span
+            aria-hidden="true"
+            class="value"
+          >
+            1h
+          </span>
+          
+[Icon {"name":"angleDown","background":"highlight"} /]
+          <select
+            aria-label="Duración de la tarea"
+            class="select"
+          >
+            <option
+              value=""
+            >
+              Sin definir
+            </option>
+            <option
+              value="15"
+            >
+              15m
+            </option>
+            <option
+              value="30"
+            >
+              30m
+            </option>
+            <option
+              value="45"
+            >
+              45m
+            </option>
+            <option
+              value="60"
+            >
+              1h
+            </option>
+            <option
+              value="90"
+            >
+              1h 30m
+            </option>
+            <option
+              value="120"
+            >
+              2h
+            </option>
+            <option
+              value="180"
+            >
+              3h
+            </option>
+            <option
+              value="240"
+            >
+              4h
+            </option>
+          </select>
+        </div>
+        
+[Paragraph {"size":"sm"}]Define la duración de esta tarea[/Paragraph]
+      </div>
+      <section
+        class="section is-filled"
+      >
+        <span
+          aria-hidden="true"
+          class="icon"
+        >
+          
+[Icon {"name":"tag","color":"muted"} /]
+        </span>
+        <div
+          class="body"
+        >
+          <button
+            class="action"
+            type="button"
+          >
+            Agregar subtarea
+          </button>
+          <ul
+            class="list"
+          >
+            <li
+              class="subtask"
+            >
+              <button
+                aria-label="Marcar como pendiente: Crear plantilla"
+                aria-pressed="true"
+                class="icon-button"
+                type="button"
+              >
+                
+[Check {"isChecked":true} /]
+              </button>
+              
+[Paragraph {"color":"muted"}]Crear plantilla[/Paragraph]
+              <button
+                aria-label="Eliminar: Crear plantilla"
+                class="icon-button"
+                type="button"
+              >
+                
+[Icon {"name":"cross","color":"primary","size":"sm"} /]
+              </button>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section
+        class="section is-filled"
+      >
+        <span
+          aria-hidden="true"
+          class="icon"
+        >
+          
+[Icon {"name":"tag","color":"muted"} /]
+        </span>
+        <div
+          class="body"
+        >
+          <button
+            aria-label="Editar notas"
+            class="notes"
+            type="button"
+          >
+            Primero marketing
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
+</DocumentFragment>
+`;

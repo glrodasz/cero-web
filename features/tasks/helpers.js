@@ -147,3 +147,30 @@ export const filterColumns =
 
     return false
   }
+
+// Subtasks are kept on the task itself and written back whole: a PATCH
+// replaces the array, so every change produces the complete new list.
+export const addSubtask = (subtasks = [], description = '') => {
+  const trimmedDescription = description.trim()
+
+  if (!trimmedDescription) return subtasks
+
+  return [
+    ...subtasks,
+    {
+      id: crypto.randomUUID(),
+      description: trimmedDescription,
+      isCompleted: false,
+    },
+  ]
+}
+
+export const toggleSubtask = (subtasks = [], id) =>
+  subtasks.map((subtask) =>
+    subtask.id === id
+      ? { ...subtask, isCompleted: !subtask.isCompleted }
+      : subtask
+  )
+
+export const removeSubtask = (subtasks = [], id) =>
+  subtasks.filter((subtask) => subtask.id !== id)
