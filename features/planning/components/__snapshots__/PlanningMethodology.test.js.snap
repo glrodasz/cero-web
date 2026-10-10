@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / planning / components / PlanningMethodology ] when \`tasksLength\` is greater or equal to one should explain the methodology 1`] = `
+<DocumentFragment>
+  
+[Spacer.Vertical {"size":"lg"} /]
+[Paragraph {"size":"sm","isCentered":true}]Basados en la matriz de Eisenhower priorizamos tus tareas evitando listas de pendientes saturadas.[/Paragraph]
+</DocumentFragment>
+`;

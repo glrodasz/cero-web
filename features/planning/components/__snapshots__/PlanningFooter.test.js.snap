@@ -2,10 +2,6 @@
 
 exports[`[ features / planning / components / PlanningFooter ] when \`tasksLength\` is greater or equal to one should return the footer 1`] = `
 <DocumentFragment>
-  
-[Spacer.Vertical {"size":"lg"} /]
-[Paragraph {"size":"sm"}]Basados en la matriz de Eisenhower priorizamos tus tareas evitando listas de pendientes saturadas.[/Paragraph]
-[Spacer.Vertical {"size":"sm"} /]
   <button
     class="button type-primary"
   >

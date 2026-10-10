@@ -2,8 +2,9 @@ import { useUser } from '../../common/auth'
 import { getGreeting } from '../../common/helpers'
 import PropTypes from 'prop-types'
 
-import { FullHeightContent, LoadingError, Link } from '@glrodasz/components'
+import { LoadingError, Link } from '@glrodasz/components'
 
+import PageLayout from '../../common/components/PageLayout'
 import UserHeader from '../../common/components/UserHeader'
 import Board from '../../tasks/components/Board'
 import DeleteTaskModal from '../../tasks/components/DeleteTaskModal'
@@ -25,6 +26,7 @@ import {
 } from '../../tasks/handlers'
 
 import PlanningFooter from '../components/PlanningFooter'
+import PlanningMethodology from '../components/PlanningMethodology'
 import AddTaskButton from '../components/AddTaskButton'
 import EditTask from '../../tasks/containers/EditTask'
 
@@ -54,7 +56,7 @@ const Planning = ({ initialData }) => {
 
   return (
     <>
-      <FullHeightContent
+      <PageLayout
         content={
           <LoadingError
             isLoading={tasks.isLoading}
@@ -95,6 +97,7 @@ const Planning = ({ initialData }) => {
               isShown={shouldShowAddTaskButton}
               onAddTask={createAddTaskHandler({ tasks })}
             />
+            <PlanningMethodology tasksLength={tasksLength} />
           </LoadingError>
         }
         footer={

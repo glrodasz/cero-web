@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / common / components / PageLayout ] when \`PageLayout\` is mounted should render the content and the footer 1`] = `
+<DocumentFragment>
+  <div
+    class="page-layout"
+  >
+    <div
+      class="content"
+    >
+      content-component
+    </div>
+    <div
+      class="footer"
+    >
+      footer-component
+    </div>
+  </div>
+</DocumentFragment>
+`;

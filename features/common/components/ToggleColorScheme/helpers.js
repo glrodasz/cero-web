@@ -1,7 +1,10 @@
+import syncThemeColor from '../../../../utils/syncThemeColor'
+
 export const persistColorScheme = ({ isDarkMode, setIsDarkMode }) => {
   const colorScheme = isDarkMode ? 'dark' : 'light'
   document.querySelector('html').dataset.colorScheme = colorScheme
   localStorage.setItem('prefers-color-scheme', colorScheme)
+  syncThemeColor('--background-color-primary')
   setIsDarkMode && setIsDarkMode(isDarkMode)
 }
 

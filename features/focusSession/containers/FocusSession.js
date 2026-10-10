@@ -3,13 +3,9 @@ import { useEffect, useMemo, useState } from 'react'
 import { useUser } from '../../common/auth'
 import { getGreeting } from '../../common/helpers'
 
-import {
-  FullHeightContent,
-  LoadingError,
-  Link,
-  Spacer,
-} from '@glrodasz/components'
+import { LoadingError, Link, Spacer } from '@glrodasz/components'
 
+import PageLayout from '../../common/components/PageLayout'
 import UserHeader from '../../common/components/UserHeader'
 import Board from '../../tasks/components/Board'
 import DeleteTaskModal from '../../tasks/components/DeleteTaskModal'
@@ -112,7 +108,7 @@ const FocusSession = ({ initialData }) => {
 
   return (
     <>
-      <FullHeightContent
+      <PageLayout
         content={
           <LoadingError
             isLoading={tasks.isLoading}

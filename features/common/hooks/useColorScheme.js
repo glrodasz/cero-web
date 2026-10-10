@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import syncThemeColor from '../../../utils/syncThemeColor'
 
 export const persistColorScheme = ({ isDarkMode, setIsDarkMode }) => {
   // Only run on client side to prevent hydration errors
@@ -7,6 +8,7 @@ export const persistColorScheme = ({ isDarkMode, setIsDarkMode }) => {
   const colorScheme = isDarkMode ? 'dark' : 'light'
   document.querySelector('html').dataset.colorScheme = colorScheme
   localStorage.setItem('prefers-color-scheme', colorScheme)
+  syncThemeColor('--background-color-primary')
   setIsDarkMode && setIsDarkMode(isDarkMode)
 }
 const useColorScheme = (__persistColorScheme = persistColorScheme) => {

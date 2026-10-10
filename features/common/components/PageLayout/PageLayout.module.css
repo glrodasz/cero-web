@@ -1,0 +1,48 @@
+/* Not stretched to the container's height: as tall as its content, at least
+   one screen. The sticky footer can only float within this box, so it has to
+   span the whole scrollable content. */
+.page-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+  flex-direction: column;
+  align-self: flex-start;
+  justify-content: space-between;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.footer {
+  position: sticky;
+  z-index: var(--z-index-10);
+  bottom: 0;
+  padding: 16px 0 calc(16px + env(safe-area-inset-bottom, 0px));
+  margin-top: 16px;
+  background: var(--background-color-primary);
+  text-align: center;
+}
+
+/* Fades the content out as it scrolls under the footer. */
+.footer::before {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
+  height: 24px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--background-color-primary)
+  );
+  content: '';
+  pointer-events: none;
+}
+
+/* A footer that renders nothing leaves no empty bar behind. */
+.footer:empty {
+  display: none;
+}

@@ -52,16 +52,18 @@ const DevTools = () => {
       )}
 
       <style jsx>{`
+        /* Top right: the bottom of the screen belongs to each page's
+           floating actions (PageLayout). */
         .dev-tools-button {
           position: fixed;
-          right: 16px;
-          bottom: 16px;
+          top: calc(12px + env(safe-area-inset-top, 0px));
+          right: calc(12px + env(safe-area-inset-right, 0px));
           z-index: 10;
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 48px;
-          height: 48px;
+          width: 40px;
+          height: 40px;
           padding: 0;
           border: none;
           border-radius: 50%;
@@ -72,7 +74,7 @@ const DevTools = () => {
 
         @media (min-width: 992px) {
           .dev-tools-button {
-            bottom: 24px;
+            top: 24px;
             right: 24px;
           }
         }
