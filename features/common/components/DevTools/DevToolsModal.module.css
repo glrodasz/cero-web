@@ -1,0 +1,137 @@
+.modal {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+  gap: 24px;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section-title {
+  margin: 0;
+  color: var(--color-font-muted);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-wider);
+  text-transform: uppercase;
+}
+
+/* A grouped list, like a settings screen: one card, rows split by a hairline. */
+.list {
+  padding: 0;
+  margin: 0;
+  background: var(--background-color-primary-highlight);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--box-shadow-xs);
+  list-style: none;
+}
+
+.list > * + * {
+  border-top: var(--border-width-thin) solid var(--background-color-primary);
+}
+
+.row {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  padding: 0 16px;
+  color: var(--color-font-base);
+  gap: 12px;
+  text-decoration: none;
+}
+
+.row:focus-visible {
+  border-radius: var(--card-border-radius);
+  outline: var(--border-width-thick) solid var(--color-primary);
+}
+
+.row-label {
+  flex: 1;
+  font-size: var(--paragraph-font-size-md);
+  font-weight: var(--font-weight-medium);
+}
+
+.row-detail {
+  color: var(--color-font-muted);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-base);
+}
+
+.is-current .row-label,
+.is-current .row-detail {
+  color: var(--color-primary);
+}
+
+.environment {
+  padding: 4px 16px;
+}
+
+.environment-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 10px 0;
+  column-gap: 16px;
+  row-gap: 2px;
+}
+
+.environment-row dt {
+  color: var(--color-font-muted);
+  font-size: var(--paragraph-font-size-sm);
+}
+
+.environment-row dd {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-end;
+  margin: 0;
+  margin-left: auto;
+  text-align: right;
+}
+
+.environment-row code {
+  color: var(--color-font-base);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-base);
+  overflow-wrap: anywhere;
+}
+
+.hint {
+  color: var(--color-font-muted);
+  font-size: var(--font-size-base);
+}
+
+.description {
+  margin: 0;
+  color: var(--color-font-muted);
+  font-size: var(--paragraph-font-size-sm);
+  line-height: var(--line-height-snug);
+}
+
+/* Outlined rather than filled: it matters, but it shouldn't be the loudest
+   thing on a screen you mostly open to navigate. */
+.danger {
+  min-height: 48px;
+  padding: 0 16px;
+  border: var(--border-width-thin) solid var(--color-secondary);
+  background: var(--color-base-transparent);
+  border-radius: var(--card-border-radius);
+  color: var(--color-secondary);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--paragraph-font-size-md);
+  font-weight: var(--font-weight-bold);
+}
+
+.danger:focus-visible {
+  outline: var(--border-width-thick) solid var(--color-secondary);
+  outline-offset: 2px;
+}

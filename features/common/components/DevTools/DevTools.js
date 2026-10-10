@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { Icon } from '@glrodasz/components'
 
 import { API_URL } from '../../../../config'
@@ -18,12 +19,15 @@ import {
 
 const DevTools = () => {
   const { showDialog, setShowDialog } = useDialog()
+  const router = useRouter()
 
   if (!IS_DEV_TOOLS_ENABLED) return null
 
   const environment = [
     { label: 'Data source', value: getDataSource() },
-    { label: 'API URL', value: API_URL ?? 'none (answered in this browser)' },
+    API_URL
+      ? { label: 'API URL', value: API_URL }
+      : { label: 'API URL', value: 'none', hint: 'answered in this browser' },
     { label: 'Demo mode', value: IS_DEMO_MODE },
     { label: 'NODE_ENV', value: process.env.NODE_ENV },
   ]
@@ -44,6 +48,7 @@ const DevTools = () => {
       {showDialog && (
         <DevToolsModal
           environment={environment}
+          currentPath={router?.pathname}
           onClose={createCloseDevToolsHandler({ setShowDialog })}
           onResetData={
             isBrowserDataSource() ? createResetDataHandler() : undefined
