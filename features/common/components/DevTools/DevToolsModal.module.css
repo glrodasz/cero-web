@@ -8,8 +8,7 @@
   display: flex;
   width: calc(100% + 2 * var(--modal-gutter));
   flex-direction: column;
-  padding: 0 var(--modal-gutter)
-    calc(32px + env(safe-area-inset-bottom, 0px));
+  padding: 0 var(--modal-gutter) calc(32px + env(safe-area-inset-bottom, 0px));
   margin: 0 calc(-1 * var(--modal-gutter));
   gap: 24px;
   -webkit-overflow-scrolling: touch;
