@@ -5,10 +5,16 @@ import {
   createCancelRemoveHandler,
   createConfirmRemoveHandler,
   createStartSessionHandler,
+  createChangeTaskDurationHandler,
+  createAddSubtaskHandler,
+  createToggleSubtaskHandler,
+  createRemoveSubtaskHandler,
+  createSaveTaskNotesHandler,
 } from './handlers'
 
 import { reorderTasks } from './helpers'
 jest.mock('./helpers', () => ({
+  ...jest.requireActual('./helpers'),
   reorderTasks: jest.fn().mockReturnValue(['a', 'b', 'c']),
 }))
 
@@ -373,6 +379,153 @@ describe('[ features / tasks / handlers ]', () => {
 
         // Assert
         expect(Router.push).toHaveBeenCalledWith('/focus-session')
+      })
+    })
+  })
+
+  describe('task detail autosave', () => {
+    const createTask = (data) => ({
+      data: { id: 7, ...data },
+      api: { update: jest.fn() },
+    })
+
+    describe('#createChangeTaskDurationHandler', () => {
+      it('should save the new duration', () => {
+        // Arrange
+        const task = createTask({ duration: 30 })
+
+        // Act
+        createChangeTaskDurationHandler({ task })(60)
+
+        // Assert
+        expect(task.api.update).toHaveBeenCalledWith({
+          id: 7,
+          task: { duration: 60 },
+        })
+      })
+
+      it('should not save when the duration did not change', () => {
+        // Arrange
+        const task = createTask({})
+
+        // Act
+        createChangeTaskDurationHandler({ task })(null)
+
+        // Assert
+        expect(task.api.update).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('#createAddSubtaskHandler', () => {
+      it('should save the list with the new subtask', () => {
+        // Arrange
+        const task = createTask({})
+
+        // Act
+        createAddSubtaskHandler({ task })('Crear plantilla')
+
+        // Assert
+        expect(task.api.update).toHaveBeenCalledWith({
+          id: 7,
+          task: {
+            subtasks: [
+              {
+                id: expect.any(String),
+                description: 'Crear plantilla',
+                isCompleted: false,
+              },
+            ],
+          },
+        })
+      })
+
+      it('should not save a blank subtask', () => {
+        // Arrange
+        const task = createTask({})
+
+        // Act
+        createAddSubtaskHandler({ task })('  ')
+
+        // Assert
+        expect(task.api.update).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('#createToggleSubtaskHandler', () => {
+      it('should save the list with the subtask toggled', () => {
+        // Arrange
+        const task = createTask({
+          subtasks: [{ id: 'a', description: 'Uno', isCompleted: false }],
+        })
+
+        // Act
+        createToggleSubtaskHandler({ task })('a')
+
+        // Assert
+        expect(task.api.update).toHaveBeenCalledWith({
+          id: 7,
+          task: {
+            subtasks: [{ id: 'a', description: 'Uno', isCompleted: true }],
+          },
+        })
+      })
+    })
+
+    describe('#createRemoveSubtaskHandler', () => {
+      it('should save the list without the subtask', () => {
+        // Arrange
+        const task = createTask({
+          subtasks: [{ id: 'a', description: 'Uno', isCompleted: false }],
+        })
+
+        // Act
+        createRemoveSubtaskHandler({ task })('a')
+
+        // Assert
+        expect(task.api.update).toHaveBeenCalledWith({
+          id: 7,
+          task: { subtasks: [] },
+        })
+      })
+    })
+
+    describe('#createSaveTaskNotesHandler', () => {
+      it('should save changed notes', () => {
+        // Arrange
+        const task = createTask({ notes: 'Antes' })
+
+        // Act
+        createSaveTaskNotesHandler({ task })('Después')
+
+        // Assert
+        expect(task.api.update).toHaveBeenCalledWith({
+          id: 7,
+          task: { notes: 'Después' },
+        })
+      })
+
+      it('should not save unchanged notes', () => {
+        // Arrange
+        const task = createTask({})
+
+        // Act
+        createSaveTaskNotesHandler({ task })('')
+
+        // Assert
+        expect(task.api.update).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('when the task has not loaded yet', () => {
+      it('should not save anything', () => {
+        // Arrange
+        const task = { data: undefined, api: { update: jest.fn() } }
+
+        // Act
+        createChangeTaskDurationHandler({ task })(60)
+
+        // Assert
+        expect(task.api.update).not.toHaveBeenCalled()
       })
     })
   })

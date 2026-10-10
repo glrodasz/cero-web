@@ -7,6 +7,11 @@ import {
   createDeleteTaskHandler,
   createCloseEditTaskModalHandler,
   createUpdateTaskHandler,
+  createChangeTaskDurationHandler,
+  createAddSubtaskHandler,
+  createToggleSubtaskHandler,
+  createRemoveSubtaskHandler,
+  createSaveTaskNotesHandler,
 } from '../../tasks/handlers'
 
 const EditTask = ({ editTaskModal, deleteConfirmation }) => {
@@ -20,6 +25,7 @@ const EditTask = ({ editTaskModal, deleteConfirmation }) => {
       {editTaskModal.showDialog && (
         <EditTaskModal
           task={task?.data}
+          hasSaveError={Boolean(task?.updateError)}
           onClose={createCloseEditTaskModalHandler({ editTaskModal })}
           onDelete={createDeleteTaskHandler({
             deleteConfirmation,
@@ -27,6 +33,11 @@ const EditTask = ({ editTaskModal, deleteConfirmation }) => {
           onUpdate={createUpdateTaskHandler({
             task,
           })}
+          onChangeDuration={createChangeTaskDurationHandler({ task })}
+          onAddSubtask={createAddSubtaskHandler({ task })}
+          onToggleSubtask={createToggleSubtaskHandler({ task })}
+          onRemoveSubtask={createRemoveSubtaskHandler({ task })}
+          onSaveNotes={createSaveTaskNotesHandler({ task })}
         />
       )}
     </>

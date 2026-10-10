@@ -1,4 +1,9 @@
-import { reorderTasks } from './helpers'
+import {
+  reorderTasks,
+  addSubtask,
+  toggleSubtask,
+  removeSubtask,
+} from './helpers'
 import Router from 'next/router'
 import isEmpty from '../../utils/isEmpty'
 
@@ -137,4 +142,51 @@ export const createUpdateTaskHandler =
   ({ task }) =>
   ({ id, data }) => {
     task.api.update({ id, task: data })
+  }
+
+// The task detail saves each change as it happens (`useTask` makes it
+// optimistic), sending only the fields that changed.
+const updateTaskFields = ({ task }, fields) => {
+  const id = task.data?.id
+  id !== undefined && task.api.update({ id, task: fields })
+}
+
+export const createChangeTaskDurationHandler =
+  ({ task }) =>
+  (duration) => {
+    duration !== (task.data?.duration ?? null) &&
+      updateTaskFields({ task }, { duration })
+  }
+
+export const createAddSubtaskHandler =
+  ({ task }) =>
+  (description) => {
+    const subtasks = task.data?.subtasks ?? []
+    const nextSubtasks = addSubtask(subtasks, description)
+    nextSubtasks !== subtasks &&
+      updateTaskFields({ task }, { subtasks: nextSubtasks })
+  }
+
+export const createToggleSubtaskHandler =
+  ({ task }) =>
+  (id) => {
+    updateTaskFields(
+      { task },
+      { subtasks: toggleSubtask(task.data?.subtasks, id) }
+    )
+  }
+
+export const createRemoveSubtaskHandler =
+  ({ task }) =>
+  (id) => {
+    updateTaskFields(
+      { task },
+      { subtasks: removeSubtask(task.data?.subtasks, id) }
+    )
+  }
+
+export const createSaveTaskNotesHandler =
+  ({ task }) =>
+  (notes) => {
+    notes !== (task.data?.notes ?? '') && updateTaskFields({ task }, { notes })
   }

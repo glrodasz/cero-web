@@ -384,6 +384,19 @@ set, so anything pinned to a screen edge must pad itself with
 `utils/syncThemeColor`. The icon's source is `public/icons/icon.svg`;
 regenerate the PNGs from it rather than editing them.
 
+### Task detail
+
+`features/tasks/components/EditTaskModal.js` is the task detail. Every field
+saves on its own (no save button): `useTask`'s `update` is optimistic and rolls
+back on failure, and the handlers in `features/tasks/handlers.js` send only the
+fields that changed through the generic `PATCH tasks/:id`. Beyond `description`
+a task may carry `duration` (minutes or `null`, options in
+`TASK_DURATION_OPTIONS`), `subtasks` (`[{ id, description, isCompleted }]`,
+always written whole — a PATCH replaces the array; build it with the
+`addSubtask` / `toggleSubtask` / `removeSubtask` helpers) and `notes`. Inputs
+in the detail stop Enter from propagating: the library `AddButton` behind the
+modal listens for it on `window` and would steal the focus.
+
 ### Constants over magic strings
 
 Status values are constants, not inline strings:

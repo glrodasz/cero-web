@@ -1,0 +1,39 @@
+.task-duration {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.picker {
+  position: relative;
+  display: inline-flex;
+  height: 48px;
+  flex: none;
+  align-items: center;
+  padding: 0 5px 0 6px;
+  border: var(--border-width-thin) solid var(--color-primary);
+  border-radius: var(--button-border-radius-lg);
+  gap: 4px;
+}
+
+.picker:focus-within {
+  box-shadow: 0 0 0 1px var(--color-primary), 0 0 10px 0 var(--color-primary);
+}
+
+.value {
+  padding-right: 10px;
+  color: var(--color-font-base);
+  font-size: var(--paragraph-font-size-md);
+  white-space: nowrap;
+}
+
+/* 16px keeps iOS from zooming in when the select takes the focus. */
+.select {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  font-size: 16px;
+  inset: 0;
+  opacity: 0;
+}

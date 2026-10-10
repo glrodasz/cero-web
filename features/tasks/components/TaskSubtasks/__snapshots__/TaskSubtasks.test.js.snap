@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[ features / tasks / components / TaskSubtasks ] when there are subtasks should render them 1`] = `
+<DocumentFragment>
+  <section
+    class="section is-filled"
+  >
+    <span
+      aria-hidden="true"
+      class="icon"
+    >
+      
+[Icon {"name":"tag","color":"muted"} /]
+    </span>
+    <div
+      class="body"
+    >
+      <button
+        class="action"
+        type="button"
+      >
+        Agregar subtarea
+      </button>
+      <ul
+        class="list"
+      >
+        <li
+          class="subtask"
+        >
+          <button
+            aria-label="Completar: Crear plantilla"
+            aria-pressed="false"
+            class="icon-button"
+            type="button"
+          >
+            
+[Check {"isChecked":false} /]
+          </button>
+          
+[Paragraph {"color":"base"}]Crear plantilla[/Paragraph]
+          <button
+            aria-label="Eliminar: Crear plantilla"
+            class="icon-button"
+            type="button"
+          >
+            
+[Icon {"name":"cross","color":"primary","size":"sm"} /]
+          </button>
+        </li>
+        <li
+          class="subtask"
+        >
+          <button
+            aria-label="Marcar como pendiente: Enviar correo"
+            aria-pressed="true"
+            class="icon-button"
+            type="button"
+          >
+            
+[Check {"isChecked":true} /]
+          </button>
+          
+[Paragraph {"color":"muted"}]Enviar correo[/Paragraph]
+          <button
+            aria-label="Eliminar: Enviar correo"
+            class="icon-button"
+            type="button"
+          >
+            
+[Icon {"name":"cross","color":"primary","size":"sm"} /]
+          </button>
+        </li>
+      </ul>
+    </div>
+  </section>
+</DocumentFragment>
+`;

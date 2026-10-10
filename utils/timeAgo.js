@@ -2,7 +2,12 @@ import time from './time'
 
 const DEAFULT_LOCALE = 'es-CO'
 
+// Largest first. A month is 30 days and a year 365: close enough for "how long
+// ago", where days alone turned a two-year-old task into "hace 730 días".
 const TIME_UNITS_IN_SECONDS = {
+  year: time.ONE_YEAR_IN_SECONDS,
+  month: time.ONE_MONTH_IN_SECONDS,
+  week: time.ONE_WEEK_IN_SECONDS,
   day: time.ONE_DAY_IN_SECONDS,
   hour: time.ONE_HOUR_IN_SECONDS,
   minute: time.ONE_MINUTE_IN_SECONDS,

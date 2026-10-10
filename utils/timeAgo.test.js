@@ -75,6 +75,48 @@ describe('[ utils / timeAgo ]', () => {
     })
   })
 
+  describe('when the `timestamp` is two weeks ago', () => {
+    it('should return `hace 2 semanas`', () => {
+      // Arrange
+      const timestamp = Date.now() - time.ONE_DAY_IN_MS * 14
+
+      // Act
+      const result = timeAgo(timestamp)
+      const expected = 'hace 2 semanas'
+
+      // Assert
+      expect(result).toBe(expected)
+    })
+  })
+
+  describe('when the `timestamp` is three months ago', () => {
+    it('should return `hace 3 meses`', () => {
+      // Arrange
+      const timestamp = Date.now() - time.ONE_DAY_IN_MS * 90
+
+      // Act
+      const result = timeAgo(timestamp)
+      const expected = 'hace 3 meses'
+
+      // Assert
+      expect(result).toBe(expected)
+    })
+  })
+
+  describe('when the `timestamp` is two years ago', () => {
+    it('should return `hace 2 años`', () => {
+      // Arrange
+      const timestamp = Date.now() - time.ONE_DAY_IN_MS * 365 * 2
+
+      // Act
+      const result = timeAgo(timestamp)
+      const expected = 'hace 2 años'
+
+      // Assert
+      expect(result).toBe(expected)
+    })
+  })
+
   describe('when the `timestamp` is 2 days ago and `locale` is `en-US`', () => {
     it('should return `2 days ago`', () => {
       // Arrange

@@ -6,7 +6,21 @@
       "priority": 0,
       "status": "in-progress",
       "focusSessionId": null,
-      "createdAt": 1692000000000
+      "createdAt": 1692000000000,
+      "duration": 60,
+      "subtasks": [
+        {
+          "id": "seed-subtask-1",
+          "description": "Revisar el flujo en el celular",
+          "isCompleted": true
+        },
+        {
+          "id": "seed-subtask-2",
+          "description": "Anotar los ajustes de espaciado",
+          "isCompleted": false
+        }
+      ],
+      "notes": "Priorizar lo que bloquee empezar una sesión."
     },
     {
       "id": 2,

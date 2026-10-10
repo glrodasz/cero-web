@@ -5,6 +5,9 @@ import {
   reorderTasks,
   getTaskType,
   getTotal,
+  addSubtask,
+  toggleSubtask,
+  removeSubtask,
 } from './helpers'
 
 jest.mock('../../config', () => ({
@@ -307,6 +310,99 @@ describe('[ features / tasks / helpers ]', () => {
 
         // Assert
         expect(result).toBe(expected)
+      })
+    })
+  })
+
+  describe('#addSubtask', () => {
+    describe('when the description has text', () => {
+      it('should append a pending subtask with a trimmed description', () => {
+        // Arrange
+        const subtasks = [{ id: 'a', description: 'Uno', isCompleted: true }]
+
+        // Act
+        const result = addSubtask(subtasks, '  Dos  ')
+        const expected = [
+          { id: 'a', description: 'Uno', isCompleted: true },
+          { id: expect.any(String), description: 'Dos', isCompleted: false },
+        ]
+
+        // Assert
+        expect(result).toEqual(expected)
+      })
+    })
+
+    describe('when there are no subtasks yet', () => {
+      it('should start the list', () => {
+        // Act
+        const result = addSubtask(undefined, 'Uno')
+        const expected = [
+          { id: expect.any(String), description: 'Uno', isCompleted: false },
+        ]
+
+        // Assert
+        expect(result).toEqual(expected)
+      })
+    })
+
+    describe('when the description is blank', () => {
+      it('should return the same list', () => {
+        // Arrange
+        const subtasks = [{ id: 'a', description: 'Uno', isCompleted: false }]
+
+        // Act
+        const result = addSubtask(subtasks, '   ')
+
+        // Assert
+        expect(result).toBe(subtasks)
+      })
+    })
+  })
+
+  describe('#toggleSubtask', () => {
+    it('should flip only the matching subtask', () => {
+      // Arrange
+      const subtasks = [
+        { id: 'a', description: 'Uno', isCompleted: false },
+        { id: 'b', description: 'Dos', isCompleted: true },
+      ]
+
+      // Act
+      const result = toggleSubtask(subtasks, 'b')
+      const expected = [
+        { id: 'a', description: 'Uno', isCompleted: false },
+        { id: 'b', description: 'Dos', isCompleted: false },
+      ]
+
+      // Assert
+      expect(result).toEqual(expected)
+    })
+  })
+
+  describe('#removeSubtask', () => {
+    it('should drop the matching subtask', () => {
+      // Arrange
+      const subtasks = [
+        { id: 'a', description: 'Uno', isCompleted: false },
+        { id: 'b', description: 'Dos', isCompleted: true },
+      ]
+
+      // Act
+      const result = removeSubtask(subtasks, 'a')
+      const expected = [{ id: 'b', description: 'Dos', isCompleted: true }]
+
+      // Assert
+      expect(result).toEqual(expected)
+    })
+
+    describe('when there are no subtasks', () => {
+      it('should return an empty list', () => {
+        // Act
+        const result = removeSubtask(undefined, 'a')
+        const expected = []
+
+        // Assert
+        expect(result).toEqual(expected)
       })
     })
   })
