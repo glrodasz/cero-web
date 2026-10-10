@@ -1,3 +1,11 @@
+// Titles a step down from the library's scale, which reads oversized on a
+// phone. Only `Heading` sizes `lg` and `xl` use these, so body copy, buttons
+// and the timers (`2xl`) keep their size, and `md` < `lg` < `xl` still holds.
+:root {
+  --font-size-lg: 1.7rem;
+  --font-size-xl: 1.9rem;
+}
+
 @mixin dark-color-scheme {
   --color-primary: var(--color-amber-600);
   --color-primary-muted: var(--color-amber-800);

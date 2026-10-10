@@ -2,44 +2,328 @@
 
 exports[`[ features / common / components / DevTools / DevToolsModal ] when \`DevToolsModal\` is mounted should render 1`] = `
 <DocumentFragment>
-  
-[Modal {"type":"secondary"}]&lt;div class="jsx-2606328044 dev-tools-modal"&gt;
+  <div>
+    <div
+      class="modal"
+    >
+      
 [Heading {"size":"xl"}]Dev tools[/Heading]
-[Spacer.Vertical {"size":"md"} /]&lt;div class="jsx-2606328044 dev-tools-links"&gt;
-[Button {"type":"tertiary"}]/index[/Button]
-[Button {"type":"tertiary"}]api/auth/login[/Button]
-[Button {"type":"tertiary"}]api/auth/logout[/Button]
-[Button {"type":"tertiary"}]planning[/Button]
-[Button {"type":"tertiary"}]retrospective[/Button]&lt;/div&gt;
-[Spacer.Vertical {"size":"md"} /]ToggleColorScheme
-[Spacer.Vertical {"size":"md"} /]
-[Heading {"size":"md"}]Environment[/Heading]
-[Spacer.Vertical {"size":"xs"} /]&lt;dl class="jsx-2606328044 dev-tools-environment"&gt;&lt;div class="jsx-2606328044 dev-tools-environment-row"&gt;&lt;dt class="jsx-2606328044"&gt;
-[Paragraph {"size":"sm","color":"muted"}]Data source[/Paragraph]&lt;/dt&gt;&lt;dd class="jsx-2606328044"&gt;
-[Paragraph {"size":"sm"}]json-server[/Paragraph]&lt;/dd&gt;&lt;/div&gt;&lt;div class="jsx-2606328044 dev-tools-environment-row"&gt;&lt;dt class="jsx-2606328044"&gt;
-[Paragraph {"size":"sm","color":"muted"}]Demo mode[/Paragraph]&lt;/dt&gt;&lt;dd class="jsx-2606328044"&gt;
-[Paragraph {"size":"sm"}]false[/Paragraph]&lt;/dd&gt;&lt;/div&gt;&lt;/dl&gt;&lt;/div&gt;[/Modal]
+      <section
+        class="section"
+      >
+        <h2
+          class="section-title"
+        >
+          Pages
+        </h2>
+        <ul
+          class="list"
+        >
+          <li>
+            <a
+              class="row"
+              href="/planning"
+            >
+              
+[Icon {"name":"tasks","color":"muted","size":"sm"} /]
+              <span
+                class="row-label"
+              >
+                Planning
+              </span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="row"
+              href="/focus-session"
+            >
+              
+[Icon {"name":"clock","color":"muted","size":"sm"} /]
+              <span
+                class="row-label"
+              >
+                Focus session
+              </span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="row"
+              href="/retrospective"
+            >
+              
+[Icon {"name":"reports","color":"muted","size":"sm"} /]
+              <span
+                class="row-label"
+              >
+                Retrospective
+              </span>
+            </a>
+          </li>
+        </ul>
+      </section>
+      <section
+        class="section"
+      >
+        <h2
+          class="section-title"
+        >
+          Session
+        </h2>
+        <ul
+          class="list"
+        >
+          <li>
+            <a
+              class="row"
+              href="/api/auth/login"
+            >
+              
+[Icon {"name":"user","color":"muted","size":"sm"} /]
+              <span
+                class="row-label"
+              >
+                Log in
+              </span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="row"
+              href="/api/auth/logout"
+            >
+              
+[Icon {"name":"arrowRight","color":"muted","size":"sm"} /]
+              <span
+                class="row-label"
+              >
+                Log out
+              </span>
+            </a>
+          </li>
+        </ul>
+      </section>
+      <section
+        class="section"
+      >
+        <h2
+          class="section-title"
+        >
+          Appearance
+        </h2>
+        <div
+          class="list"
+        >
+          ToggleColorScheme
+        </div>
+      </section>
+      <section
+        class="section"
+      >
+        <h2
+          class="section-title"
+        >
+          Environment
+        </h2>
+        <dl
+          class="list environment"
+        >
+          <div
+            class="environment-row"
+          >
+            <dt>
+              Data source
+            </dt>
+            <dd>
+              <code>
+                json-server
+              </code>
+            </dd>
+          </div>
+          <div
+            class="environment-row"
+          >
+            <dt>
+              Demo mode
+            </dt>
+            <dd>
+              <code>
+                false
+              </code>
+            </dd>
+          </div>
+        </dl>
+      </section>
+    </div>
+  </div>
 </DocumentFragment>
 `;
 
 exports[`[ features / common / components / DevTools / DevToolsModal ] when it is given a way to reset the data should render a reset button 1`] = `
 <DocumentFragment>
-  
-[Modal {"type":"secondary"}]&lt;div class="jsx-2606328044 dev-tools-modal"&gt;
+  <div>
+    <div
+      class="modal"
+    >
+      
 [Heading {"size":"xl"}]Dev tools[/Heading]
-[Spacer.Vertical {"size":"md"} /]&lt;div class="jsx-2606328044 dev-tools-links"&gt;
-[Button {"type":"tertiary"}]/index[/Button]
-[Button {"type":"tertiary"}]api/auth/login[/Button]
-[Button {"type":"tertiary"}]api/auth/logout[/Button]
-[Button {"type":"tertiary"}]planning[/Button]
-[Button {"type":"tertiary"}]retrospective[/Button]&lt;/div&gt;
-[Spacer.Vertical {"size":"md"} /]
-[Button {"type":"tertiary"}]Reset demo data[/Button]
-[Spacer.Vertical {"size":"md"} /]ToggleColorScheme
-[Spacer.Vertical {"size":"md"} /]
-[Heading {"size":"md"}]Environment[/Heading]
-[Spacer.Vertical {"size":"xs"} /]&lt;dl class="jsx-2606328044 dev-tools-environment"&gt;&lt;div class="jsx-2606328044 dev-tools-environment-row"&gt;&lt;dt class="jsx-2606328044"&gt;
-[Paragraph {"size":"sm","color":"muted"}]Data source[/Paragraph]&lt;/dt&gt;&lt;dd class="jsx-2606328044"&gt;
-[Paragraph {"size":"sm"}]local-storage[/Paragraph]&lt;/dd&gt;&lt;/div&gt;&lt;/dl&gt;&lt;/div&gt;[/Modal]
+      <section
+        class="section"
+      >
+        <h2
+          class="section-title"
+        >
+          Pages
+        </h2>
+        <ul
+          class="list"
+        >
+          <li>
+            <a
+              class="row"
+              href="/planning"
+            >
+              
+[Icon {"name":"tasks","color":"muted","size":"sm"} /]
+              <span
+                class="row-label"
+              >
+                Planning
+              </span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="row"
+              href="/focus-session"
+            >
+              
+[Icon {"name":"clock","color":"muted","size":"sm"} /]
+              <span
+                class="row-label"
+              >
+                Focus session
+              </span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="row"
+              href="/retrospective"
+            >
+              
+[Icon {"name":"reports","color":"muted","size":"sm"} /]
+              <span
+                class="row-label"
+              >
+                Retrospective
+              </span>
+            </a>
+          </li>
+        </ul>
+      </section>
+      <section
+        class="section"
+      >
+        <h2
+          class="section-title"
+        >
+          Session
+        </h2>
+        <ul
+          class="list"
+        >
+          <li>
+            <a
+              class="row"
+              href="/api/auth/login"
+            >
+              
+[Icon {"name":"user","color":"muted","size":"sm"} /]
+              <span
+                class="row-label"
+              >
+                Log in
+              </span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="row"
+              href="/api/auth/logout"
+            >
+              
+[Icon {"name":"arrowRight","color":"muted","size":"sm"} /]
+              <span
+                class="row-label"
+              >
+                Log out
+              </span>
+            </a>
+          </li>
+        </ul>
+      </section>
+      <section
+        class="section"
+      >
+        <h2
+          class="section-title"
+        >
+          Appearance
+        </h2>
+        <div
+          class="list"
+        >
+          ToggleColorScheme
+        </div>
+      </section>
+      <section
+        class="section"
+      >
+        <h2
+          class="section-title"
+        >
+          Environment
+        </h2>
+        <dl
+          class="list environment"
+        >
+          <div
+            class="environment-row"
+          >
+            <dt>
+              Data source
+            </dt>
+            <dd>
+              <code>
+                local-storage
+              </code>
+            </dd>
+          </div>
+        </dl>
+      </section>
+      <section
+        class="section"
+      >
+        <h2
+          class="section-title"
+        >
+          Demo data
+        </h2>
+        <p
+          class="description"
+        >
+          Lives in this browser and never expires. Resetting puts back the seed tasks and reloads Planning.
+        </p>
+        <button
+          class="danger"
+          type="button"
+        >
+          Reset demo data
+        </button>
+      </section>
+    </div>
+  </div>
 </DocumentFragment>
 `;

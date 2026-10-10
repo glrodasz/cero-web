@@ -76,20 +76,39 @@ describe('[ features / common / components / DevTools / handlers ]', () => {
     beforeEach(() => {
       delete window.location
       window.location = { assign: jest.fn() }
+      resetCollections.mockClear()
     })
 
     afterEach(() => {
       window.location = location
+      window.confirm.mockRestore()
     })
 
-    describe('when the returned function is called', () => {
+    describe('when the returned function is called and the reset is confirmed', () => {
       it('should reseed the data and load planning from scratch', () => {
+        // Arrange
+        jest.spyOn(window, 'confirm').mockReturnValue(true)
+
         // Act
         createResetDataHandler()()
 
         // Assert
         expect(resetCollections).toHaveBeenCalled()
         expect(window.location.assign).toHaveBeenCalledWith('/planning')
+      })
+    })
+
+    describe('when the returned function is called and the reset is cancelled', () => {
+      it('should leave the data alone', () => {
+        // Arrange
+        jest.spyOn(window, 'confirm').mockReturnValue(false)
+
+        // Act
+        createResetDataHandler()()
+
+        // Assert
+        expect(resetCollections).not.toHaveBeenCalled()
+        expect(window.location.assign).not.toHaveBeenCalled()
       })
     })
   })

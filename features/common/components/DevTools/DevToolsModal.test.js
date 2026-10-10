@@ -1,15 +1,13 @@
 import DevToolsModal from './DevToolsModal'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
 jest.mock('@glrodasz/components', () => {
   const { dummyRender } = require('../../../../utils/testUtils/dummyRender')
 
   return {
-    Modal: dummyRender('Modal'),
-    Button: dummyRender('Button'),
+    Modal: ({ children }) => <div>{children}</div>,
     Heading: dummyRender('Heading'),
-    Paragraph: dummyRender('Paragraph'),
-    Spacer: { Vertical: dummyRender('Spacer.Vertical') },
+    Icon: dummyRender('Icon'),
   }
 })
 
@@ -49,6 +47,43 @@ describe('[ features / common / components / DevTools / DevToolsModal ]', () => 
 
       // Assert
       expect(asFragment()).toMatchSnapshot()
+    })
+  })
+
+  describe('when it is open on one of its pages', () => {
+    it('should mark that page as the current one', () => {
+      // Arrange
+      const props = {
+        onClose: jest.fn(),
+        currentPath: '/retrospective',
+        environment: [],
+      }
+
+      // Act
+      render(<DevToolsModal {...props} />)
+      const result = screen.getByRole('link', { current: 'page' })
+
+      // Assert
+      expect(result.getAttribute('href')).toBe('/retrospective')
+    })
+  })
+
+  describe('when an environment value comes with a hint', () => {
+    it('should render the hint next to the value', () => {
+      // Arrange
+      const props = {
+        onClose: jest.fn(),
+        environment: [
+          { label: 'API URL', value: 'none', hint: 'answered in this browser' },
+        ],
+      }
+
+      // Act
+      render(<DevToolsModal {...props} />)
+      const result = screen.getByText('answered in this browser')
+
+      // Assert
+      expect(result).toBeTruthy()
     })
   })
 })
