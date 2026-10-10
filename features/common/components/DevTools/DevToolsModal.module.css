@@ -8,6 +8,14 @@
   overflow-y: auto;
 }
 
+/* The library Modal gives its Container `height: 100%` below the close
+   button's row, so the Container — and this column with it — ran past the
+   Modal's bottom edge, most visibly on desktop where the Modal is a box.
+   Letting the Container shrink fits it to the space that is actually left. */
+:global(*):has(> .modal) {
+  min-height: 0;
+}
+
 .section {
   display: flex;
   flex-direction: column;
