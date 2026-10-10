@@ -1,8 +1,16 @@
+/* Scrolls edge to edge, so the scrollbar sits at the side of the Modal rather
+   than against the cards: the negative margin takes back the Modal's side
+   padding (32px) and its Container's (15px), and the padding puts the
+   content back where it was. */
 .modal {
+  --modal-gutter: 47px;
+
   display: flex;
-  width: 100%;
+  width: calc(100% + 2 * var(--modal-gutter));
   flex-direction: column;
-  padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+  padding: 0 var(--modal-gutter)
+    calc(32px + env(safe-area-inset-bottom, 0px));
+  margin: 0 calc(-1 * var(--modal-gutter));
   gap: 24px;
   -webkit-overflow-scrolling: touch;
   overflow-y: auto;
