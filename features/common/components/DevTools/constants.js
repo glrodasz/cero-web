@@ -10,6 +10,9 @@ import { IS_DEMO_MODE } from '../../auth'
 export const IS_DEV_TOOLS_ENABLED =
   process.env.NODE_ENV !== 'production' || IS_DEMO_MODE
 
+// Where the floating button was last dropped, per browser.
+export const DEV_TOOLS_CORNER_STORAGE_KEY = 'dev-tools-corner'
+
 // Client-side transitions. `/` is left out: it only redirects to `/planning`.
 export const DEV_TOOLS_PAGES = [
   { href: '/planning', label: 'Planning', icon: 'tasks' },
