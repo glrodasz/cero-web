@@ -373,6 +373,17 @@ Containers instantiate these and pass them to components as `on*` props.
   the page's primary action floats at the bottom of the screen once the
   content scrolls. Keep that footer to the actions themselves — explanatory
   copy belongs in `content`, or the floating bar eats a phone screen.
+- **Never leave a primary action silent.** An action that can't run says why
+  (a one-line hint under the button), and one that failed says so in a
+  `role="alert"` line; a pending one changes its label (`Empezando…`) and
+  ignores repeat clicks. These one-liners are the exception to the footer rule
+  above: they belong to the button. See `PlanningFooter` and
+  `RetrospectiveFooter`, which read `isCreating` / `createError` /
+  `isFinishing` / `finishError` from `useFocusSessions`.
+- `isMuted` is not "disabled". In the library it is a colour (today darker
+  than primary), and `Button` doesn't honour `isDisabled` until the
+  `@glrodasz/components` fix ships — so a blocked handler must still guard
+  itself (`createRegisterSessionHandler` returns without a score).
 
 ### Mobile / PWA
 
@@ -396,6 +407,35 @@ always written whole — a PATCH replaces the array; build it with the
 `addSubtask` / `toggleSubtask` / `removeSubtask` helpers) and `notes`. Inputs
 in the detail stop Enter from propagating: the library `AddButton` behind the
 modal listens for it on `window` and would steal the focus.
+
+### Focus session flow (by design)
+
+Planning → focus session → retrospective. A few behaviours here are
+deliberate; keep them:
+
+- **Completing a task always offers a break.** `createCheckCompleteTaskHandler`
+  opens `BreaktimeConfirmation` (5 / 10 / 15 min) on every task checked during
+  a session — celebrate each small win. Don't add a skip, a "not now" or a
+  throttle. Closing the modal declines the break.
+- **A break is a pause.** Choosing one calls `focusSession.api.pause({ time })`,
+  which stops the chronometer until it's resumed. A pause can outlive its
+  modal (a reload, a closed tab), so the focus session shows `PausedBanner`
+  with "Reanudar" whenever it's paused and no timer modal is open.
+- **"Finalizar tu sesión" doesn't finish anything.** It only leads to the
+  retrospective; the session stays active, and the retrospective offers
+  "Volver a la sesión", until it is registered or skipped.
+- **The retrospective's recap** (`getSessionRecap`) shows the chronometer's time
+  — the active session's `startTime` arrives shifted past its finished pauses
+  (`readActiveFocusSession`), so don't subtract them again — and counts the
+  completed tasks whose `focusSessionId` is the session's. Starting a session
+  stamps its tasks with that id; finishing clears it only from the tasks still
+  open, so completed ones keep it.
+- **Registering needs a mood.** "Registrar sesión" stays disabled, with a hint,
+  until a score is chosen; blockers are optional. `finishAndLeave` moves on to
+  planning only when finishing worked or answered 404 (already finished);
+  anything else keeps the user and their feedback on the page.
+- Feedback history and reports are a planned dashboard feature, not part of
+  the retrospective.
 
 ### Constants over magic strings
 
@@ -498,6 +538,8 @@ that keep them fixed — don't reintroduce the underlying mistake elsewhere:
   as valid data — an error response's JSON body is not the same shape as a
   success body, and treating it as one produces confusing downstream errors
   (e.g. `[object Object]`) instead of the real message.
+  `api/request.js` does it once for every call, and the error it throws
+  carries the response's `status`, so a caller can tell a 404 from a 500.
 - **One selector per decision.** Two variables deciding two halves of the same
   question is how `/api/local` ended up meaning json-server in one environment
   and Redis in another, and how the `test` environment came to point the
