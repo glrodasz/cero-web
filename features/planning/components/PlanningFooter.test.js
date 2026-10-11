@@ -47,6 +47,43 @@ describe('[ features / planning / components / PlanningFooter ]', () => {
     })
   })
 
+  describe('when starting the session failed', () => {
+    it('should show an alert', () => {
+      // Arrange
+      const props = {
+        tasksLength: 1,
+        hasStartError: true,
+        onClickStartSession: () => {},
+      }
+
+      // Act
+      render(<PlanningFooter {...props} />)
+      const result = screen.getByRole('alert').textContent
+
+      // Assert
+      expect(result).toContain('No pudimos empezar la sesión')
+    })
+  })
+
+  describe('while the session is starting', () => {
+    it('should ignore further clicks', () => {
+      // Arrange
+      const onClickStartSessionStub = jest.fn()
+      const props = {
+        tasksLength: 1,
+        isStarting: true,
+        onClickStartSession: onClickStartSessionStub,
+      }
+      render(<PlanningFooter {...props} />)
+
+      // Act
+      fireEvent.click(screen.getByText('Empezando…'))
+
+      // Assert
+      expect(onClickStartSessionStub).not.toHaveBeenCalled()
+    })
+  })
+
   describe('when the `Button` is clicked', () => {
     it('should call `onClickStartSession`', () => {
       // Arrange

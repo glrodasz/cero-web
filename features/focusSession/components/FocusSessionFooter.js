@@ -3,7 +3,7 @@ import { Button } from '@glrodasz/components'
 
 const FocusSessionFooter = ({ onClickEndSession }) => {
   return (
-    <Button onClick={onClickEndSession} type="primary" isDisabled>
+    <Button onClick={onClickEndSession} type="primary">
       Finalizar tu sesión
     </Button>
   )

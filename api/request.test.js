@@ -126,5 +126,23 @@ describe('[ api / request ]', () => {
         new Request('tasks', { baseUrl: 'http://api' }).fetch()
       ).rejects.toThrow('Request to "tasks" failed with status 502')
     })
+
+    it('should carry the status on the error', async () => {
+      // Arrange
+      global.fetch = jest.fn(() =>
+        Promise.resolve(
+          mockResponse({ ok: false, status: 404, body: { error: 'Gone' } })
+        )
+      )
+      const expected = 404
+
+      // Act
+      const result = await new Request('tasks', { baseUrl: 'http://api' })
+        .fetch()
+        .catch((error) => error.status)
+
+      // Assert
+      expect(result).toBe(expected)
+    })
   })
 })

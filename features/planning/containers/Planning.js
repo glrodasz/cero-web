@@ -103,6 +103,8 @@ const Planning = ({ initialData }) => {
         footer={
           <PlanningFooter
             tasksLength={tasksLength}
+            isStarting={focusSessions.isCreating}
+            hasStartError={!!focusSessions.createError}
             onClickStartSession={createStartSessionHandler({ focusSessions })}
           />
         }

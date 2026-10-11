@@ -113,10 +113,16 @@ export const createConfirmRemoveHandler =
     setShowDialog(false)
   }
 
+// A failed start stays on planning: the footer shows the mutation's error.
 export const createStartSessionHandler =
   ({ focusSessions }) =>
   async () => {
-    await focusSessions.api.create()
+    try {
+      await focusSessions.api.create()
+    } catch {
+      return
+    }
+
     Router.push('/focus-session')
   }
 

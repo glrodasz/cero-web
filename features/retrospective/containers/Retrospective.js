@@ -23,6 +23,7 @@ import { getTaskSections } from '../helpers'
 import useRetrospectiveFeedback from '../hooks/useRetrospectiveFeedback'
 import useFocusSessions from '../../focusSession/hooks/useFocusSessions'
 import useTasks from '../../tasks/hooks/useTasks'
+import httpCodes from '../../../utils/httpCodes'
 
 const Retrospective = ({ initialData }) => {
   const tasks = useTasks({ initialData: initialData.tasks })
@@ -47,7 +48,7 @@ const Retrospective = ({ initialData }) => {
             <>
               <Spacer.Vertical size="lg" />
               <div>
-                <Heading size="xl">¿Cómo te sentiste el día de hoy?</Heading>
+                <Heading size="xl">¿Cómo te sentiste en esta sesión?</Heading>
                 <Spacer.Vertical size="sm" />
                 <MoodScore
                   score={feedback.score}
@@ -55,7 +56,7 @@ const Retrospective = ({ initialData }) => {
                 />
               </div>
               <Spacer.Vertical size="md" />
-              <Heading size="xl">¿Qué bloqueos tuviste?</Heading>
+              <Heading size="xl">¿Qué bloqueos tuviste? (opcional)</Heading>
               <Spacer.Vertical size="sm" />
               <Paragraph>
                 Durante el día, existen distractores y escribirlos te ayuda a
@@ -72,7 +73,12 @@ const Retrospective = ({ initialData }) => {
       }
       footer={
         <RetrospectiveFooter
-          isRegisterMuted={feedback.score === null}
+          isRegisterDisabled={feedback.score === null}
+          isRegistering={focusSessions.isFinishing}
+          hasRegisterError={
+            !!focusSessions.finishError &&
+            focusSessions.finishError.status !== httpCodes.NOT_FOUND
+          }
           onClickRegisterSession={createRegisterSessionHandler({
             focusSessions,
             feedback,
