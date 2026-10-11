@@ -1,5 +1,6 @@
 .user-header {
   display: flex;
+  align-items: center;
 }
 
 .text {

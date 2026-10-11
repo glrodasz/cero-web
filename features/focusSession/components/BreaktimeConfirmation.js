@@ -36,7 +36,7 @@ const BreaktimeConfirmation = ({ onClose, onChoose }) => {
         <Picture src="/images/couch-pause.svg" width={200}></Picture>
         <Spacer.Vertical size="md" />
         <Heading size="xl" color="tertiary" isCentered>
-          Tomate un tiempo para refrescarte
+          Tómate un tiempo para refrescarte
         </Heading>
         <Spacer.Vertical size="sm" />
         <Paragraph color="inverted" isCentered>

@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useUser } from '../../common/auth'
 import { getGreeting } from '../../common/helpers'
 
-import { LoadingError, Link, Spacer } from '@glrodasz/components'
+import { LoadingError, Spacer } from '@glrodasz/components'
 
 import PageLayout from '../../common/components/PageLayout'
 import UserHeader from '../../common/components/UserHeader'
@@ -125,11 +125,6 @@ const FocusSession = ({ initialData }) => {
               <UserHeader
                 avatar={user?.picture}
                 title={getGreeting('Hola', user)}
-                text={
-                  <>
-                    <span>Conoce la metodologia</span> <Link>RETO</Link>
-                  </>
-                }
               />
             </LoadingError>
             <Spacer.Vertical size="sm" />

@@ -11,11 +11,12 @@ const UserHeader = ({ avatar, title, text, isPrimary }) => {
       <Spacer.Horizontal size="sm" />
       <div className={styles['text']}>
         <Heading size="lg">{title}</Heading>
-        {isPrimary ? (
-          <Heading color="primary">{text}</Heading>
-        ) : (
-          <Paragraph size="lg">{text}</Paragraph>
-        )}
+        {text &&
+          (isPrimary ? (
+            <Heading color="primary">{text}</Heading>
+          ) : (
+            <Paragraph size="lg">{text}</Paragraph>
+          ))}
       </div>
     </div>
   )
@@ -24,7 +25,7 @@ const UserHeader = ({ avatar, title, text, isPrimary }) => {
 UserHeader.propTypes = {
   avatar: PropTypes.string,
   title: PropTypes.string.isRequired,
-  text: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   isPrimary: PropTypes.bool,
 }
 

@@ -2,7 +2,7 @@ import { useUser } from '../../common/auth'
 import { getGreeting } from '../../common/helpers'
 import PropTypes from 'prop-types'
 
-import { LoadingError, Link } from '@glrodasz/components'
+import { LoadingError } from '@glrodasz/components'
 
 import PageLayout from '../../common/components/PageLayout'
 import UserHeader from '../../common/components/UserHeader'
@@ -69,11 +69,6 @@ const Planning = ({ initialData }) => {
               <UserHeader
                 avatar={user?.picture}
                 title={getGreeting('Hola', user)}
-                text={
-                  <>
-                    <span>Conoce la metodologia</span> <Link>RETO</Link>
-                  </>
-                }
               />
             </LoadingError>
             <PlanningOnboarding tasksLength={tasksLength}>

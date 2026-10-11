@@ -1,5 +1,5 @@
 import UserHeader from './UserHeader'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
 jest.mock('@glrodasz/components', () => {
   const { dummyRender } = require('../../../../utils/testUtils/dummyRender')
@@ -35,6 +35,20 @@ describe('[ features / common / components / UserHeader ]', () => {
       }
       const { asFragment } = render(<UserHeader {...props} />)
       expect(asFragment()).toMatchSnapshot()
+    })
+  })
+
+  describe('when `UserHeader` is mounted without `text`', () => {
+    it('should render only the title', () => {
+      // Arrange
+      const props = { avatar: 'avatar', title: 'title' }
+
+      // Act
+      render(<UserHeader {...props} />)
+      const result = screen.queryByText(/Paragraph/)
+
+      // Assert
+      expect(result).toBeNull()
     })
   })
 })
