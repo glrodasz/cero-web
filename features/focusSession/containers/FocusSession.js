@@ -15,6 +15,7 @@ import FocusSessionFooter from '../components/FocusSessionFooter'
 import Chronometer from '../components/Chronometer'
 import AddTaskButton from '../../planning/components/AddTaskButton'
 import PauseTimer from '../components/PauseTimer'
+import PausedBanner from '../components/PausedBanner'
 
 import EditTask from '../../tasks/containers/EditTask'
 
@@ -35,6 +36,7 @@ import {
   createCheckCompleteTaskHandler,
   createPauseChronometerHandler,
   createClosePauseTimerHandler,
+  createResumeSessionHandler,
 } from '../handlers.js'
 
 import useEditTaskModal from '../../tasks/hooks/useEditTaskModal'
@@ -82,6 +84,8 @@ const FocusSession = ({ initialData }) => {
 
   const activePause = getActivePause({ focusSession })
   const isPaused = isObject(activePause) && !isEmpty(activePause)
+  const shouldShowPausedBanner =
+    isPaused && !pauseTimer.showDialog && !breaktimeTimer.showDialog
 
   const startTime = useMemo(
     () => focusSession?.data?.startTime ?? 0,
@@ -138,6 +142,11 @@ const FocusSession = ({ initialData }) => {
                   pauseTimer,
                   clearTime,
                 })}
+              />
+            )}
+            {shouldShowPausedBanner && (
+              <PausedBanner
+                onResume={createResumeSessionHandler({ focusSession })}
               />
             )}
             <Board

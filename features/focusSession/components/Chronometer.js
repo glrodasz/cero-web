@@ -23,7 +23,14 @@ const Chronometer = ({ currentTime, isPaused, onPause }) => {
           </Paragraph>
         </div>
         <Spacer.Horizontal size="sm" />
-        <div className="bar">
+        <div
+          className="bar"
+          role="progressbar"
+          aria-label="Progreso de la hora en curso"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={parseInt(barWidth)}
+        >
           <div
             className="inner-bar"
             style={{ width: `${parseInt(barWidth)}%` }}

@@ -7,7 +7,6 @@ import {
   Heading,
   Spacer,
   Paragraph,
-  Link,
 } from '@glrodasz/components'
 
 import useTime from '../../common/hooks/useTime'
@@ -40,13 +39,9 @@ const BreaktimeTimer = ({ onClose, breaktime }) => {
         </Heading>
         <Spacer.Vertical size="sm" />
         <Paragraph color="inverted">
-          Trabajar cuando te levantas no te permite despertar completamente. Por
-          eso, date un tiempo antes de empezar tu día.
+          Aléjate de la pantalla, estira el cuerpo y respira. Cuando termine el
+          tiempo volverás a tus tareas.
         </Paragraph>
-        <Spacer.Vertical size="md" />
-        <Link size="lg" color="tertiary">
-          Leer más
-        </Link>
       </CenteredContent>
     </Modal>
   )
