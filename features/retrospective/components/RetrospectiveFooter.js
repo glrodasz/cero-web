@@ -1,22 +1,45 @@
 import PropTypes from 'prop-types'
-import { Spacer, Button } from '@glrodasz/components'
+import { Spacer, Button, Paragraph } from '@glrodasz/components'
+
+const noop = () => {}
 
 const RetrospectiveFooter = ({
-  isRegisterMuted,
+  isRegisterDisabled,
+  isRegistering,
+  hasRegisterError,
   onClickRegisterSession,
   onClickSkipRegisterSession,
 }) => {
   return (
     <>
       <Button
-        onClick={onClickRegisterSession}
+        onClick={isRegistering ? noop : onClickRegisterSession}
         type="primary"
-        isMuted={isRegisterMuted}
+        isDisabled={isRegisterDisabled || isRegistering}
       >
-        Registrar sesión
+        {isRegistering ? 'Registrando…' : 'Registrar sesión'}
       </Button>
+      {isRegisterDisabled && (
+        <>
+          <Spacer.Vertical size="xs" />
+          <Paragraph size="sm" isCentered>
+            Elige cómo te sentiste para registrar la sesión
+          </Paragraph>
+        </>
+      )}
+      {hasRegisterError && (
+        <div role="alert">
+          <Spacer.Vertical size="xs" />
+          <Paragraph size="sm" color="primary" isCentered>
+            No pudimos registrar la sesión. Inténtalo de nuevo.
+          </Paragraph>
+        </div>
+      )}
       <Spacer.Vertical size="md" />
-      <Button type="tertiary" onClick={onClickSkipRegisterSession}>
+      <Button
+        type="tertiary"
+        onClick={isRegistering ? noop : onClickSkipRegisterSession}
+      >
         No registrar esta sesión
       </Button>
     </>
@@ -24,13 +47,17 @@ const RetrospectiveFooter = ({
 }
 
 RetrospectiveFooter.propTypes = {
-  isRegisterMuted: PropTypes.bool,
+  isRegisterDisabled: PropTypes.bool,
+  isRegistering: PropTypes.bool,
+  hasRegisterError: PropTypes.bool,
   onClickRegisterSession: PropTypes.func.isRequired,
   onClickSkipRegisterSession: PropTypes.func.isRequired,
 }
 
 RetrospectiveFooter.defaultProps = {
-  isRegisterMuted: false,
+  isRegisterDisabled: false,
+  isRegistering: false,
+  hasRegisterError: false,
 }
 
 export default RetrospectiveFooter

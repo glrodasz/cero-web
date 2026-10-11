@@ -1,4 +1,5 @@
 import Router from 'next/router'
+import httpCodes from '../../utils/httpCodes'
 
 const finishAndLeave = async ({ focusSessions, feedback }) => {
   try {
@@ -6,10 +7,10 @@ const finishAndLeave = async ({ focusSessions, feedback }) => {
   } catch (error) {
     // Finishing answers 404 when there is no active session -- a second tab,
     // or a double click on the same button. The user asked to leave the
-    // session and that is already true, so the navigation below is still the
-    // right outcome. Letting this reject would strand them on a dead session
-    // with no way out.
-    console.error('[retrospective] could not finish the session', error)
+    // session and that is already true, so going to planning is still the
+    // right outcome. Any other failure keeps them here, with their feedback,
+    // and the footer says so.
+    if (error?.status !== httpCodes.NOT_FOUND) return
   }
 
   Router.push('/planning')
@@ -27,8 +28,8 @@ export const createBlockersChangeHandler =
     feedback.setBlockers(event.target.value)
   }
 
-// A score is what makes it feedback: until one is chosen the button stays
-// muted and does nothing.
+// A score is what makes it feedback: until one is chosen the button is
+// disabled, with a hint saying why, and does nothing.
 export const createRegisterSessionHandler =
   ({ focusSessions, feedback }) =>
   async () => {
@@ -44,3 +45,9 @@ export const createSkipRegisterSessionHandler =
   async () => {
     await finishAndLeave({ focusSessions })
   }
+
+// The session stays active until it is registered or skipped, so there is
+// still one to go back to.
+export const createBackToSessionHandler = () => () => {
+  Router.push('/focus-session')
+}

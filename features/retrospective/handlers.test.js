@@ -1,5 +1,6 @@
 import Router from 'next/router'
 import {
+  createBackToSessionHandler,
   createBlockersChangeHandler,
   createRegisterSessionHandler,
   createScoreHandler,
@@ -85,14 +86,15 @@ describe('[ features / retrospective / handlers ]', () => {
       })
     })
 
-    describe('when finishing fails', () => {
+    describe('when the session was already finished', () => {
       it('should still go to `/planning`', async () => {
         // Arrange
-        jest.spyOn(console, 'error').mockImplementation(() => {})
+        const error = Object.assign(
+          new Error('There is no active focus session'),
+          { status: 404 }
+        )
         const focusSessions = buildFocusSessions(
-          jest
-            .fn()
-            .mockRejectedValue(new Error('There is no active focus session'))
+          jest.fn().mockRejectedValue(error)
         )
         const feedback = { score: 5, blockers: '' }
 
@@ -101,8 +103,23 @@ describe('[ features / retrospective / handlers ]', () => {
 
         // Assert
         expect(Router.push).toHaveBeenCalledWith('/planning')
+      })
+    })
 
-        console.error.mockRestore()
+    describe('when finishing fails for any other reason', () => {
+      it('should stay on the retrospective', async () => {
+        // Arrange
+        const error = Object.assign(new Error('Boom'), { status: 500 })
+        const focusSessions = buildFocusSessions(
+          jest.fn().mockRejectedValue(error)
+        )
+        const feedback = { score: 5, blockers: 'Ruido' }
+
+        // Act
+        await createRegisterSessionHandler({ focusSessions, feedback })()
+
+        // Assert
+        expect(Router.push).not.toHaveBeenCalled()
       })
     })
   })
@@ -121,6 +138,18 @@ describe('[ features / retrospective / handlers ]', () => {
           feedback: undefined,
         })
         expect(Router.push).toHaveBeenCalledWith('/planning')
+      })
+    })
+  })
+
+  describe('#createBackToSessionHandler', () => {
+    describe('when the returned function is called', () => {
+      it('should go back to `/focus-session`', () => {
+        // Act
+        createBackToSessionHandler()()
+
+        // Assert
+        expect(Router.push).toHaveBeenCalledWith('/focus-session')
       })
     })
   })

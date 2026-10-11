@@ -62,3 +62,9 @@ export const createPauseChronometerHandler =
       clearTime()
     }
   }
+
+export const createResumeSessionHandler =
+  ({ focusSession }) =>
+  () => {
+    focusSession.api.resume()
+  }

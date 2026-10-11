@@ -19,6 +19,17 @@ retrospective.
 **Stack:** Next.js 12 (pages router) · React 18 · `@tanstack/react-query` v4 ·
 `@auth0/nextjs-auth0` · `react-beautiful-dnd` · Yarn 4 · Node ≥ 24 (see `.nvmrc`).
 
+### The flow
+
+1. **Planning** — list the day's tasks; a few go in progress, the rest wait in
+   the backlog (both capped).
+2. **Focus session** — work through them against a chronometer. Completing a
+   task **always** offers a 5, 10 or 15 minute break: that's by design, to
+   celebrate each small win. A break pauses the session's clock.
+3. **Retrospective** — a recap of the session (time focused, tasks completed),
+   then how you felt and what blocked you. Choosing a mood is what registers
+   the session; you can also skip it.
+
 ## Related projects
 
 - **[`cero-components`](https://github.com/glrodasz/cero-components)** — the UI

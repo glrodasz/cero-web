@@ -59,8 +59,12 @@ class Request {
       // checked explicitly — otherwise it gets treated as real data and
       // breaks whatever consumes it several layers downstream, hiding the
       // actual error.
+      // The status rides along so callers can tell one failure from
+      // another (a 404 "already gone" is not a 500).
       if (!response.ok) {
-        throw new Error(getErrorMessage({ data, resource, response }))
+        const error = new Error(getErrorMessage({ data, resource, response }))
+        error.status = response.status
+        throw error
       }
 
       return data

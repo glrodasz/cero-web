@@ -34,7 +34,7 @@ const PauseTimer = ({ onClose }) => {
         <Picture src="/images/forest-pause.svg" width={200}></Picture>
         <Spacer.Vertical size="md" />
         <Heading size="xl" color="tertiary">
-          TU RETO ESTA EN PAUSA
+          TU RETO ESTÁ EN PAUSA
         </Heading>
         <Spacer.Vertical size="sm" />
         <Paragraph color="inverted">

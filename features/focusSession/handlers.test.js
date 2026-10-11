@@ -3,6 +3,7 @@ import {
   createCloseBreaktimeConfirmationHandler,
   createCloseBreaktimeTimerHandler,
   createEndSessionHandler,
+  createResumeSessionHandler,
 } from './handlers'
 
 import Router from 'next/router'
@@ -219,6 +220,21 @@ describe('[ features / focusSession / handlers ]', () => {
 
         // Assert
         expect(Router.push).toHaveBeenCalledWith('/retrospective')
+      })
+    })
+  })
+
+  describe('#createResumeSessionHandler', () => {
+    describe('when the returned function is called', () => {
+      it('should resume the focus session', () => {
+        // Arrange
+        const focusSession = { api: { resume: jest.fn() } }
+
+        // Act
+        createResumeSessionHandler({ focusSession })()
+
+        // Assert
+        expect(focusSession.api.resume).toHaveBeenCalled()
       })
     })
   })

@@ -18,7 +18,7 @@ export default function Index() {
 
   return (
     <CenteredContent>
-      <Heading size="xl">Cuentame sobre ti</Heading>
+      <Heading size="xl">Cuéntame sobre ti</Heading>
       <Spacer.Vertical size="md" />
       <Input
         value={formValues.name}

@@ -381,6 +381,22 @@ describe('[ features / tasks / handlers ]', () => {
         expect(Router.push).toHaveBeenCalledWith('/focus-session')
       })
     })
+
+    describe('when the session cannot be created', () => {
+      it('should stay on planning', async () => {
+        // Arrange
+        Router.push.mockClear()
+        const focusSessions = {
+          api: { create: jest.fn().mockRejectedValue(new Error('Boom')) },
+        }
+
+        // Act
+        await createStartSessionHandler({ focusSessions })()
+
+        // Assert
+        expect(Router.push).not.toHaveBeenCalled()
+      })
+    })
   })
 
   describe('task detail autosave', () => {
