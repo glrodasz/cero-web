@@ -31,11 +31,11 @@ export const getServerSideProps = withPageAuthRequired({
 
     const tasks = await readTasks({ sessionId })
 
-    return { props: { tasks } }
+    return { props: { tasks, activeFocusSession } }
   },
 })
 
-const Retrospective = ({ tasks }) => {
+const Retrospective = ({ tasks, activeFocusSession }) => {
   const { isReady } = useFocusSessionRedirect({
     redirectWhenActive: false,
     to: '/planning',
@@ -43,7 +43,7 @@ const Retrospective = ({ tasks }) => {
 
   if (!isReady) return null
 
-  return <RetrospectiveContainer initialData={{ tasks }} />
+  return <RetrospectiveContainer initialData={{ tasks, activeFocusSession }} />
 }
 
 Retrospective.propTypes = {
@@ -52,6 +52,9 @@ Retrospective.propTypes = {
       id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     })
   ),
+  activeFocusSession: PropTypes.shape({
+    startTime: PropTypes.number,
+  }),
 }
 
 export default Retrospective

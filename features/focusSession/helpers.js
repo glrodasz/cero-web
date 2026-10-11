@@ -23,6 +23,22 @@ export const getChronometerStartTime = ({ startTime, pauseStartTime }) => {
   return 0
 }
 
+// The time actually worked: from the start to `now`, less every pause. A pause
+// still open (no `endTime`) runs up to `now`.
+export const getFocusedTime = (
+  { startTime, pauses = [] } = {},
+  now = Date.now()
+) => {
+  if (typeof startTime !== 'number') return 0
+
+  const pausedTime = pauses.reduce(
+    (total, pause) => total + ((pause.endTime ?? now) - pause.startTime),
+    0
+  )
+
+  return Math.max(0, now - startTime - pausedTime)
+}
+
 // The retrospective's feedback arrives over HTTP, so only the known fields are
 // kept: whatever else the body carries never reaches the stored session.
 // Answers `{ feedback }` (`null` when none was sent) or `{ error }`.

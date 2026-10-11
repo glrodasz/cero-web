@@ -28,8 +28,9 @@ const updateTask = ({ id, body, options }) =>
   })
 
 // Puts the task first in the `status` column (priority 0) and renumbers the
-// tasks already there from 1, keeping their order.
-const moveTaskToTopOfColumn = async ({ id, status, options }) => {
+// tasks already there from 1, keeping their order. `fields` are written to the
+// moved task along with its new place.
+const moveTaskToTopOfColumn = async ({ id, status, fields, options }) => {
   const tasks = await getTasksWithStatus({ status, options })
 
   await Promise.all(
@@ -42,7 +43,11 @@ const moveTaskToTopOfColumn = async ({ id, status, options }) => {
     )
   )
 
-  const task = await updateTask({ id, body: { status, priority: 0 }, options })
+  const task = await updateTask({
+    id,
+    body: { ...fields, status, priority: 0 },
+    options,
+  })
 
   return { status: 200, body: task }
 }
@@ -78,8 +83,20 @@ export async function createTask({ options }) {
   return { status: 200, body: task }
 }
 
+// `completedAt` is what the retrospective counts a session's completed tasks
+// by, so unchecking a task takes it back.
 export const completeTask = ({ id, options }) =>
-  moveTaskToTopOfColumn({ id, status: COMPLETED_COLUMN_ID, options })
+  moveTaskToTopOfColumn({
+    id,
+    status: COMPLETED_COLUMN_ID,
+    fields: { completedAt: Date.now() },
+    options,
+  })
 
 export const resetTask = ({ id, options }) =>
-  moveTaskToTopOfColumn({ id, status: PENDING_COLUMN_ID, options })
+  moveTaskToTopOfColumn({
+    id,
+    status: PENDING_COLUMN_ID,
+    fields: { completedAt: null },
+    options,
+  })

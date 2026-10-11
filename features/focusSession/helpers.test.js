@@ -1,6 +1,11 @@
 import dateNowMock from '../../utils/testUtils/dateNowMock'
 import time from '../../utils/time'
-import { getBarWidth, getChronometerStartTime, parseFeedback } from './helpers'
+import {
+  getBarWidth,
+  getChronometerStartTime,
+  getFocusedTime,
+  parseFeedback,
+} from './helpers'
 
 describe('[ features / focusSession / helpers ]', () => {
   describe('#getBarWidth', () => {
@@ -150,6 +155,39 @@ describe('[ features / focusSession / helpers ]', () => {
 
         // Assert
         expect(result).toEqual({ error: expect.any(String) })
+      })
+    })
+  })
+
+  describe('#getFocusedTime', () => {
+    describe('when the session had closed and open pauses', () => {
+      it('should leave every pause out', () => {
+        // Arrange
+        const focusSession = {
+          startTime: 0,
+          pauses: [
+            { startTime: 1000, endTime: 3000 },
+            { startTime: 8000, endTime: null },
+          ],
+        }
+        const now = 10000
+        const expected = 6000
+
+        // Act
+        const result = getFocusedTime(focusSession, now)
+
+        // Assert
+        expect(result).toBe(expected)
+      })
+    })
+
+    describe('when there is no session', () => {
+      it('should return 0', () => {
+        // Act
+        const result = getFocusedTime(undefined, 10000)
+
+        // Assert
+        expect(result).toBe(0)
       })
     })
   })

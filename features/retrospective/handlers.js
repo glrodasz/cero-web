@@ -45,3 +45,9 @@ export const createSkipRegisterSessionHandler =
   async () => {
     await finishAndLeave({ focusSessions })
   }
+
+// The session stays active until it is registered or skipped, so there is
+// still one to go back to.
+export const createBackToSessionHandler = () => () => {
+  Router.push('/focus-session')
+}

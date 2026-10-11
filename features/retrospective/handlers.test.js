@@ -1,5 +1,6 @@
 import Router from 'next/router'
 import {
+  createBackToSessionHandler,
   createBlockersChangeHandler,
   createRegisterSessionHandler,
   createScoreHandler,
@@ -137,6 +138,18 @@ describe('[ features / retrospective / handlers ]', () => {
           feedback: undefined,
         })
         expect(Router.push).toHaveBeenCalledWith('/planning')
+      })
+    })
+  })
+
+  describe('#createBackToSessionHandler', () => {
+    describe('when the returned function is called', () => {
+      it('should go back to `/focus-session`', () => {
+        // Act
+        createBackToSessionHandler()()
+
+        // Assert
+        expect(Router.push).toHaveBeenCalledWith('/focus-session')
       })
     })
   })

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import {
+  Button,
   Spacer,
   Heading,
   LoadingError,
@@ -11,24 +12,34 @@ import PageLayout from '../../common/components/PageLayout'
 import MoodScore from '../components/MoodScore'
 import RetrospectiveFooter from '../components/RetrospectiveFooter'
 import RetrospectiveTasks from '../components/RetrospectiveTasks'
+import SessionRecap from '../components/SessionRecap'
 
 import {
+  createBackToSessionHandler,
   createBlockersChangeHandler,
   createRegisterSessionHandler,
   createScoreHandler,
   createSkipRegisterSessionHandler,
 } from '../handlers'
-import { getTaskSections } from '../helpers'
+import { getSessionRecap, getTaskSections } from '../helpers'
 
 import useRetrospectiveFeedback from '../hooks/useRetrospectiveFeedback'
+import useFocusSession from '../../focusSession/hooks/useFocusSession'
 import useFocusSessions from '../../focusSession/hooks/useFocusSessions'
 import useTasks from '../../tasks/hooks/useTasks'
 import httpCodes from '../../../utils/httpCodes'
 
 const Retrospective = ({ initialData }) => {
   const tasks = useTasks({ initialData: initialData.tasks })
+  const focusSession = useFocusSession({
+    initialData: initialData.activeFocusSession,
+  })
   const focusSessions = useFocusSessions()
   const feedback = useRetrospectiveFeedback()
+  const recap = getSessionRecap({
+    focusSession: focusSession.data,
+    tasks: tasks.data,
+  })
 
   return (
     <PageLayout
@@ -37,6 +48,12 @@ const Retrospective = ({ initialData }) => {
           isLoading={tasks.isLoading}
           errorMessage={tasks.error?.message}
         >
+          <Button type="tertiary" onClick={createBackToSessionHandler()}>
+            Volver a la sesión
+          </Button>
+          <Spacer.Vertical size="md" />
+          <SessionRecap {...recap} />
+          <Spacer.Vertical size="md" />
           <RetrospectiveTasks sections={getTaskSections(tasks.data)} />
           <div
             style={{
@@ -101,6 +118,9 @@ Retrospective.propTypes = {
         description: PropTypes.string,
       })
     ),
+    activeFocusSession: PropTypes.shape({
+      startTime: PropTypes.number,
+    }),
   }),
 }
 
