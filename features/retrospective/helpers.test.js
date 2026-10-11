@@ -58,23 +58,59 @@ describe('[ features / retrospective / helpers ]', () => {
   })
 
   describe('#getSessionRecap', () => {
-    describe('when tasks were completed before and during the session', () => {
-      it('should count only the ones completed during it', () => {
+    beforeEach(() => {
+      jest.spyOn(Date, 'now').mockReturnValue(5000)
+    })
+
+    afterEach(() => {
+      Date.now.mockRestore()
+    })
+
+    describe('when tasks were completed in this and other sessions', () => {
+      it('should count only the ones completed in this one', () => {
         // Arrange
-        const focusSession = { startTime: 1000, pauses: [] }
+        const focusSession = { id: 9, startTime: 1000, pauses: [] }
         const tasks = [
-          { id: 1, status: 'completed', completedAt: 500 },
-          { id: 2, status: 'completed', completedAt: 2000 },
-          { id: 3, status: 'completed' },
-          { id: 4, status: 'pending', completedAt: null },
+          { id: 1, status: 'completed', focusSessionId: 9 },
+          { id: 2, status: 'completed', focusSessionId: 3 },
+          { id: 3, status: 'completed', focusSessionId: null },
+          { id: 4, status: 'pending', focusSessionId: 9 },
         ]
         const expected = { focusedTime: 4000, completedTasks: 1 }
 
         // Act
-        const result = getSessionRecap({ focusSession, tasks, now: 5000 })
+        const result = getSessionRecap({ focusSession, tasks })
 
         // Assert
         expect(result).toEqual(expected)
+      })
+    })
+
+    describe('when the session is paused', () => {
+      it('should stop the time where the pause began', () => {
+        // Arrange
+        const focusSession = {
+          id: 9,
+          startTime: 1000,
+          pauses: [{ startTime: 3000, endTime: null }],
+        }
+        const expected = 2000
+
+        // Act
+        const result = getSessionRecap({ focusSession }).focusedTime
+
+        // Assert
+        expect(result).toBe(expected)
+      })
+    })
+
+    describe('when there is no session yet', () => {
+      it('should recap nothing', () => {
+        // Act
+        const result = getSessionRecap({ focusSession: undefined })
+
+        // Assert
+        expect(result).toEqual({ focusedTime: 0, completedTasks: 0 })
       })
     })
   })

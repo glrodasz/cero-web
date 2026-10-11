@@ -123,24 +123,6 @@ describe('[ features / tasks / commands ]', () => {
     })
   })
 
-  describe('when a task is completed and then reset', () => {
-    it('should record when it was completed and clear it again', async () => {
-      // Arrange
-      jest.spyOn(Date, 'now').mockReturnValue(1700000000000)
-      const options = buildOptions({ method: 'PATCH' })
-
-      // Act
-      const completed = await completeTask({ id: 2, options })
-      const reset = await resetTask({ id: 2, options })
-
-      // Assert
-      expect(completed.body.completedAt).toBe(1700000000000)
-      expect(reset.body.completedAt).toBeNull()
-
-      Date.now.mockRestore()
-    })
-  })
-
   describe('resetTask', () => {
     it('should put the task first among the pending ones', async () => {
       // Act
