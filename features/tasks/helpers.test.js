@@ -123,18 +123,19 @@ describe('[ features / tasks / helpers ]', () => {
     })
 
     describe('when `isActive`is `false` and `column.id` is `PENDING_COLUMN_ID`', () => {
-      it('should return an empty string', () => {
+      it('should return `column.title`', () => {
         // Arrange
         const params = {
           isActive: false,
           column: {
             id: 'PENDING_COLUMN_ID',
+            title: 'Pendientes',
           },
         }
 
         // Act
         const result = getTitle(params)
-        const expected = ''
+        const expected = 'Pendientes'
 
         // Assert
         expect(result).toBe(expected)
@@ -144,10 +145,10 @@ describe('[ features / tasks / helpers ]', () => {
 
   describe('#getCurrent', () => {
     describe('when `column.id` is `PENDING_COLUMN_ID` and `isActive` is `false`', () => {
-      it('should return `null`', () => {
+      it('should return the length of the `tasks`', () => {
         // Arrange
         const params = {
-          tasks: [],
+          tasks: [null],
           isActive: false,
           column: {
             id: 'PENDING_COLUMN_ID',
@@ -156,7 +157,7 @@ describe('[ features / tasks / helpers ]', () => {
 
         // Act
         const result = getCurrent(params)
-        const expected = null
+        const expected = 1
 
         // Assert
         expect(result).toBe(expected)
@@ -198,6 +199,25 @@ describe('[ features / tasks / helpers ]', () => {
         // Act
         const result = getTotal(params)
         const expected = 3
+
+        // Assert
+        expect(result).toBe(expected)
+      })
+    })
+
+    describe('when `column.id` is `PENDING_COLUMN_ID` and `isActive` is false', () => {
+      it('should return `MAXIMUM_BACKLOG_QUANTITY`', () => {
+        // Arrange
+        const params = {
+          column: {
+            id: 'PENDING_COLUMN_ID',
+          },
+          isActive: false,
+        }
+
+        // Act
+        const result = getTotal(params)
+        const expected = 5
 
         // Assert
         expect(result).toBe(expected)

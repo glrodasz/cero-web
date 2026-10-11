@@ -167,16 +167,12 @@ const FocusSession = ({ initialData }) => {
                 }),
               }}
             />
-            {shouldShowAddTaskButton && (
-              <>
-                <Spacer.Vertical size="lg" />
-                <AddTaskButton
-                  id="focus-session"
-                  isShown={shouldShowAddTaskButton}
-                  onAddTask={createAddTaskHandler({ tasks })}
-                />
-              </>
-            )}
+            <Spacer.Vertical size="sm" />
+            <AddTaskButton
+              id="focus-session"
+              isShown={shouldShowAddTaskButton}
+              onAddTask={createAddTaskHandler({ tasks })}
+            />
           </LoadingError>
         }
         footer={

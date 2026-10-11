@@ -51,27 +51,17 @@ export const getTitle = ({ column, isActive }) => {
     return 'Tareas'
   }
 
-  if (column.id === PENDING_COLUMN_ID && !isActive) {
-    return ''
-  }
-
   return column.title
 }
 
-export const getCurrent = ({ column, isActive, tasks }) => {
-  if (column.id === PENDING_COLUMN_ID && !isActive) {
-    return null
-  }
-
-  return tasks.length
-}
+export const getCurrent = ({ tasks }) => tasks.length
 
 export const getTotal = ({ column, isActive }) => {
   if (column.id === IN_PROGRESS_COLUMN_ID && !isActive) {
     return MAXIMUM_IN_PRIORITY_TASKS
   }
 
-  if (column.id === PENDING_COLUMN_ID && isActive) {
+  if (column.id === PENDING_COLUMN_ID) {
     return MAXIMUM_BACKLOG_QUANTITY
   }
 
