@@ -1,7 +1,7 @@
 const path = require('path')
-const transpileModules = require('next-transpile-modules')
 
 const customConfig = {
+  transpilePackages: ['@glrodasz/components'],
   webpack: (config, options) => {
     // resolve unique version of react
     // https://github.com/martpie/next-transpile-modules#i-have-trouble-with-duplicated-dependencies-or-the-invalid-hook-call-error-in-react
@@ -25,4 +25,4 @@ const customConfig = {
   },
 }
 
-module.exports = transpileModules(['@glrodasz/components'])(customConfig)
+module.exports = customConfig
