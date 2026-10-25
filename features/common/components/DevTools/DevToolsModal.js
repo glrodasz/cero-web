@@ -45,20 +45,19 @@ const DevToolsModal = ({ onClose, onResetData, environment, currentPath }) => {
               const isCurrent = page.href === currentPath
               return (
                 <li key={page.href}>
-                  <Link href={page.href}>
-                    <a
-                      className={classNames(styles.row, {
-                        [styles['is-current']]: isCurrent,
-                      })}
-                      aria-current={isCurrent ? 'page' : undefined}
-                      onClick={onClose}
-                    >
-                      <LinkRow
-                        label={page.label}
-                        icon={page.icon}
-                        isCurrent={isCurrent}
-                      />
-                    </a>
+                  <Link
+                    href={page.href}
+                    className={classNames(styles.row, {
+                      [styles['is-current']]: isCurrent,
+                    })}
+                    aria-current={isCurrent ? 'page' : undefined}
+                    onClick={onClose}
+                  >
+                    <LinkRow
+                      label={page.label}
+                      icon={page.icon}
+                      isCurrent={isCurrent}
+                    />
                   </Link>
                 </li>
               )

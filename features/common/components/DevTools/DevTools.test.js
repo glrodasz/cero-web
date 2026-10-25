@@ -11,6 +11,10 @@ jest.mock('@glrodasz/components', () => {
   }
 })
 
+jest.mock('next/router', () => ({
+  useRouter: () => ({ pathname: '/planning' }),
+}))
+
 jest.mock('./DevToolsModal', () => jest.fn(() => 'DevToolsModal'))
 
 jest.mock('./constants', () => ({
