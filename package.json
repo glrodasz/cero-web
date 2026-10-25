@@ -40,7 +40,7 @@
     "@glrodasz/components": "2.13.1",
     "@tanstack/react-query": "4.0.10",
     "minireset.css": "0.0.7",
-    "next": "12.2.3",
+    "next": "15.5.28",
     "react": "18.2.0",
     "react-beautiful-dnd": "13.1.0",
     "react-dom": "18.2.0"
