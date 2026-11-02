@@ -24,10 +24,10 @@ It is built for people who plan their work in small, focused blocks, on a phone
 or a desktop. It is not a project tracker: there are no projects, assignees or
 due dates.
 
-**RETO** is the app built live in **Cero a Producción**, a series of live coding
-sessions that take it from scratch to production — real decisions, failing
+**RETO** was built live in **Cero a Producción**, a series of live coding
+sessions that took it from scratch to production — real decisions, failing
 tests, refactors and all. 📺 [YouTube](https://glrz.me/youtube-cero) ·
-🟣 [Twitch](https://glrz.me/stream) (live in 🇪🇸 Spanish, Tuesdays to Fridays).
+🟣 [Twitch](https://glrz.me/stream).
 Part of the [Cero a Producción project](https://github.com/glrodasz/cero).
 
 ### Design principles
@@ -171,7 +171,7 @@ utils/          Generic helpers, never importing from features/
 
 ## Contributing
 
-Work happens live on stream; changes follow the same conventions.
+Changes follow the conventions below.
 
 - **A feature** goes in `features/<feature>/`: components, containers, `use*`
   hooks, `create*Handler` factories in `handlers.js`, pure logic in
