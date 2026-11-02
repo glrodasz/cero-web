@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 466" width="880" role="img">
+  <title>How a request reaches a store</title>
+  <desc>Browser hooks call api/request.js, which goes over HTTP to the API routes or, with no API URL, to browserTransport.js; both run the same commands, which reach a store through datasources/index.js; server rendering reads through queries.js.</desc>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M2 1L8 5L2 9"/></marker>
+    <marker id="al" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk e-coral" d="M2 1L8 5L2 9"/></marker>
+  </defs>
+  <g class="s-purple"><rect x="30" y="30" width="184" height="56" rx="8"/>
+    <text class="tm" x="122" y="50" text-anchor="middle" dominant-baseline="central">useTasks</text>
+    <text class="ts" x="122" y="68" text-anchor="middle" dominant-baseline="central">React Query hooks</text></g>
+  <g class="s-purple"><rect x="242" y="30" width="184" height="56" rx="8"/>
+    <text class="tm" x="334" y="50" text-anchor="middle" dominant-baseline="central">api/request.js</text>
+    <text class="ts" x="334" y="68" text-anchor="middle" dominant-baseline="central">HTTP client</text></g>
+  <g class="s-teal"><rect x="454" y="30" width="184" height="56" rx="8"/>
+    <text class="tm" x="546" y="50" text-anchor="middle" dominant-baseline="central">pages/api/[source]</text>
+    <text class="ts" x="546" y="68" text-anchor="middle" dominant-baseline="central">thin route adapters</text></g>
+  <g class="s-teal"><rect x="666" y="30" width="184" height="56" rx="8"/>
+    <text class="tm" x="758" y="50" text-anchor="middle" dominant-baseline="central">getServerSideProps</text>
+    <text class="ts" x="758" y="68" text-anchor="middle" dominant-baseline="central">server render</text></g>
+  <g class="s-purple"><rect x="242" y="150" width="184" height="56" rx="8"/>
+    <text class="tm" x="334" y="170" text-anchor="middle" dominant-baseline="central">browserTransport.js</text>
+    <text class="ts" x="334" y="188" text-anchor="middle" dominant-baseline="central">route table in browser</text></g>
+  <g class="s-blue"><rect x="454" y="150" width="184" height="56" rx="8"/>
+    <text class="tm" x="546" y="170" text-anchor="middle" dominant-baseline="central">features/*/commands.js</text>
+    <text class="ts" x="546" y="188" text-anchor="middle" dominant-baseline="central">writes and rules</text></g>
+  <g class="s-teal"><rect x="666" y="150" width="184" height="56" rx="8"/>
+    <text class="tm" x="758" y="170" text-anchor="middle" dominant-baseline="central">features/*/queries.js</text>
+    <text class="ts" x="758" y="188" text-anchor="middle" dominant-baseline="central">shared reads</text></g>
+  <g class="s-blue"><rect x="242" y="270" width="184" height="56" rx="8"/>
+    <text class="tm" x="334" y="290" text-anchor="middle" dominant-baseline="central">collections/</text>
+    <text class="ts" x="334" y="308" text-anchor="middle" dominant-baseline="central">shared CRUD engine</text></g>
+  <g class="s-blue"><rect x="454" y="270" width="184" height="56" rx="8"/>
+    <text class="tm" x="546" y="290" text-anchor="middle" dominant-baseline="central">datasources/index.js</text>
+    <text class="ts" x="546" y="308" text-anchor="middle" dominant-baseline="central">picks the store</text></g>
+  <g class="s-gray"><rect x="30" y="390" width="184" height="56" rx="8"/>
+    <text class="tm" x="122" y="410" text-anchor="middle" dominant-baseline="central">localStorage/</text>
+    <text class="ts" x="122" y="428" text-anchor="middle" dominant-baseline="central">per visitor, demo</text></g>
+  <g class="s-gray"><rect x="242" y="390" width="184" height="56" rx="8"/>
+    <text class="tm" x="334" y="410" text-anchor="middle" dominant-baseline="central">fixtures/</text>
+    <text class="ts" x="334" y="428" text-anchor="middle" dominant-baseline="central">per process, tests</text></g>
+  <g class="s-gray"><rect x="454" y="390" width="184" height="56" rx="8"/>
+    <text class="tm" x="546" y="410" text-anchor="middle" dominant-baseline="central">jsonServer.js</text>
+    <text class="ts" x="546" y="428" text-anchor="middle" dominant-baseline="central">db.json on :3001</text></g>
+  <path class="arr" d="M214 58 H242" marker-end="url(#a)"/>
+  <path class="arr" d="M426 58 H454" marker-end="url(#a)"/>
+  <path class="arr" d="M334 86 V150" marker-end="url(#a)"/>
+  <text class="ts" x="342" y="118" dominant-baseline="central">no API URL</text>
+  <path class="arr" d="M546 86 V150" marker-end="url(#a)"/>
+  <path class="arr" d="M426 178 H454" marker-end="url(#a)"/>
+  <path class="arr" d="M758 86 V150" marker-end="url(#a)"/>
+  <path class="arr" d="M546 206 V270" marker-end="url(#a)"/>
+  <path class="arr" d="M758 206 V298 H638" marker-end="url(#a)"/>
+  <path class="arr" d="M454 298 H426" marker-end="url(#a)"/>
+  <path class="arr" d="M546 326 V390" marker-end="url(#a)"/>
+  <path class="arr" d="M300 326 V358 H122 V390" marker-end="url(#a)"/>
+  <path class="arr" d="M360 326 V390" marker-end="url(#a)"/>
+</svg>
