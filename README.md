@@ -10,7 +10,7 @@
 
 [**Live demo**](https://reto.guillermorodas.com/) · [How it works](#how-it-works) · [Architecture](#architecture) · [Quick start](#quick-start) · [Deployment](docs/deployment.md)
 
-<img src="public/og.png" alt="RETO, Cero a Producción: Planea tus tareas y enfócate en lo importante. Chips: 1 Planea, 2 Enfócate, 3 Reflexiona. Two phones show the planning board and a 5-minute break timer." width="860">
+<img src="public/og.png" alt="RETO: Planea tus tareas y enfócate en lo importante. Chips: 1 Planea, 2 Enfócate, 3 Reflexiona. Two phones show the planning board and a 5-minute break timer." width="860">
 
 ## Why
 

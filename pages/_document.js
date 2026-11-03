@@ -4,7 +4,7 @@ import { Html, Head, Main, NextScript } from 'next/document'
 const SITE_URL = 'https://reto.guillermorodas.com'
 const SITE_DESCRIPTION = 'Planea tus tareas y enfócate en lo importante.'
 const OG_IMAGE_ALT =
-  'RETO, Cero a Producción: Planea tus tareas y enfócate en lo importante. Planea, enfócate, reflexiona.'
+  'RETO: Planea tus tareas y enfócate en lo importante. Planea, enfócate, reflexiona.'
 
 export default function Document() {
   return (
@@ -21,8 +21,8 @@ export default function Document() {
             queries read on first paint. */}
         <meta name="description" content={SITE_DESCRIPTION} />
         <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="RETO · Cero a Producción" />
-        <meta property="og:title" content="RETO · Cero a Producción" />
+        <meta property="og:site_name" content="RETO" />
+        <meta property="og:title" content="RETO" />
         <meta property="og:description" content={SITE_DESCRIPTION} />
         <meta property="og:url" content={SITE_URL} />
         <meta property="og:image" content={`${SITE_URL}/og.png`} />

@@ -14,9 +14,9 @@ moves into each visitor's browser, and Auth0 is stubbed.
 
 **One switch picks the backend: `NEXT_PUBLIC_API_URL`.** The frontend calls
 that API, and with none configured it falls back to the visitor's browser.
-`config/dataSource.js` derives everything else from it — where the browser's
+`config/dataSource.js` derives everything else from it: where the browser's
 requests go (`config/index.js`, `api/index.js`) and the storage behind them
-(`datasources/index.js`) — so the two can never disagree:
+(`datasources/index.js`), so the two can never disagree:
 
 ```mermaid
 flowchart TD
@@ -35,21 +35,21 @@ flowchart TD
 
 | `NEXT_PUBLIC_API_URL` | browser calls | storage | server rendering |
 | --- | --- | --- | --- |
-| unset | nothing — answered in the browser | `localStorage`, per browser | skipped, the page loads its data |
+| unset | nothing, answered in the browser | `localStorage`, per browser | skipped, the page loads its data |
 | `/api/local` | this app's routes | `json-server` at `JSON_SERVER_URL` | reads the store directly |
 | `/api/test` | this app's routes | committed arrays, per process (integration tests) | reads the store directly |
 | any other URL | that backend | its own | skipped, the page loads its data |
 
 **Switching between them:**
 
-- Already wired per environment — `yarn dev` uses `/api/local`,
+- Already wired per environment: `yarn dev` uses `/api/local`,
   `yarn test:integration` uses `/api/test`, and a deployment leaves it unset.
 - One-off, locally: `NEXT_PUBLIC_API_URL=/api/local yarn build && yarn start`.
 - On Vercel: set it in the dashboard (or delete it for localStorage), **then
   redeploy**.
 
 That last step is not optional. `NEXT_PUBLIC_*` values are compiled into the
-bundle, so changing one without rebuilding does nothing — and a bundle built
+bundle, so changing one without rebuilding does nothing, and a bundle built
 for one namespace calling another is exactly what the 400 below catches.
 
 **A backend elsewhere** has to implement the same REST contract as this app's
@@ -75,7 +75,7 @@ no database, no credentials, no quota.
 
 What that means in practice:
 
-- **Per browser.** Each visitor — each browser profile — has their own data,
+- **Per browser.** Each visitor (each browser profile) has their own data,
   and it never reaches the server.
 - **No expiry.** Data stays until the site's data is cleared. DevTools (the cog,
   enabled on demo deployments) has **Reset demo data**, which restores the seed
@@ -90,8 +90,8 @@ What that means in practice:
 **Migrating from `NEXT_PUBLIC_DATA_SOURCE`.** That variable used to pick the
 backend (with `memory` keeping the demo in Upstash Redis). It is retired: a
 deployment that still sets it fails its build with a message pointing at
-`NEXT_PUBLIC_API_URL`. Delete it from the dashboard — and set
-`NEXT_PUBLIC_API_URL` only if the deployment has a real backend — then
+`NEXT_PUBLIC_API_URL`. Delete it from the dashboard (and set
+`NEXT_PUBLIC_API_URL` only if the deployment has a real backend), then
 redeploy. The Upstash integration and its `UPSTASH_REDIS_REST_*` /
 `KV_REST_API_*` variables can be removed too.
 
@@ -119,7 +119,7 @@ request carried no auth it came back as `401: Protected deployment`, failing
 every server rendered page.) The API routes reuse the same functions, so the
 two paths cannot drift apart.
 
-To reproduce a preview locally — exactly, since everything happens in the
+To reproduce a preview locally, exactly, since everything happens in the
 browser:
 
 ```
@@ -133,5 +133,5 @@ Local development is unaffected: `.env.development` selects `json-server`, so
 
 The integration suite (`yarn test:integration`) selects `fixtures`, so it runs
 against the same routes with the committed arrays in `datasources/fixtures/`
-behind them — no `json-server`, and your local `db.json` is left alone. It waits for the server to be listening and exits when TestCafe does.
+behind them: no `json-server`, and your local `db.json` is left alone. It waits for the server to be listening and exits when TestCafe does.
 
