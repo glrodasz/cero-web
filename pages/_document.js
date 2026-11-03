@@ -1,7 +1,7 @@
 import { Html, Head, Main, NextScript } from 'next/document'
 
 // Link previews need an absolute image URL, so this names the public demo.
-const SITE_URL = 'https://prior.guillermorodas.com'
+const SITE_URL = 'https://reto.guillermorodas.com'
 const SITE_DESCRIPTION = 'Planea tus tareas y enfócate en lo importante.'
 const OG_IMAGE_ALT =
   'RETO, Cero a Producción: Planea tus tareas y enfócate en lo importante. Planea, enfócate, reflexiona.'
