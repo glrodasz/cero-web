@@ -1,6 +1,7 @@
 {
-  "name": "web",
+  "name": "cero-web",
   "version": "0.1.0",
+  "description": "RETO, the productivity web app of the Cero project.",
   "private": true,
   "license": "MIT",
   "packageManager": "yarn@4.12.0",

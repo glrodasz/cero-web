@@ -1,6 +1,6 @@
 <img src="public/icons/icon.svg" width="168" align="left" alt="RETO logo: a white ring on a purple tile, with a green arc tracing the first quarter like a timer">
 
-# RETO · Cero a Producción
+# RETO
 
 **Plan your day, cap what's in progress at 2 tasks, and focus with a timer that offers a break after every win.**
 
@@ -24,11 +24,9 @@ It is built for people who plan their work in small, focused blocks, on a phone
 or a desktop. It is not a project tracker: there are no projects, assignees or
 due dates.
 
-**RETO** was built live in **Cero a Producción**, a series of live coding
-sessions that took it from scratch to production — real decisions, failing
-tests, refactors and all. 📺 [YouTube](https://glrz.me/youtube-cero) ·
-🟣 [Twitch](https://glrz.me/stream).
-Part of the [Cero a Producción project](https://github.com/glrodasz/cero).
+RETO is the web app of [Cero](https://github.com/glrodasz/cero), the project
+that builds it from scratch to production — real decisions, failing tests,
+refactors and all.
 
 ### Design principles
 
@@ -166,6 +164,7 @@ utils/          Generic helpers, never importing from features/
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Request path from hook to store, data-layer rules |
 | [`docs/deployment.md`](docs/deployment.md) | Deploying, the browser-backed demo, environment variables |
 | [`AGENTS.md`](AGENTS.md) | Conventions: feature layout, handlers, hooks, tests, rules from production incidents |
+| [Cero](https://github.com/glrodasz/cero) | The project hub: how it started and the other repositories |
 | [`cero-components`](https://github.com/glrodasz/cero-components) | The UI kit ([Storybook](https://cero-components.vercel.app), [npm](https://www.npmjs.com/package/@glrodasz/components)) |
 | [`cero-api`](https://github.com/glrodasz/cero-api) | Backend explorations across several stacks |
 
