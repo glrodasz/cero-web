@@ -84,15 +84,15 @@ A day in RETO has three screens, and each one leads to the next.
 | --- | --- | --- |
 | **Planning** | `/planning` | Add tasks, drag them between *Tareas* (in progress) and *Pendientes* (backlog), open one for its duration, subtasks and notes. "Empieza ahora" starts a focus session. |
 | **Focus session** | `/focus-session` | A chronometer runs while you work. Checking off a task offers a 5, 10 or 15 minute break, which pauses the clock; a paused session shows a "Reanudar" banner until you resume. |
-| **Retrospective** | `/retrospective` | A recap (time focused, tasks completed in this session), then how you felt — *Frustrado*, *Normal* or *Muy motivado* — and optional blockers. Choosing a mood registers the session; you can also skip it or go back to the session. |
+| **Retrospective** | `/retrospective` | A recap (time focused, tasks completed in this session), then how you felt (*Frustrado*, *Normal* or *Muy motivado*) and optional blockers. Choosing a mood registers the session; you can also skip it or go back to the session. |
 
 The app redirects between planning and an active focus session on its own, so
 reopening it lands you where you left off. It is installable as a PWA, opening
 straight into `/planning` without browser chrome.
 
 Every task detail field saves on its own, optimistically, and rolls back if the
-write fails. Task and focus-session rules — completing, starting, pausing,
-finishing — run in `features/*/commands.js`, so they behave the same whichever
+write fails. Task and focus-session rules (completing, starting, pausing,
+finishing) run in `features/*/commands.js`, so they behave the same whichever
 store sits behind them.
 
 ## Architecture
@@ -117,7 +117,7 @@ reads the store directly through `features/*/queries.js`. The full request path,
 the data-layer rules and the incidents that shaped them are in
 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
-**Tech stack** — UI: React 18, [`@glrodasz/components`](https://github.com/glrodasz/cero-components), `react-beautiful-dnd` ·
+**Tech stack.** UI: React 18, [`@glrodasz/components`](https://github.com/glrodasz/cero-components), `react-beautiful-dnd` ·
 Data: `@tanstack/react-query` v4 · App: Next.js 15 (pages router), `@auth0/nextjs-auth0` ·
 Storage: `localStorage`, `json-server` · Tooling: Yarn 4, Jest, Testing Library, TestCafe, ESLint, Prettier, Husky.
 
