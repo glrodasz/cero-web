@@ -25,7 +25,7 @@ or a desktop. It is not a project tracker: there are no projects, assignees or
 due dates.
 
 RETO is the web app of [Cero](https://github.com/glrodasz/cero), the project
-that builds it from scratch to production — real decisions, failing tests,
+that builds it from scratch to production: real decisions, failing tests,
 refactors and all.
 
 ### Design principles
