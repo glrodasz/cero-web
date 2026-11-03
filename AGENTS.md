@@ -6,8 +6,8 @@ make changes that match the existing code.
 
 ## What this is
 
-**Cero a Producción — Web** (app codename **RETO**) is a productivity /
-task-management app built live on stream. Stack:
+**RETO** is a productivity / task-management app, the web app of the
+[Cero](https://github.com/glrodasz/cero) project. Stack:
 
 - **Next.js 12** (pages router) + **React 18**
 - **@tanstack/react-query v4** for server state

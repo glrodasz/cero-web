@@ -1,6 +1,6 @@
 <img src="public/icons/icon.svg" width="168" align="left" alt="RETO logo: a white ring on a purple tile, with a green arc tracing the first quarter like a timer">
 
-# RETO · Cero a Producción
+# RETO
 
 **Plan your day, cap what's in progress at 2 tasks, and focus with a timer that offers a break after every win.**
 
@@ -24,11 +24,9 @@ It is built for people who plan their work in small, focused blocks, on a phone
 or a desktop. It is not a project tracker: there are no projects, assignees or
 due dates.
 
-**RETO** was built live in **Cero a Producción**, a series of live coding
-sessions that took it from scratch to production — real decisions, failing
-tests, refactors and all. 📺 [YouTube](https://glrz.me/youtube-cero) ·
-🟣 [Twitch](https://glrz.me/stream).
-Part of the [Cero a Producción project](https://github.com/glrodasz/cero).
+RETO is the web app of [Cero](https://github.com/glrodasz/cero), the project
+that builds it from scratch to production: real decisions, failing tests,
+refactors and all.
 
 ### Design principles
 
@@ -86,15 +84,15 @@ A day in RETO has three screens, and each one leads to the next.
 | --- | --- | --- |
 | **Planning** | `/planning` | Add tasks, drag them between *Tareas* (in progress) and *Pendientes* (backlog), open one for its duration, subtasks and notes. "Empieza ahora" starts a focus session. |
 | **Focus session** | `/focus-session` | A chronometer runs while you work. Checking off a task offers a 5, 10 or 15 minute break, which pauses the clock; a paused session shows a "Reanudar" banner until you resume. |
-| **Retrospective** | `/retrospective` | A recap (time focused, tasks completed in this session), then how you felt — *Frustrado*, *Normal* or *Muy motivado* — and optional blockers. Choosing a mood registers the session; you can also skip it or go back to the session. |
+| **Retrospective** | `/retrospective` | A recap (time focused, tasks completed in this session), then how you felt (*Frustrado*, *Normal* or *Muy motivado*) and optional blockers. Choosing a mood registers the session; you can also skip it or go back to the session. |
 
 The app redirects between planning and an active focus session on its own, so
 reopening it lands you where you left off. It is installable as a PWA, opening
 straight into `/planning` without browser chrome.
 
 Every task detail field saves on its own, optimistically, and rolls back if the
-write fails. Task and focus-session rules — completing, starting, pausing,
-finishing — run in `features/*/commands.js`, so they behave the same whichever
+write fails. Task and focus-session rules (completing, starting, pausing,
+finishing) run in `features/*/commands.js`, so they behave the same whichever
 store sits behind them.
 
 ## Architecture
@@ -119,7 +117,7 @@ reads the store directly through `features/*/queries.js`. The full request path,
 the data-layer rules and the incidents that shaped them are in
 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
-**Tech stack** — UI: React 18, [`@glrodasz/components`](https://github.com/glrodasz/cero-components), `react-beautiful-dnd` ·
+**Tech stack.** UI: React 18, [`@glrodasz/components`](https://github.com/glrodasz/cero-components), `react-beautiful-dnd` ·
 Data: `@tanstack/react-query` v4 · App: Next.js 15 (pages router), `@auth0/nextjs-auth0` ·
 Storage: `localStorage`, `json-server` · Tooling: Yarn 4, Jest, Testing Library, TestCafe, ESLint, Prettier, Husky.
 
@@ -166,6 +164,7 @@ utils/          Generic helpers, never importing from features/
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Request path from hook to store, data-layer rules |
 | [`docs/deployment.md`](docs/deployment.md) | Deploying, the browser-backed demo, environment variables |
 | [`AGENTS.md`](AGENTS.md) | Conventions: feature layout, handlers, hooks, tests, rules from production incidents |
+| [Cero](https://github.com/glrodasz/cero) | The project hub: how it started and the other repositories |
 | [`cero-components`](https://github.com/glrodasz/cero-components) | The UI kit ([Storybook](https://cero-components.vercel.app), [npm](https://www.npmjs.com/package/@glrodasz/components)) |
 | [`cero-api`](https://github.com/glrodasz/cero-api) | Backend explorations across several stacks |
 
