@@ -1,5 +1,11 @@
 import { Html, Head, Main, NextScript } from 'next/document'
 
+// Link previews need an absolute image URL, so this names the public demo.
+const SITE_URL = 'https://reto.guillermorodas.com'
+const SITE_DESCRIPTION = 'Planea tus tareas y enfócate en lo importante.'
+const OG_IMAGE_ALT =
+  'RETO, Cero a Producción: Planea tus tareas y enfócate en lo importante. Planea, enfócate, reflexiona.'
+
 export default function Document() {
   return (
     <Html lang="es">
@@ -13,6 +19,20 @@ export default function Document() {
             `useColorScheme` keeps `theme-color` in step with the app's own
             toggle, which can disagree with the OS preference these media
             queries read on first paint. */}
+        <meta name="description" content={SITE_DESCRIPTION} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="RETO · Cero a Producción" />
+        <meta property="og:title" content="RETO · Cero a Producción" />
+        <meta property="og:description" content={SITE_DESCRIPTION} />
+        <meta property="og:url" content={SITE_URL} />
+        <meta property="og:image" content={`${SITE_URL}/og.png`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={OG_IMAGE_ALT} />
+        <meta property="og:locale" content="es_ES" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={`${SITE_URL}/og.png`} />
+
         <meta name="application-name" content="RETO" />
         <meta name="apple-mobile-web-app-title" content="RETO" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
