@@ -17,7 +17,7 @@ make changes that match the existing code.
 - **json-server** as the local mock backend (`db.json`, port 3001)
 
 Package manager is **Yarn 4** (`yarn@4.12.0`, Berry). Node **>= 24** (see
-`.nvmrc`). Do not introduce `npm install` lockfile churn — use `yarn`.
+`.nvmrc`). Do not introduce `npm install` lockfile churn; use `yarn`.
 
 ## Commands
 
@@ -41,7 +41,7 @@ Notes for agents:
   `react/forbid-prop-types`). They are tolerated; don't treat them as your
   regressions, but don't add new ones.
 - Jest coverage threshold is **branches 40 / functions 25 / lines 30 /
-  statements 30** (see the comment in `jest.config.js` — it was lowered from
+  statements 30** (see the comment in `jest.config.js`: it was lowered from
   an aspirational 60% to match actual repo coverage; ratchet it up as
   coverage improves, don't lower it to unblock a change).
 - Integration tests use TestCafe (`*.integration.test.js`) and are excluded
@@ -64,24 +64,24 @@ Features: `common`, `tasks`, `planning`, `focusSession`, `retrospective`.
 
 ### `utils/` vs `helpers.js` vs `datasources/`
 
-Three places hold non-component logic, and they're not interchangeable — pick
+Three places hold non-component logic, and they're not interchangeable, so pick
 by *how reusable* and *how data-related* the code is:
 
-- **`utils/`** — generic and project-independent. It should read like it
+- **`utils/`**: generic and project-independent. It should read like it
   could be copy-pasted into any other JS project (`isEmpty`, `isObject`,
   `time`, `formatMilliseconds`, `timeAgo`, `httpCodes`, `withApiHandler`).
   If a function mentions a task, a focus session, a route, or a status
   string, it does not belong here.
-- **`helpers.js`** (per feature) — pure functions that *are* specific to this
+- **`helpers.js`** (per feature): pure functions that *are* specific to this
   project/feature, but don't touch storage. Domain logic, formatting for a
   specific screen, derived values from feature state.
-- **`datasources/`** — project-specific, but cross-cutting infrastructure for
+- **`datasources/`**: project-specific, but cross-cutting infrastructure for
   *talking to storage*. Not tied to one feature; every feature's
   `queries.js` goes through it.
 
 Promotion rule: React-shared code (hooks, components) that more than one
 feature needs goes to `features/common/`. Non-React generic code goes to
-`utils/`. **`utils/` must never import from `features/`** — that dependency
+`utils/`. **`utils/` must never import from `features/`**; that dependency
 only ever points the other way.
 
 ### One selector: `NEXT_PUBLIC_API_URL`
@@ -93,16 +93,16 @@ derives a data source from it:
 
 | `NEXT_PUBLIC_API_URL` | data source | browser calls | storage | server rendering |
 | --- | --- | --- | --- | --- |
-| unset | `local-storage` | nothing — `api/browserTransport.js` answers | `localStorage`, per browser | skipped |
+| unset | `local-storage` | nothing, `api/browserTransport.js` answers | `localStorage`, per browser | skipped |
 | `/api/local` | `json-server` | this app's routes | `json-server` at `JSON_SERVER_URL` | reads the store directly |
 | `/api/test` | `fixtures` | this app's routes | committed arrays, per process | reads the store directly |
 | any other URL | `api` | that backend | whatever it uses | skipped |
 
 Wired per environment: `.env.development` sets `/api/local`, `.env.test` sets
-`/api/test`, and `.env.production` leaves it unset — a deployment with a real
+`/api/test`, and `.env.production` leaves it unset; a deployment with a real
 backend sets it on the hosting dashboard.
 
-Rules that keep it a single source of truth — don't reintroduce a second one:
+Rules that keep it a single source of truth, so don't reintroduce a second one:
 
 - **The path names the store.** `/api/<namespace>` is this app's own API, and
   `API_NAMESPACE` maps the namespace to the store behind it. Never add a
@@ -115,7 +115,7 @@ Rules that keep it a single source of truth — don't reintroduce a second one:
   preview, with nothing connecting the two.)
 - Failures happen at build time, since `NEXT_PUBLIC_*` bakes in then: an
   unknown namespace (`/api/demo`) throws, and so does the retired
-  `NEXT_PUBLIC_DATA_SOURCE` if it is still set — left alone, a `json-server`
+  `NEXT_PUBLIC_DATA_SOURCE` if it is still set; left alone, a `json-server`
   there would quietly become the browser store.
 - Ask the derived source, never the raw URL or a source by name:
   `isServerDataSource()` is "can this app's server read the data" (it makes
@@ -168,7 +168,7 @@ straight out of this app: the browser calls it directly, and server rendering
 reads nothing.
 
 Two things to preserve when changing any of this. **Server rendering skips the
-HTTP column on purpose** — routing it back through the app's own API routes is
+HTTP column on purpose**: routing it back through the app's own API routes is
 what produced the `401: Protected deployment` failure, so `getServerSideProps`
 calls `features/*/queries.js` directly. And **`collections/` is the only place
 CRUD semantics are defined**, which is what stops the demo store and the test
@@ -178,10 +178,10 @@ fixtures from drifting apart; a new store supplies `getCollections` /
 A third, for the browser store: **the route logic lives in
 `features/*/commands.js`, not in the route files.** The API routes and
 `api/browserTransport.js` are both thin adapters over the same commands, so
-`local-storage` behaves exactly like the stores behind the routes — see the
-section on commands below.
+`local-storage` behaves exactly like the stores behind the routes (see the
+section on commands below).
 
-### `datasources/` — the data layer, explicit
+### `datasources/`: the data layer, explicit
 
 `pages/api/[source]/**` and `getServerSideProps` never talk to storage
 directly; they go through `datasources/`:
@@ -206,8 +206,8 @@ datasources/
 ```
 
 Splitting the CRUD (`collections/`) from the stores (`localStorage/`,
-`fixtures/`) is deliberate twice over: each piece — storage, locking, the query
-engine — is independently unit-testable, which is the whole point of keeping
+`fixtures/`) is deliberate twice over: each piece (storage, locking, the query
+engine) is independently unit-testable, which is the whole point of keeping
 files small here; and the demo store and the test fixtures get *identical*
 semantics instead of two implementations that drift.
 
@@ -233,7 +233,7 @@ corrects it; anything that had to be correct under real concurrency needs a
 lock in the backing store, or a key per record instead of one document per
 session.
 
-### `pages/api/[source]/**` — the namespace names the backend
+### `pages/api/[source]/**`: the namespace names the backend
 
 The routes live under a dynamic `[source]` segment, so one set of files serves
 `/api/local` and `/api/test` and the **path itself says which store is behind
@@ -241,7 +241,7 @@ it**. `API_URL` is derived from the same config, so the two agree by
 construction.
 
 `datasources/withApiRoute.js` wraps every handler and returns **400** if
-`req.query.source` doesn't match the configured source's namespace — a stale
+`req.query.source` doesn't match the configured source's namespace, so a stale
 bundle calling a namespace this build no longer serves fails loudly instead of
 silently reading the wrong store. A source with no namespace (`local-storage`,
 `api`) isn't served by these routes at all, so every path answers **404**. It
@@ -251,10 +251,10 @@ plumbing, and `utils/` must not learn about this project's data layer.
 
 Static route segments win over dynamic ones in Next, so `pages/api/auth/**`
 keeps resolving to its own files. Nothing else may sit at `pages/api/<name>/`
-where `<name>` is one of the namespaces above — a static file there would
+where `<name>` is one of the namespaces above; a static file there would
 shadow the real routes.
 
-### `queries.js` — per-feature server-side reads
+### `queries.js`: per-feature server-side reads
 
 Each feature that's read from `getServerSideProps` *and* an API route (so
 far `tasks`, `focusSession`) has a `queries.js` alongside `handlers.js` /
@@ -263,12 +263,12 @@ domain reads (`readTasks`, `readActiveFocusSession`, …) so both call sites
 share one implementation and can't drift apart. See the "no self-fetch" rule
 below for why this exists.
 
-### `commands.js` + `api/browserTransport.js` — route logic, run in two places
+### `commands.js` + `api/browserTransport.js`: route logic, run in two places
 
 The writes behind the API routes (`createTask`, `completeTask`,
 `startFocusSession`, `finishFocusSession`, `pauseFocusSession`, …) live in each
-feature's `commands.js`. A command takes the `options` `buildApiUrl` builds —
-never `req` or `res` — and answers `{ status, body }`, throwing on any failed
+feature's `commands.js`. A command takes the `options` `buildApiUrl` builds
+(never `req` or `res`) and answers `{ status, body }`, throwing on any failed
 step so it stops where it failed.
 
 They exist because `local-storage` has no server to run on. Two adapters
@@ -327,7 +327,7 @@ Not every feature has every folder. `features/common/` holds shared hooks
   ```
   `features/common/api.js` re-exports `tasks as tasksApi` /
   `focusSessions as focusSessionsApi`. Do **not** create per-feature `api.js`
-  re-export files — that pattern was removed.
+  re-export files; that pattern was removed.
 
 ### Hooks
 
@@ -362,7 +362,7 @@ Containers instantiate these and pass them to components as `on*` props.
 
 - Co-locate as a folder with a barrel: `Board/Board.js` +
   `Board/index.js` (`export { default } from './Board'`). Some older feature
-  components are still flat files — follow the folder+barrel form for new ones
+  components are still flat files; follow the folder+barrel form for new ones
   in `common`/`tasks`.
 - Always declare `propTypes`. `react/forbid-prop-types` is a warning: prefer
   `PropTypes.shape({...})` over bare `PropTypes.object` / `PropTypes.array`
@@ -371,7 +371,7 @@ Containers instantiate these and pass them to components as `on*` props.
 - Pages lay out with `features/common/components/PageLayout` (`content` +
   `footer`), not the library's `FullHeightContent`: its footer is sticky, so
   the page's primary action floats at the bottom of the screen once the
-  content scrolls. Keep that footer to the actions themselves — explanatory
+  content scrolls. Keep that footer to the actions themselves; explanatory
   copy belongs in `content`, or the floating bar eats a phone screen.
 - **Never leave a primary action silent.** An action that can't run says why
   (a one-line hint under the button), and one that failed says so in a
@@ -382,7 +382,7 @@ Containers instantiate these and pass them to components as `on*` props.
   `isFinishing` / `finishError` from `useFocusSessions`.
 - `isMuted` is not "disabled". In the library it is a colour (today darker
   than primary), and `Button` doesn't honour `isDisabled` until the
-  `@glrodasz/components` fix ships — so a blocked handler must still guard
+  `@glrodasz/components` fix ships, so a blocked handler must still guard
   itself (`createRegisterSessionHandler` returns without a score).
 
 ### Mobile / PWA
@@ -390,7 +390,7 @@ Containers instantiate these and pass them to components as `on*` props.
 The app is installable (`public/manifest.webmanifest`, icons in
 `public/icons/`, meta tags in `pages/_document.js`). `viewport-fit=cover` is
 set, so anything pinned to a screen edge must pad itself with
-`env(safe-area-inset-*)` — see `MainLayout`, `PageLayout` and `DevTools`.
+`env(safe-area-inset-*)`; see `MainLayout`, `PageLayout` and `DevTools`.
 `theme-color` follows the app's own light/dark toggle via
 `utils/syncThemeColor`. The icon's source is `public/icons/icon.svg`;
 regenerate the PNGs from it rather than editing them.
@@ -403,7 +403,7 @@ back on failure, and the handlers in `features/tasks/handlers.js` send only the
 fields that changed through the generic `PATCH tasks/:id`. Beyond `description`
 a task may carry `duration` (minutes or `null`, options in
 `TASK_DURATION_OPTIONS`), `subtasks` (`[{ id, description, isCompleted }]`,
-always written whole — a PATCH replaces the array; build it with the
+always written whole: a PATCH replaces the array; build it with the
 `addSubtask` / `toggleSubtask` / `removeSubtask` helpers) and `notes`. Inputs
 in the detail stop Enter from propagating: the library `AddButton` behind the
 modal listens for it on `window` and would steal the focus.
@@ -415,7 +415,7 @@ deliberate; keep them:
 
 - **Completing a task always offers a break.** `createCheckCompleteTaskHandler`
   opens `BreaktimeConfirmation` (5 / 10 / 15 min) on every task checked during
-  a session — celebrate each small win. Don't add a skip, a "not now" or a
+  a session: celebrate each small win. Don't add a skip, a "not now" or a
   throttle. Closing the modal declines the break.
 - **A break is a pause.** Choosing one calls `focusSession.api.pause({ time })`,
   which stops the chronometer until it's resumed. A pause can outlive its
@@ -425,8 +425,8 @@ deliberate; keep them:
   retrospective; the session stays active, and the retrospective offers
   "Volver a la sesión", until it is registered or skipped.
 - **The retrospective's recap** (`getSessionRecap`) shows the chronometer's time
-  — the active session's `startTime` arrives shifted past its finished pauses
-  (`readActiveFocusSession`), so don't subtract them again — and counts the
+  (the active session's `startTime` arrives shifted past its finished pauses
+  in `readActiveFocusSession`, so don't subtract them again) and counts the
   completed tasks whose `focusSessionId` is the session's. Starting a session
   stamps its tasks with that id; finishing clears it only from the tasks still
   open, so completed ones keep it.
@@ -446,7 +446,7 @@ Status values are constants, not inline strings:
 - Focus-session statuses in `features/focusSession/constants.js`:
   `ACTIVE_FOCUS_SESSION_STATUS`, `FINISHED_FOCUS_SESSION_STATUS`.
 
-Shared server-side reads live in each feature's `queries.js` — reuse
+Shared server-side reads live in each feature's `queries.js`; reuse
 `getActiveFocusSession` / `getInProgressAndPendingTasks` (and the
 session-aware `readActiveFocusSession` / `readTasks`) rather than
 re-implementing them in route handlers or in `getServerSideProps`.
@@ -455,7 +455,7 @@ re-implementing them in route handlers or in `getServerSideProps`.
 
 `pages/api/[source]/**` are Next API routes that adapt HTTP to a feature's
 `commands.js` (writes) or `queries.js` (shared reads), or pass a plain CRUD
-request straight through `buildApiUrl` + `fetchResource` — see the data layer
+request straight through `buildApiUrl` + `fetchResource`; see the data layer
 sections above. Wrap every handler in `withApiRoute`, use the status constants
 above in URLs and bodies, and give `api/browserTransport.js` a matching entry.
 
@@ -501,13 +501,13 @@ no `db.json`.
 
 - Public config is read in `config/index.js` from `NEXT_PUBLIC_*` env vars
   (`MAXIMUM_IN_PRIORITY_TASKS`, `MAXIMUM_BACKLOG_QUANTITY`, `API_URL`).
-  `API_URL` is `NEXT_PUBLIC_API_URL` normalized, or `null` with none set —
+  `API_URL` is `NEXT_PUBLIC_API_URL` normalized, or `null` with none set;
   see the selector section above.
 - Dev defaults live in `.env.development`; secrets (Auth0) go in `.env.local`
   (see `.env.local.example`).
 - Every committed env file must set `NEXT_PUBLIC_MAXIMUM_*`. Leaving them out
   makes the config `NaN`, and every `length >= NaN` check silently returns
-  false — which is exactly how the in-progress cap went missing under test.
+  false, which is exactly how the in-progress cap went missing under test.
 - `NEXT_PUBLIC_MAXIMUM_IN_PRIORITY_TASKS` is the canonical key; a temporary
   `??` fallback to the misspelled legacy `NEXT_PUBLIC_MAXIMUN_IN_PRIORITY_TASKS`
   exists for rollout and will be removed once deployments are migrated.
@@ -520,22 +520,22 @@ that keep them fixed — don't reintroduce the underlying mistake elsewhere:
 
 - **No module-level memory across `pages/api/**` routes.** Each API route
   (and each page with `getServerSideProps`) deploys as its own isolated
-  serverless function on Vercel — a top-level `Map`/`Set`/plain object is
+  serverless function on Vercel, so a top-level `Map`/`Set`/plain object is
   *not* shared between them. Anything that must be shared across requests
-  needs an external store reachable from every function — none is wired up
-  today, since the demo keeps its data in the browser — never a module-level
+  needs an external store reachable from every function. None is wired up
+  today, since the demo keeps its data in the browser. Never use a module-level
   variable.
 - **Never let `getServerSideProps` fetch this deployment's own API routes
   over HTTP.** Vercel Deployment Protection rejects that self-fetch with a
   401, and it's slower even when protection is off. Call the `datasources/`
-  functions (via a feature's `queries.js`) directly instead — that's what
+  functions (via a feature's `queries.js`) directly instead; that's what
   `queries.js` exists for.
 - **`NEXT_PUBLIC_*` env vars bake in at build time**, not read at request
   time. Changing one on Vercel requires a fresh deployment (or an empty
   commit) to take effect, and it must be scoped to the right environment
   (Preview vs. Production).
 - **Always check `response.ok`** in HTTP client code before treating a body
-  as valid data — an error response's JSON body is not the same shape as a
+  as valid data: an error response's JSON body is not the same shape as a
   success body, and treating it as one produces confusing downstream errors
   (e.g. `[object Object]`) instead of the real message.
   `api/request.js` does it once for every call, and the error it throws
@@ -545,10 +545,10 @@ that keep them fixed — don't reintroduce the underlying mistake elsewhere:
   and Redis in another, and how the `test` environment came to point the
   browser at fixtures while server rendering reached for Redis credentials
   that weren't there. If a new environment needs one of this app's stores, give
-  it a namespace in `config/dataSource.js` and point `NEXT_PUBLIC_API_URL` at it
-  — never a second variable.
+  it a namespace in `config/dataSource.js` and point `NEXT_PUBLIC_API_URL` at it,
+  never a second variable.
 - **Answer on every path.** Handlers reply inside a `if (req.method === …)`
-  guard, and Next leaves the connection open if none matches — the caller waits
+  guard, and Next leaves the connection open if none matches, so the caller waits
   out a gateway timeout instead of getting an error. `utils/withApiHandler`
   sends a 405 when a handler returns without writing a response; don't add a
   route that bypasses it.
@@ -560,6 +560,6 @@ that keep them fixed — don't reintroduce the underlying mistake elsewhere:
   on failure to stop execution.** Resolving `res` on error (writing the
   response but not throwing) lets the handler keep running past a failure it
   should have stopped on.
-- **Never compile a value that crossed HTTP into `new RegExp()`** — that's a
+- **Never compile a value that crossed HTTP into `new RegExp()`**: that's a
   ReDoS vector. `datasources/collections/query.js`'s `_like` filter matches by
   plain substring/alternation instead.
